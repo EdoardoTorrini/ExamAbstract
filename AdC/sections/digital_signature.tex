@@ -1,0 +1,208 @@
+\chapter{Firma Digitale}
+La \textit{firma digitale} è il metodo di \textbf{autenticazione} basato su crittografia a chiave pubblica. In generale si tratta di una \textbf{``cifratura''} con la \textbf{chiave privata}. L'\textbf{autenticità del mittente} deriva dal fatto che solo con la corrispondente \textbf{chiave pubblica del mittente} si possa decifrare un messaggio ``cifrato'' \textit{M}.
+
+\section{Firma Digitale con RSA}
+L'osservazione fondamentale è il ruolo perfettamente \textbf{simmetrico} degli esponenti \textit{e} e \textit{d}, infatti essi sono l'uno l'inverso dell'altro in $\mathbb{Z}_n^*$. È quindi possibile \textbf{\textit{firmare}} un messaggio \textit{M} con la propria \textbf{chiave privata}, in questo caso \textbf{non} avremo \textbf{riservatezza} sul messaggio, infatti essendo che il messaggio \textit{M} si potrà decifrare con la chiave pubblica, quindi nota a chiunque, essa servirà unicamente per validare che quel messaggio è stato inviato dal proprietario della corrispondente chiave privata.
+\begin{center}
+    $F = M^d \bmod n \;\;\;\;\; M = F^e \bmod n$
+\end{center}
+Naturalmente anche se un \textit{destinatario} decifrasse il messaggio \textit{F} con la chiave pubblica del \textit{mittente} non potrebbe validare il messaggio è quindi necessario associare alla quantità \textit{F} il messaggio originale \textit{M} per poter poi effettuare il confronto tra i due, ecco quindi derivata la ``definizione'' di \textbf{\textit{digital signature}}: $DS = (M, F)$. \\
+La garanzia è che senza una copia di \textit{d} è computazionalmente intrattabile \textbf{forgiare} una coppia $(\overline{M}, \overline{F})$ dove $\overline{F} = \overline{M}^d \bmod n$.
+\\ \newline
+\textbf{Protocollo di Base}
+\begin{itemize}
+    \item \textbf{Firma del Messaggio: \textit{Alice}}
+    \begin{enumerate}
+        \item calcolo $F = M^d \bmod n$.
+        \item invio della coppia $(M, F)$.
+    \end{enumerate}
+    \item \textbf{Verifica della Firma: \textit{Bob}}
+    \begin{enumerate}
+        \item ottiene la chiave pubblica di \textit{Alice} $(n, e)$.
+        \item calcola $M' = F^e \bmod n$.
+        \item accetta se e solo se $M = M'$.
+    \end{enumerate}
+\end{itemize}
+In un implementazione ``reale'' la coppia non contiene la firma del messaggio \textit{M}, ma contiene la \textbf{firma} di un \textbf{fingerprint} di \textit{M}, che viene normalmente ottenuto mediante l'applicazione di una \textbf{funzione di hash crittografica}. Viene normalmente effettuato per \textbf{ridurre} sensibilmente la \textbf{dimensione} dei numeri senza però \textbf{perdere sicurezza} a patto che la funzione di \textbf{hash} sia \textbf{resistente alle collisioni}. \\
+Ovvero la funzione deve essere \textbf{\textit{Second Pre-Image Resistant}} quindi che dato un \textit{M} deve essere computazionalmente proibitivo trovare un $\overline{M}\;|\;H(M) = H(\overline{M})$.
+\\ \newline
+\textbf{Protocollo di Base con Hash}
+\begin{itemize}
+    \item \textbf{Firma del Messaggio: \textit{Alice}}
+    \begin{enumerate}
+        \item calcola $H = hash(M)$
+        \item calcolo $F = H^d \bmod n$.
+        \item invio della coppia $(M, F)$.
+    \end{enumerate}
+    \item \textbf{Verifica della Firma: \textit{Bob}}
+    \begin{enumerate}
+        \item ottiene la chiave pubblica di \textit{Alice} $(n, e)$.
+        \item calcola $H' = F^e \bmod n$.
+        \item calcola $H = hash(M)$
+        \item accetta se e solo se $H = H'$.
+    \end{enumerate}
+\end{itemize}
+\   \\
+\textbf{Blinding Attack: \textit{Eve}}
+Cerchiamo un numero \textit{R} tale che $\overline{M} = R^e \cdot M \bmod n$, \textit{Eve} ``convince'' (tramite attacchi di \textit{social engineering}) \textit{Alice} a firmarlo ottenendo $F = \overline{M}^d \bmod n$. Poiché:
+\begin{center}
+    \begin{math}
+        \begin{aligned}
+            F &= \overline{M}^d \bmod n \\
+            &= (R^e \cdot M \bmod n)^d \bmod n \\
+            &= R^{ed} \cdot M^d \bmod n \\
+            &= R^{1 + \phi(n)} \cdot M^{d} \bmod n \\
+            &= R \cdot R^{\phi(n)} \cdot M^d \bmod n \; || \; R^{\phi(n)} \bmod n = 1 \text{ teorema di \textbf{Eulero}} \\ 
+            &= R \cdot 1 \cdot M^d \bmod n \\
+            &= R \cdot M^d \bmod n
+        \end{aligned}
+    \end{math}
+\end{center}
+A \textit{Eve} è sufficiente calcolare $F \cdot R^{-1} \bmod n$ per ottenere proprio $M^d \bmod n$, la parte difficoltosa è riuscire a nascondere in un messaggio apparentemente innocuo un messaggio pericoloso. La ``debolezza'' di questo attacco risiede nell'utilizzo di un \textbf{\textit{hash}} del messaggio per effettuare la firma. Non sono tutt'ora noti attacchi funzionanti al protocollo con hash. La possibilità di effettuare attacchi si riduce ancora nel momento in cui al messaggio viene aggiunto del \textit{padding ``casuale''}. L'idea è sviluppata all'interno dello standard \textbf{\textit{Probabilistic Signature Scheme - PSS}} nel quale, se viene applicata una funzione \textit{hash} il messaggio da firmare avrà una lunghezza molto minore della lunghezza massima consentita da \textit{RSA}, questo permette di riempire lo ``spazio'' rimanente con \textbf{bit casuali}. Un esempio è \textbf{\textit{RSA-OAEP}}.
+
+\newpage
+\section{Firma Digitale con ElGamal}
+Definiamo la chiave \textbf{pubblica} e \textbf{privata}:
+\begin{itemize}
+    \item \textbf{Chiave Privata}: \textit{a}
+    \item \textbf{Chiave Pubblica}: $(p, g, A)$ dove \textit{p} è un primo, \textit{g} è un generatore di un sottogruppo di $\mathbb{Z}_p^*$ e $A = g^a \bmod p$ dove \textit{a} è la \textit{chiave privata} ed è un numero tale che $a \in \{2, 3, ..., p - 2\}$
+\end{itemize}
+\   \\
+\textbf{Protocollo di Base}
+\begin{itemize}
+    \item \textbf{Firma del Messaggio: \textit{Alice}}
+    \begin{enumerate}
+        \item seglie un numero \textit{k} a caso tale che $gcd(k, p - 1) = 1$.
+        \item calcola le quantità $r = g^k \bmod p$ e $s = k^{-1} \cdot (M - a \cdot r) \bmod (p -1)$.
+        \item il messaggio firmato è $(M, (r, s))$.
+    \end{enumerate}
+    \item \textbf{Verifica della Firma: \textit{Bob}}
+    \begin{enumerate}
+        \item si procura la chiave pubblica di \textit{Alice}: $(p, g, A)$.
+        \item calcola le due quantità $x_1 = A^r \cdot r^s \bmod p$ e $x_2 = g^M \bmod p$.
+        \item accetta la firma come autenticata se e solo se $x_1 = x_2$.
+    \end{enumerate}
+\end{itemize}
+La \textbf{Correttezza} del metodo è data da:
+\begin{center}
+    \begin{math}
+        \begin{aligned}
+            r^s \bmod p &= (g^k \bmod p)^s \bmod p \\
+            &= (g^k \bmod p)^{(k^{-1} \cdot (M - ar)) \bmod (p - 1)} \bmod p \\
+            &= (g^k \bmod p)^{(k^{-1} \cdot (M - ar) - (p - 1)h^*)} \bmod p \\
+            &= (g^k)^{(k^{-1} \cdot (M - ar))} \cdot (g^k)^{-(p - 1) \cdot h} \bmod p\\
+            &= g^{M - ar} \cdot (g^{-kh})^{p - 1} \bmod p \\
+            &= g^M \cdot g^{-ar} \bmod p \\
+            &= g^M \cdot (g^a \bmod p)^{-r} \bmod p \\
+            &= g^M \cdot A^{-r} \bmod p 
+        \end{aligned}
+    \end{math}
+\end{center}
+dove \textit{h*} è quoziente della divisione di $k^{-1} \cdot (M - ar)$ e per $p - 1$ seguendo la combinazione lineare $R = x - \floor{\frac{x}{y}} * Q$.
+\begin{center}
+    \begin{math}
+        \begin{aligned}    
+            x_1 &= A^r \cdot r^s \bmod p \\
+            &= A^r \cdot (g^M \cdot A^{-r} \bmod p) \bmod p \\
+            &= g^M \bmod p \\
+            &= x^2
+        \end{aligned}
+    \end{math}
+\end{center}
+\textbf{Configurazioni di Sicurezza}
+\begin{itemize}
+    \item \textbf{Uso singolo di K}: il valore segreto \textit{k} deve essere usato una sola volta. Se $M_1$ e $M_2$ vengono firmati con lo stesso \textit{k} ad \textit{Eve} basta impostare il sistema di equazioni:
+    \begin{center}
+        \begin{math}
+            \begin{cases}
+                a \cdot r_1 + k \cdot s_1 = M_1\;\;(\bmod p) \\
+                a \cdot r_2 + k \cdot s_2 = M_2\;\;(\bmod p)
+            \end{cases}
+        \end{math}
+    \end{center}
+    In questo modo l'unica soluzione al sistema non è altro che la coppia $(a, k)$ ovvero il \textit{k} utilizzato per la generazione di \textit{r} e \textit{s} e la chiave private \textit{a}.
+    \item \textbf{Valore hash del messaggio}: il protocollo deve essere usato con un \textbf{hash del messaggio}, in caso contrario \textit{Eve} può eseguire un \textbf{\textit{Message Forgery Attack}}, ovvero produrre un messaggio correttamente firmato senza conoscere la chiave privata di \textit{Alice}. Si possono infatti identificare una coppia $(r, s)$ tale per cui il messaggio \textit{M} creato abbia come firma proprio la coppia $(r, s)$.
+    \begin{enumerate}
+        \item \textit{Eve} sceglie due numeri $x \text{ e } y$ con $gcd(y, p - 1) = 1$
+        \item sceglie un \textit{r} tale per cui valga:
+        \begin{center}
+            \begin{math}
+                \begin{aligned}
+                    r &= g^x \cdot A^y \bmod p \\
+                    &= g^x \cdot (g^a \bmod p)^y \bmod p \\
+                    &= g^{x + a \cdot y} \bmod p
+                \end{aligned}
+            \end{math}
+        \end{center}
+        \item una volta ottenuto \textit{r} possiamo calcolare $s = -r \cdot y^{-1} \bmod (p - 1)$.
+        \item \textit{Eve} infatti sa che \textit{Bob} eseguirà il seguente controllo:
+        \begin{center}
+            $A^r \cdot r^s \bmod p \stackrel{?}{=} g^M \bmod p$
+        \end{center}
+        e dunque pone \colorbox{yellow}{$M = x \cdot s \bmod (p - 1)$}.
+        \item in questo modo risulta:
+        \begin{center}
+            \begin{math}
+                \begin{aligned}
+                    A^r \cdot r^s \bmod p &= (g^a \bmod p)^r \cdot (g^{x + a \cdot y})^s \bmod p \\
+                    &= g^{a \cdot r} \cdot g^{(x + a \cdot y) \cdot s} \bmod p \\
+                    &= g^{a \cdot r + x \cdot s + a \cdot y \cdot s} \bmod p \\
+                    &= g^{a \cdot r + x \cdot s} \cdot g^{a \cdot y \cdot (-r \cdot y^{-1} - h' \cdot (p - 1))} \bmod p \\
+                    &= g^{a \cdot r + x \cdot s} \cdot g^{a \cdot y \cdot -r \cdot y^{-1}} \cdot {g^{h}}^{(p - 1)} \bmod p \\
+                    &= g^{a \cdot r + x \cdot s} \cdot g^{-r \cdot a} \bmod p \\
+                    &= g^{a \cdot r} \cdot g^{x \cdot s} \cdot g^{a \cdot -r} \bmod p \\
+                    &= g^{x \cdot s} \bmod p \\
+                    &= g^{x \cdot -(r \cdot y^{-1} + h' \cdot (p - 1))} \\
+                    &= g^{x \cdot -r \cdot y^{-1}} \cdot {g^{h'}}^{(p - 1)} \bmod p \\
+                    &= g^M \bmod p
+                \end{aligned}
+            \end{math}
+        \end{center}
+        Abbiato riutilizzato la definizione di modulo: $R = x - \floor{\frac{x}{y}} * Q$ andando a sostituire $s = -r \cdot y^{-1} \bmod (p - 1)$ con $s = -r \cdot y^{-1} - h \cdot (p - 1) = - (r \cdot y^{-1} + h \cdot (p - 1))$ e grazie al \textit{piccolo Teorema di Fermat} abbiamo semplificato con $s = -r \cdot y^{-1}$. \\
+    \end{enumerate}
+\end{itemize}
+
+Per riuscire a difendersi da questo tipo di attacco possiamo utilizzare una funzione di hash, per ottenere un \textit{H} per poi firmarlo. Più precisamente, dopo aver scelto \textit{k} e calcolato \textit{r}, \textit{Alice} firma $H(M||r)$ ovvero il messaggio \textit{M} concatenato al valore \textit{r}, in questo modo \textit{Eve} non potrebbe porre $M = x \cdot s \bmod (p - 1)$, perché non è questo che \textit{Bob} usa nella verifica. \textit{Eve} dovrebbe trovare un messaggio \textit{M} tale che $H(M||r) = x \cdot s \bmod (p - 1)$ ma questo implicherebbe che \textbf{\textit{H} non} sia \textbf{\textit{First Pre-Image Resistant}}. In oltre bisogna che \textit{Bob} controlli il valore di \textit{r} se no, \textit{Eve} potrebbe produrre firme apparentemente autentiche su qualsiasi messaggio, nel momento in cui disponga della firma autenticata $(r, s)$ di un solo messaggio \textit{M}.
+
+\newpage
+\section{Firma Digitale con Digital Signature Algorithm}
+Il \textbf{\textit{Digital Signature Algorithm}} anche detto \textbf{\textit{DSA}} è un metodo definito con precisione dal \textbf{\textit{National Institute of Standard and Technology}} (\textbf{\textit{NIST}}) e adottato come standard dal 1994. A differenza degli altri protocolli \textbf{DSA} prevede fin da subito l'utilizzo di una funzione di \textbf{hash crittografico}, nello specifico \textit{SHA-1}
+\\ \newline
+\textbf{Protocollo Originale}
+\begin{itemize}
+    \item \textbf{Generazione delle Chiavi: \textit{Alice}}
+    \begin{enumerate}
+        \item genera un numero \textit{q} di 160 bit.
+        \item genera un numero \textit{p} di 1024 bit tale che $gcd(q, p - 1) > 1$.
+        \item determina un elemento di $g \in \mathbb{Z}_p^*$ di ordine \textit{q} ovvero un generatore di $\mathbb{Z}_q \subseteq \mathbb{Z}_p^* \approx 2^{160} \text{ elementi}$.
+        \item scegli a caso un $a \in \mathbb{Z}_q$
+        \item calcola $A = g^a \bmod p$
+        \item pubblica $(p, q, g, A)$ e tieni riservato il numero \textit{a}.
+    \end{enumerate}
+    \item \textbf{Firma del Messaggio: \textit{Alice}}
+    \begin{enumerate}
+        \item dato il messaggio \textit{M}, calcola $m = SHA1(M)$
+        \item sceglie un $k \in \mathbb{Z}_p^*$ uniformemente a caso.
+        \item calcola $r = (g^k \bmod p) \bmod q$ e $s = k^{-1} \cdot (m + a \cdot r) \bmod q$
+        \item se anche uno solo dei due valori (\textit{r} o \textit{s}) è \textit{0}, scegli un valore diverso di \textit{k} (punto 2).
+        \item altrimenti invia il messaggio $(m, (r, s))$.
+    \end{enumerate}
+    \item \textbf{Verifica della Firma: \textit{Bob}}
+    \begin{enumerate}
+        \item si procura la chiave pubblica di \textit{Alice} $(p, q, g, A)$.
+        \item controlli che risulti $0 < r, \; s < q$.
+        \item calcola $x = SHA1(M) \cdot (s^{-1} \bmod p)$
+        \item calcola $y = r \cdot (s^{-1} \bmod p)$.
+        \item esegue il controllo $(g^x \cdot A^y \bmod p) \bmod q \stackrel{?}{=} r$ e se verificato accetta la firma come autentica. 
+    \end{enumerate}
+\end{itemize}
+La \textbf{sicurezza} di \textbf{DSA} dipende dalla difficoltà del logaritmo discreto su sottogruppi di \textit{q} elementi. Il protocollo originale, in qui \textit{q} veniva scelto nell'intervallo $(2^{159}, 2^{160})$ fornisce quindi $\log_{\sqrt{2^{160}}} = 80$ bit di \textbf{sicurezza}. Le \textbf{specifiche del protocollo attuale} modificano solo la lunghezza di \textit{p} e \textit{q} $p \in \{1024, 2048, 3072\}$ mentre $q \in \{160, 224, 256\}$ come funzione di \textbf{hash crittografico} può essere utilizzata qualunque funzione specificata nelle pubblicazioni \textbf{\textit{FIPS 180}}. Alcune curiosità è che se \textit{k} è stata compromessa, anche la chiave privata di \textit{Alice} è stata compromessa, mentre se \textit{r} o \textit{s} è uguale a \textit{0} allora la chiave privata viene compromessa.
+
+\section{Autenticità delle chiavi pubbliche}
+Quando \textit{Bob} si procura la chiave pubblica di \textit{Alice} deve essere certo che la chiave sia \textbf{effettivamente} di \textit{Alice}. Ci sono due approcci per ottenere questo risultato il primo su cui si basa \textbf{\textit{TLS/OpenSSL}}, ovvero che necessita di infrastrutture chiamate \textbf{\textit{Certificate Authority - CA}}, mentre l'altro che viene utilizzato da \textbf{\textit{GnuPG/OpenPGP}}.
+
+\subsection{Approccio TLS}
+Il \textit{client} contatta un \textit{server} per iniziare una comunicazione, il \textit{server} risponde con un messaggio dove è incluso un \textbf{certificato di autenticità} ovvero la \textit{chiave pubblica} del \textit{sever} \textbf{firmata} da un \textbf{autorità} che funge da \textbf{garante} nella comunicazione. A quel punto il \textit{client} controlla che il certificato del \textit{server} sia già in suo possesso e sia \textit{verificato} e \textit{valido}. Se si allora il \textit{client} possiede già la chiave pubblica verificata e l'interazione procede con il \textit{protocollo concordato}. Se no, invece, ma possiede la chiave pubblica del \textit{garante} allora il \textit{client} acquisisce come autentico il certificato memorizzandolo nel cosidetto \textbf{\textit{keyring}}, e successivamente l'interazione procede con il \textit{protocollo concordato}. Se non si verifica neanche questa condizione allora il \textit{client} deve autenticare il \textit{garante} attraverso un \textbf{super-garante}. È chiaro che il problema assume cioè connotati \textbf{ricorsivi}. Sono presenti però delle \textbf{\textit{CA Top Level}} di cui ci si fida senza cercare un loro garante andando quindi ad interrompere l'iterazione. Normalmente queste \textit{chiavi pubbliche} di massimo livello sono salvate nel \textbf{\textit{keyring}} quando il \textbf{\textit{OS}} viene installato.
+
+\subsection{GnuPG}
+In questo caso l'organizzazione non è \textbf{verticale} come in nel caso del \textbf{TLS}, ma più \textbf{orizzontale} (potremmo dire \textit{peer-to-peer}). Si tratta di un'opzione molto più leggera che non potrebbe essere utilizzata negli scopi dove si applica il \textit{TLS}, e viene anche definito il \textbf{\textit{web of trust}}. Infatti ad ogni chiave pubblica viene sia associato un \textbf{\textit{fingerprint}}, importando questo nel proprio \textbf{\textit{keyring}} aumentano il \textbf{grado} di confidenzialità della chiave pubblica. Quindi i ``garanti'' sono tutti quegli utenti che hanno già importato il \textbf{\textit{fingerprint}} di una chiave pubblica all'interno del proprio \textbf{\textit{keyring}}.

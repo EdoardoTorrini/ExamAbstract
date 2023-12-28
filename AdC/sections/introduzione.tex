@@ -1,0 +1,75 @@
+\chapter{Crittografia}
+
+\section{Introduzione}
+La \textit{Crittografia} (etimologicamente ``scrittura segreta'') ha lo scopo di mascherare messaggi in modo da poter permettere lo scambio di informazioni tra due interlocutori, che per comodità chiameremo \textbf{Alice} e \textbf{Bob}, senza che un possibile ``origliatore'', \textbf{Eve}, possa comprendere il messaggio scambiato.
+\newline
+Se da una parte sono presenti attori come Alice e Bob che cercano di mandarsi messaggi segreti tramite \textit{metodi di cifratura}, avremo per definizione altri attori, identificati in Eve, che attraverso \textit{metodi di crittoanalisi} cercheranno di riportare alla luce le informazioni contenute in quelle conversazioni.
+
+\section{Cifratura, decifrazioni e attacchi}
+La \textbf{Crittologia} è la scienza che raggruppa lo studio della \textit{crittografia} con i suoi metodi di cifratura e lo studio di come poter rompere questi schemi crittografici ovvero la \textit{crittoanalisi}.
+Il problema che si vuole risolvere attraverso la crittografia è il seguente: un \textit{mittente}, Alice, vuole comunicare con un \textit{destinatario}, Bob, utilizzando un canale di trasmissione \textit{insicuro}, ovvero che intercettando un messaggio è possibile leggerlo, comprenderlo e modificarlo. 
+\newline
+Definiamo \textbf{MSG} come l'insieme a cui appartengono i messaggi, mentre \textbf{CRT} come l'insieme a cui appartengono i crittogrammi andiamo a definire:
+\begin{itemize}
+    \item \textbf{Cifratura del Messaggio}: operazione per la quale si trasforma un generico messaggio in chiaro \textbf{\textit{m}} in un crittogramma \textbf{\textit{c}} applicando una funzione $C: MSG \rightarrow CRT$
+    \item \textbf{Decifrazione del Messaggio}: operazione che permette di ricavare il messaggio in chiaro \textbf{\textit{m}} dal crittogramma \textbf{\textit{c}} applicando una funzione $D: CRT \rightarrow MSG$
+\end{itemize}
+Matematicamente $D(C(m)) = m$ infatti le funzioni \textbf{\textit{D}} e \textbf{\textit{C}} sono una l'inverso dell'altra. Sempre per definizione la funzione \textbf{\textit{C}} deve essere \textit{iniettiva}, ovvero, a messaggi diversi devono corrispondere crittogrammi diverssi, altrimenti Bob non potrebbe ricostruire univocamente un messaggio da ogni crittogramma.
+\newline
+Analizzando ora il punto di vista di Eve, ovvero di un crittoanalista che si inserisce nella comunicazione. La tipologia di azioni che va a svolgere possono essere di due tipologie: \textit{passivo} ovvero se Eve si limita ad ascoltare la comunicazione, o \textit{attivo} se agisce sul canale disturbando la comunicazione o alterandola. 
+\newline
+L'attacco a un sistema crittografico dipende dalle informazioni in possesso da un crittoanalista:
+\begin{itemize}
+    \item \textbf{\textit{Cipher Text Only Attacker (COA)}}: il crittoanalista è riuscito a leggere dal canale insicuro una serie di crittogrammi $c_1, c_2, ..., c_n$.
+    \item \textbf{\textit{Known Plain-Text Attack (KPA)}}: il crittoanalista è venuto a conoscenza di usa serie di coppie $(m_1, c_1), (m_2, c_2), ..., (m_n, c_n)$ contenenti i messaggi in chiaro e il crittogramma corrispondente.
+    \item \textbf{\textit{Chosen Plain-Text Attack (CPA)}}: il crittoanalista ha ottenuto una serie di coppie $(m_1, c_1), (m_2, c_2), ..., (m_n, c_n)$ di cui ha scelto il testo in chiaro. Effettuando delle \textbf{query} di \textbf{encryption}. Normalmente questa casistica fa riferimento alla \textit{crittografia asimmetrica}, in cui il crittanalista conosce la chiave di cifratura.
+    \item \textbf{\textit{Chosen Cipher-Text Attack (CCA)}}: invece che un \textbf{encryption query} il crittanalista ha la possibilità di eseguire una \textbf{decryption query}.
+    \item \textbf{\textit{Man in the Middle}}: il crittoanalista riesce ad porsi all'interno del canale di comunicazione interrompendo le comunicazioni tra Alice e Bob e alterando i messaggi, convincendo entrambi che tali messaggi provengano legittimamente dall'altro. 
+\end{itemize}
+Dopo aver definito le diverse tipolgie di attacco che può utilizzare un crittoanalista, andiamo a definire anche, i \textbf{requisiti tipici di sicurezza} in una comunicazione:
+\begin{itemize}
+    \item \textbf{Confidenzialità}: ovvero che Eve non sia in grado di comprendere il contenuto del messaggio che viene trasmesso su un canale insicuro.
+    \item \textbf{Autenticazione}: ovvero la sicurezza per la quale Bob è sicuro che il messaggio sia effettivamente inviato da Alice.
+    \item \textbf{Integrità}: ovvero la sicurezza per la quale Bob è sicuro che Eve non abbia manomesso il messaggio.
+    \item \textbf{Non Ripudio}: ovvero la caratteristica per la quale Alice non può, negare, nemmeno in un secondo momento, di aver inviato il messaggio a Bob.
+\end{itemize}
+
+\section{Livelli di Segretezza}
+Il grosso passaggio nella crittografia avvenne con l'avvento dei calcolatori elettronici, fino a quel momento la sicurezza della crittografia risiedeva non in una chiave di cifratura, ma nel mantenere segrete le funzioni \textbf{\textit{C}} e \textbf{\textit{D}}, in quanto la cifratura e la decifratura venivano eseguite a mano. Erano quindi stati stabilit delle \textit{norme} per caratterizzare la ``robustezza'' di un cifrario, ovvero: le funzioni \textbf{\textit{C}} e \textbf{\textit{D}} dovevano essere \textit{facili} da calcolare, era \textit{impossibile} ricavare \textbf{\textit{D}} se \textbf{\textit{C}} non era nota e il crittogramma $c = C(m)$ doveva apparire innocente.
+\newline
+Ovviamente con l'avvento dei calcolatori eletronnici, bisogna rimodulare queste caratteristiche, infatti il crittogramma viene inviato come sequenza di 0 e 1 ed è quindi ``sempre innocente''. L'altra questione è che tenere segreto l'intera funzione di cifrazione inizia ad essere impensabile, nascono quindi cifrari che si basano sulla segretezza di una chiave \textit{k} che permette, mandata in input alla funzione di cifrazione di ottenere il crittogramma. Utilizziamo quindi la notazione: $C(m, k)$ per la cifratura e $D(c, k)$ per la decifrazione.
+\newline
+Naturalmente occorre presare molta attenzione alla scelta della chiave, ma anche in questo caso, \textbf{Kerckhoffs} enuncia un \textbf{principio fondamentale} attraverso il quale trovare una chiave adatta:
+\begin{center}
+    \textbf{Se le chiavi sono: scelte bene, di lunghezza adeguata, tenute segrete e gestite unicamente da sistemi fidati allora non ha importanza mantenere segreti anche gli algoritmi di crittografia.}
+\end{center}
+Avere gli algoritmi di crittografia pubblici permette di individuare in tempi ridotti eventuali debolezze.
+\newline
+Uno dei grossi ``problemi'' della crittografia classica è che il testo viene si cifrato, ma viene mantenuta sia la struttura del messaggio ma anche le ricorrenze delle varia lettere. \'{E} quindi possibile attraverso la \textbf{crittoanalisi statistica} risalire al testo in chiaro. Nella crittografia simmetrica vengono introdotte dei \textit{pattern} per i quali si possono superare i problemi della crittoanalisi statistica, il \textbf{Modello di Shannon} descrive queste caratteristiche come:
+\begin{itemize}
+    \item \textbf{Diffusione}: ogni bit del testo cifrato deve essere influenzato da molti bit del testo in chiaro, è ottenibile applicando \textbf{permutazioni} sui dati in ingresso più una \textit{funzione}: l'effetto è che più bit in posizioni differenti nel testo in chiaro influenzino il valore di un bit del testo cifrato.
+    \item \textbf{Confusione}: bisogna che non si possa risalire alla chiave del testo cifrato. Questo si ottiene tramite un algoritmo di \textbf{Sostituzione}.
+\end{itemize}
+\newpage
+\begin{table}[ht]
+    \centering
+    \begin{tabular}[h]{| p{8cm} | p{8cm} |} \hline
+
+        \textbf{Vantaggi} & \textbf{Svantaggi} \\ \hline
+        \textbf{Efficenza e Velocità di Elaborazione}: basandosi su algoritmi meno complessi permette di utilizzare acceleratori hardware per la computazione & \textbf{Scambio Sicuro delle Chiavi}: Richiede un canale sicuro di scambio delle chiavi. Se un agente malevolo ottiene le chiavi può decifrare i dati. \\ \hline
+        \textbf{Robustezza}: se implementato correnttamente e con una lunghezza della chiave appropriata è computazionalmente sicuro. & \textbf{Scalabilità dei sistemi}: gestire un alto numero di chiavi simmetriche (una per ogni iterlocutore con cui si deve comunicare) può diventare complicato e oneroso sulla memoria del sistema. \\ \hline
+        & \textbf{Nessuna Autenticazione}: La crittografia non affronta direttamente il problema dell'\textbf{autenticazione} delle parti coinvolte. \\ \hline
+
+    \end{tabular}
+\end{table}
+
+\section{La chiave Pubblica}
+Nel 1976 venne introdotta la \textit{crittografia a chiave pubblica}, con l'obiettivo di permettere a tutti di inviare messaggi cifrati, ma di abilitare solo il destinatario a decifrarli. Nel concetto di \textbf{crittografia a chiave pubblica} le operazioni di cifratura e decifratura utilizzano due chiavi diverse \textit{k[pub]} per cifrare e \textit{k[prv]} per decifrare. La prima è pubblica e quindi non è necessaria in ``locale'', andando così a liberare della memoria, mentre la seconda è privata quindi nota solo al destinatario. 
+\newline
+Bisogna andare a modifica anche la funzione di cifratura \textbf{\textit{C}} in quando bisognerà che possegga una proprietà detta \textit{one-way trap-door}. Ovvero che il calcolo di $c = C(m, k[pub])$ per la cifratura sia computazionalmente facile, mentre il calcolo inverso $m = D(m, k[prv])$ per la decifrazione sia computazionalmente oneroso (\textit{one-way}), a meno che non si conosca un parametro che permetta una risoluzione meno onerosa, in questo caso è il ruolo della \textit{k[prv]}. La difficoltà è però condizionata a congetture matematiche universalmente accettate ma non dimostrate esplicitamente, per cui tali funzioni saranno utilizzabili solo fino al momento in cui se ne dimostri una semplice invertibilità. Le due funzioni che vengono utilizzate principalmente sono: l'\textbf{esponenziale modulare} (funzione \textit{one-way}) e la sua inversa ovvero il \textbf{logaritmo discreto}, oppure, la \textbf{moltiplicazione modulare} e la sua inversa, ovvero la \textbf{fattorizzazione}. 
+\newline
+Riuscire a rompere un sistema crittografico che utilizzi o l'esponenziale modulare o la moltiplicazione modulare implica che a livello matematico si è riusciti a trovare un algoritmo che permetta la computazione di logaritmo discreto e fattorizzazione in maniera computazionalmente facile.
+\newline
+L'introduzione di cifrari asimmetrici ha avuto alcune importanti conseguenze, in quanto un cifrario simmetrico con \textit{n} utenti sono necessarie $n(n - 1)/2$ chiavi segrete, una per ogni coppia di utenti. Mentre in un cifrario asimmetrico sono sufficienti \textit{n} coppie di chihavi publlica/privata, e scompare il loro scambio segreto perché le chiavi di cifratura sono pubbliche, e ciascuna chiave di decifrazione è in possesso di un solo utente che la manitene segreta.
+\newline
+A contrastare questo grande vantaggio che portano i protocolli asimmetrici, di contro sono molto più lenti a livello computazionale rispetto ad un protocollo simmetrico che rimane lo standar per comunicazioni di massa. Viene quindi adottata una struttura di crittografia \textit{ibrida} in cui viene utilizzata la crittografia asimmetrica per lo scambio di \textbf{chiavi segrete} e poi di crittografia simmetrica per l'intera durata della comunicazione.

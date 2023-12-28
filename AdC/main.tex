@@ -1,0 +1,263 @@
+%\documentclass[12pt,a4paper]{report}
+\documentclass[12pt,a4paper,oneside,onecolumn,openright]{book}
+% set the document language
+\usepackage[italian]{babel}
+% set the encoding used by your editor here (default is utf8)
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+% math packages
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{lmodern}
+% page margins settings
+\usepackage[inner=3cm,outer=2.5cm,top=3cm,bottom=2.5cm]{geometry}
+%\usepackage{indentfirst}
+
+% other packages
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{subfigure}
+\usepackage{graphicx}
+\usepackage{verbatim}
+\usepackage{listings}
+\usepackage{url}
+\usepackage[hidelinks]{hyperref}
+\usepackage[export]{adjustbox}
+\usepackage{latexsym}
+\usepackage{tabularx}
+\usepackage{ragged2e}
+\usepackage{mathtools}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+% \usepackage{Mathematics}
+% custom colors
+\usepackage{color}
+\usepackage{wrapfig}
+\usepackage{gensymb}
+\usepackage{caption}
+\usepackage{tikz}
+\usepackage{forest}
+\usepackage{tikz-qtree}
+
+\usetikzlibrary{shadows}
+\definecolor{light-gray}{gray}{0.96}
+\definecolor{cyan}{RGB}{230,230,255}
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\definecolor{iceberg}{rgb}{0.44, 0.65, 0.82}
+% \definecolor{blue}{RGB}{44, 44, 210}
+
+\hypersetup{
+colorlinks=true,
+linkcolor=black,
+% filecolor=blue,
+urlcolor=blue,
+% pdftitle={Overleaf Example},
+}
+
+\urlstyle{same}
+\graphicspath{ {./images/} }
+
+% environment for bash code
+\lstset{ %
+  language=bash,                % the language of the code
+  basicstyle=\footnotesize,           % the size of the fonts that are used for the code
+  numbers=left,                   % where to put the line-numbers
+  numberstyle=\footnotesize,          % the size of the fonts that are used for the line-numbers
+  stepnumber=1,                   % the step between two line-numbers. If it's 1, each line 
+                                  % will be numbered
+  numbersep=5pt,                  % how far the line-numbers are from the code
+  backgroundcolor=\color{white},      % choose the background color. You must add \usepackage{color}
+  showspaces=false,               % show spaces adding particular underscores
+  showstringspaces=false,         % underline spaces within strings
+  showtabs=false,                 % show tabs within strings adding particular underscores
+%  frame=single,                   % adds a frame around the code
+  rulecolor=\color{black},        % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. commens (green here))
+  tabsize=2,                      % sets default tabsize to 2 spaces
+  captionpos=b,                   % sets the caption-position to bottom
+  breaklines=true,                % sets automatic line breaking
+  breakatwhitespace=false,        % sets if automatic breaks should only happen at whitespace
+  title=\lstname,                   % show the filename of files included with \lstinputlisting;
+                                  % also try caption instead of title
+  numberstyle=\tiny\color{gray},        % line number style
+  keywordstyle=\textbf,          % keyword style
+  commentstyle=\color{dkgreen},       % comment style
+%  stringstyle=\color{mauve},         % string literal style
+  escapeinside={\%*}{*)},            % if you want to add a comment within your code
+  morekeywords={*,...,insert,-}               % if you want to add more keywords to the setù
+}
+
+% environment for python code
+\lstset{
+	language=Python,
+	breaklines=true,
+	breakatwhitespace=true ,
+	backgroundcolor=\color{light-gray}
+}
+
+\newcommand{\grayScale}{0.95} % Can change the gray level here
+\definecolor{codeBackground}{rgb}{\grayScale ,\grayScale ,\grayScale}
+\definecolor{forestGreen}{rgb}{0.13,0.55,0.13}
+
+\lstset{
+    language=C,
+    backgroundcolor=\color{codeBackground},
+    tabsize=4,
+    showstringspaces=false,
+    showtabs=false,
+    showspaces=false,
+    basicstyle=\ttfamily,
+    identifierstyle=\ttfamily,
+    keywordstyle=\color{blue},
+    stringstyle=\color{red},
+    commentstyle=\color{gray},
+    numberstyle=\color{magenta},
+    morecomment=[l][\color{forestGreen}]{\#},
+    escapechar={|}, 
+}
+% appendices package
+%\usepackage{appendix}
+% set Appendix name used in the toc
+%\renewcommand{\appendixtocname}{Appendice}
+
+% interline
+\linespread{1.5}
+% set numbers for subsections and show them in the toc
+\setcounter{tocdepth}{3} 
+\setcounter{secnumdepth}{3}
+
+% layout package, style and settings
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+\fancypagestyle{mainmatter}{%		
+		\fancyhf{} 
+		\fancyhead{}
+		\fancyhead[LE,RO]{\thepage}
+		\fancyhead[LO]{\footnotesize{\leftmark}}
+		\fancyhead[RE]{\footnotesize{\rightmark}}
+		\fancyfoot{}
+		\addtolength{\headwidth}{\marginparsep}
+		\addtolength{\headheight}{2.5pt}
+		\renewcommand{\headrulewidth}{0.3pt}
+		\renewcommand{\footrulewidth}{0.0pt}
+		}
+\fancypagestyle{frontmatter}{%
+		\fancyhf{} 
+		\fancyhead[LE]{\footnotesize{\MakeUppercase{\thepage}}}
+		\fancyhead[RO]{\footnotesize{\MakeUppercase{\thepage}}}
+		\fancyhead[RE,LO]{}
+		\fancyfoot{}
+		\addtolength{\headwidth}{\marginparsep}
+		\addtolength{\headheight}{2.5pt}
+		\renewcommand{\headrulewidth}{0.0pt}
+		\renewcommand{\footrulewidth}{0.0pt}
+		}
+		
+		
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+		\fancyhf{} 
+		\fancyhead{}
+		\fancyhead[LE,RO]{\thepage} 
+		\fancyhead[LO]{\footnotesize{\leftmark}}
+		\fancyhead[RE]{\footnotesize{\rightmark}}
+		\fancyfoot{}
+		\addtolength{\headwidth}{\marginparsep}
+		\addtolength{\headheight}{2.5pt}
+		\renewcommand{\headrulewidth}{0.3pt}
+		\renewcommand{\footrulewidth}{0.0pt}
+
+% empty pages have no numbers
+\makeatletter
+\def\cleardoublepage{\clearpage\if@twoside \ifodd\c@page\else
+\hbox{}
+  %Potresti voler togliere il commento dalla linea seguente
+  %Questa pagina ï¿½ stata lasciata intenzionalmente vuota.
+\thispagestyle{empty}
+\newpage
+\if@twocolumn\hbox{}\newpage\fi\fi\fi}
+\makeatother
+%????
+%\textwidth=450pt\oddsidemargin=0pt
+
+%\makeatletter 
+%  \DeclareRobustCommand*\textsubscript[1]{% 
+%    \@textsubscript{\selectfont#1}} 
+%  \newcommand{\@textsubscript}[1]{% 
+%    {\m@th\ensuremath{_{\mbox{\fontsize\sf@size\z@#1}}}}} 
+\makeatother 
+
+\begin{document}
+\begin{titlepage}
+\begin{center}
+{
+    \large
+    \textbf{Università  degli studi di Modena e Reggio Emilia} \\
+   	\textbf{Dipartimento di Ingegneria Enzo Ferrari} \\
+    \vspace{\stretch{0.5}}
+    \hspace*{0cm} \hrulefill \hspace*{0cm} \\
+    \vspace{\stretch{0.5}}    
+	  \vspace{\stretch{12}}
+  
+  
+ 		\huge{\bf Algoritmi di Crittografia }}\\
+		\vspace{3mm}
+		
+		\vspace{\stretch{6}}
+		\end{center}
+		
+\vspace{40mm}
+\par
+\noindent
+\vspace{20mm}
+\begin{center}
+\hspace*{0cm} \hrulefill \hspace*{0cm} \\
+{\large{\bf 
+Anno Accademico 2023/24}}
+\end{center}
+
+\end{titlepage}
+
+\pagestyle{frontmatter}
+\frontmatter
+
+% PAGINA VUOTA
+%\clearpage\null\thispagestyle{empty}\clearpage
+\setcounter{tocdepth}{2}
+\tableofcontents
+
+\setlength{\parindent}{12pt}
+\setlength{\parskip}{1ex plus 0.5ex minus 0.2ex}
+\mainmatter
+\pagestyle{mainmatter}
+
+\input{sections/introduzione}
+\input{sections/crittografia_simmetrica}
+\input{sections/aritmetica_modulare}
+\input{sections/crittografia_asimmetrica}
+\input{sections/digital_signature}
+\input{sections/curve_elittiche}
+\input{sections/alg_cript_ec}
+
+
+% PAGINA VUOTA
+%\clearpage\null\thispagestyle{empty}\clearpage
+%\appendix
+%\appendixpage
+%\addappheadtotoc
+
+%\clearpage\null\thispagestyle{empty}\clearpage
+
+
+%\listoffigures
+
+
+\begin{flushleft}
+\bibliographystyle{plain}
+\bibliography{sections/references} 
+\end{flushleft}
+
+\end{document}

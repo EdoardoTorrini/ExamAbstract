@@ -1,0 +1,134 @@
+\chapter{Algoritmi di Crittografia su elittica}
+I parametri pubblici in un protocollo basato su una curva elittica includono sempre i seguenti dati:
+\begin{enumerate}
+    \item la \textbf{curva}: e quindi tutti i paramentri che la caratteristicano, ovvero \textit{a}, \textit{b} (i parametri dell'equazione) e \textit{p} (il modulo) e il numero di \textbf{punti} sulla curva.
+    \item un punto \textit{P} che è generatore di un \textbf{sottogruppo ciclico} del gruppo formato da tutti i punti della curva (possibilmente di ordine elevato).
+    \item un secondo punto \textit{Q} formato da $Q = k \cdot P$, per un qualche intero \textit{k} che è il segreto della comunicazione. 
+\end{enumerate}
+È chiaro che il poter risalire a \textit{k} da parte di \textit{Eve} permette di violare il codice, tuttavia il risalire a \textit{k} dai parametri pubblici dell'algoritmo è definito \textbf{\textit{Elliptic Curve Discrete Logarithm Problem}} anche noto come \textbf{\textit{ECDLP}} ed è computazionalmente intrattabile. Tuttavia è possibile risalire ad una \textbf{collisione} per poter risalire a \textit{k} dati i valori pubblici dell'algoritmo, attraverso la combinazione lineare a coefficienti interi dei due punti \textit{P} e \textit{Q}. \\
+In altri termini dobbiamo trovare due coppie di numeri $\alpha_p, \alpha_q \text{ e } \beta_p, \beta_q$ tali che valga l'equazione:
+\begin{center}
+    \begin{math}
+        \begin{aligned}
+            \alpha_p \cdot P + \alpha_q \cdot Q &= \beta_p \cdot P + \beta_q \cdot Q \\
+            \alpha_p \cdot P + k \cdot \alpha_q \cdot P &= \beta_p \cdot P + k \cdot \beta_q \cdot P \; || \; \Leftarrow Q = k \cdot P \\
+            (\alpha_p + k \cdot \alpha_q)P &= (\beta_p + k \cdot \beta_q)Q
+        \end{aligned}
+    \end{math}
+\end{center}
+Analizzando i passaggi: i valori che cerca \textit{Eve} devono essere tali che $\alpha_p + k \cdot \alpha_q \equiv 0 \bmod \#E$ e $\beta_p + k \cdot \beta_q \equiv 0 \bmod \#E$ la ragione va ricercata utilizzando il \textbf{teorema di Lagrange}, infatti se i coefficenti sono congrui modulo il numero di punti, saranno congrui anche all'ordine del sottogruppo generato da \textit{P} in quanto, un gruppo che ha ordine \textit{k} avrà come ordine dei sottogruppi dei \textbf{divisori} di \textit{k}, se dunque quale la congruenza:
+\begin{center}
+    \begin{math}
+        \begin{aligned}
+            \alpha_p + k \cdot \alpha_q &\equiv 0 \bmod \#E \\
+            \beta_p + k \cdot \beta_q &\equiv 0 \bmod \#E \\
+            \alpha_p + k \cdot \alpha_q &\equiv \beta_p + k \cdot \beta_q \bmod \#E \\
+            \alpha_p + k \cdot \alpha_q - \beta_p - k \cdot \beta_q &\equiv 0 \bmod \#E \\
+            \alpha_p - \beta_p - k \cdot (\beta_q - \alpha_q) &\equiv 0 \bmod \#E \\
+            \alpha_p - \beta_p &\equiv k \cdot (\beta_q - \alpha_q) \bmod \#E \\
+        \end{aligned}
+    \end{math}
+\end{center}
+Ottenendo quindi:
+$$
+k = (\alpha_p - \beta_p) \cdot (\beta_q - \alpha_q)^{-1} \bmod \#E \iff gcd(\beta_q - \alpha_q, \#E) = 1
+$$
+Con un argomento riducibile all ``dimostrazione'' del \textbf{paradosso del compleanno} possiamo dire che il tempo atteso nel caso di numeri di \textit{n} bit è $\mathcal{O}(2^{\frac{n}{2}})$. \\
+I \textbf{protocolli crittografici} più comunemente utilizzati, fra quelli che impiegano curve elittiche, riguardano lo \textbf{scambio di chiavi} e la \textbf{firma digitale}. È infatti possibile avere con le \textbf{EC} un grado di sicurezza (espresso in bit) di $\frac{n}{2}$, con chiavi di \textit{n} bit e dunque $n = 256$ è tipicamente una lunghezza sufficente, quindi molto ``performante'', ma insufficiente per la \textbf{cifratura di messaggi}.
+
+\newpage
+\section{Elliptic Curve Diffie-Hellman}
+\textbf{Descrizione del Protocollo}:
+\begin{enumerate}
+    \item \textit{Alice} e \textit{Bob} si accordano su una \textbf{curva elittica \textit{E}} ($E_{a,b}(\mathbb{Z}_p)$, $\#E$) e su un punto $P \in E_{a,b}(\mathbb{Z}_p)$.
+    \item \textit{Alice} sceglie a caso un numero $k_a$ e determina il punto $A = k_a \cdot P$ che invia a \textit{Bob}.
+    \item \textit{Bob} sceglie a caso un numero $k_b$ e determina il punto $B = k_b \cdot P$ che invia a \textit{Alice}.
+    \item \textit{Alice} calcola $Z_a = k_a \cdot B$ con il punto \textit{B} ricevuto da \textit{Bob}
+    \item \textit{Bob} calcola $Z_b = k_b \cdot A$ con il punto \textit{A} ricevuto da \textit{Alice}
+    \item il punto $Z = Z_a = Z_b$ è il \textbf{segreto condiviso}, normalmente siccome \textit{Z} è nella forma $Z(x_z, y_z)$ viene scelta una delle due coordinate come segreto.
+\end{enumerate}
+La \textbf{correttezza del protocollo} è una l'applicazione della proprietà \textbf{associativa} all'interno di un gruppo $E_{a,b}(\mathbb{Z}_p)$:
+$$Z_a = k_a \cdot B = k_a \cdot (k_b \cdot P) = k_b \cdot (k_a \cdot P) = k_b \cdot A = Z_b$$
+Per quanto riguarda invece l'\textbf{efficienza} le operazioni più costose sono chiaramente i ``prodotti scalari'' per il calcolo della ``chiave pubblica'' e del segreto condiviso, dove però viene utilizzato l'algoritmo di \textbf{recursive doubling} e quindi possono essere considerati come addizioni di punti che è lineare alla lunghezza delle costanti segrete in gioco. Ogni addizione richiede, perciò, \textit{4} o \textit{5} moltiplicazioni nel campo $\mathbb{Z}_p^+$ oltre alle riduzioni in modulo. Il costo computazionale finale è perciò $\mathcal{O}(n^3)$ bit-operation.
+\   \newpage
+\textbf{Attacco basato sull'uso di una differente curva ``debole''} \\
+La \textbf{condizione} per l'attacco è che \textit{Bob} non esegua un controllo sul punto che \textit{Alice} (\textit{Eve}) invia come \textbf{chiave pubblica}. \\
+Definiamo $E_{a, b}(\mathbb{Z}_p)$ come curva scelta per la comunicazone, $\#E$ il numero di punti presenti sulla curva e un punto $P \in E_{a, b}(\mathbb{Z}_p)$. \textit{Bob} sceglie la propria \textbf{chiave privata} $k_b$ e calcola il punto $B = k_b \cdot P$ e lo invia ad \textit{Eve}. \\
+\textit{Eve} sceglie un punto $A \in \overline{E}_{a, b}(\mathbb{Z}_p) \; | \; \mathcal{O} = p \cdot A$ dove avremo che $\#\overline{E} = p \cdot q$. Definiamo $\overline{E}_{a, b}(\mathbb{Z}_p)$ \textbf{``curva debole''} e $\#\overline{E}$ il numero di punti presenti sulla curva. A quel punto invia a \textit{Bob} la propria chiave pubblica: \textit{A}. \textit{Bob} calcolerà il \textbf{segreto condiviso} come $Z = k_b \cdot A$ e potrà iniziare a inviare messaggi cifrati ad \textit{Eve} come $C = Enc(M, hash(Z))$. Una volta ottenuto un messaggio cifrato \textit{Eve} non riuscirà a decifrarlo nella maniera \textit{standard}, però per costruzione potrà ricercare un punto $I \in S_{\overline{E}_{a, b}(\mathbb{Z}_p)}(A) \; | \; I = (A \cdot \mathcal{O}) \cdot m, \; m \in \{0, 1, ..., p - 1\}$ che permetterà di decifrare il messaggio $M = Dec(C, hash(I))$. A questo punto \textit{I} è quindi associato un valore \textit{m} che altro non è che il resto della divisione di $k_b$ ovvero il segreto di \textit{Bob} per uno dei due fattori di $\#\overline{E} \rightarrow p$. \\
+Una volta ottenuto il primo dei due parametri per riuscire ad ottenere in maniera illegittima la \textbf{chiave segreta} di \textit{Bob}, \textit{Eve} dovrà ``fingere'' di aver sbagliato ad inviare la propria \textbf{chiave pubblica} attraverso tecniche di \textbf{\textit{Social Engineering}} e reinviare a \textit{Bob} un punto $A' \in \overline{E}_{a, b}(\mathbb{Z}_p) \; | \; \mathcal{O} = q \cdot A'$ dove \textit{q} è l'altro fattore di $\#\overline{E}$, \textit{Bob} ripeterà i passaggi fino a che \textit{Alice} non dovrà decifrare il nuovo messaggio inviato da \textit{Bob} utilizzando la formula: $I \in S_{\overline{E}_{a, b}(\mathbb{Z}_p)}(A) \; | \; I = (A \cdot \mathcal{O}) \cdot r, \; r \in \{0, 1, ..., q - 1\}$ una volta che avra ottenuto il punto \textit{I} che gli permetterà di decifrare il nuovo messaggio $M = Dec(C, hash(I))$ e quindi il corrispondente \textit{r} che altro non è che il resto della divisione intera di $k_b$ ovvero il segreto di \textit{Bob} per uno dei due fattori di $\#\overline{E} \rightarrow q$. \\
+A questo punto \textit{Eve} può usare il \textbf{\textit{Chinese Remainder Theorem}} per costruire un $C \equiv k_b \bmod \#\overline{E}$
+\begin{center}
+        $C = q \cdot (q^{-1} \bmod p) \cdot m + p \cdot (p^{-1} \bmod q) \cdot r$ \\
+        $k_b = C \bmod \#\overline{E}$
+\end{center}
+Vista la parte di \textbf{\textit{Social Engineering}} si cerca di contenere il numero di ``errori di invio della chiave'' il più basso possibile $\#\overline{E} = p \cdot q$, ma generalizzando, potrebbe essere $\#\overline{E} = p_1 \cdot p_2 \cdot p_h$ e bisognerebbe ingannare \textit{Bob} $h - 1$ volte.
+
+\newpage
+\section{Elliptic Curve - Digital Signature Algorithm}
+\textbf{Descrizione del Protocollo}:
+\begin{itemize}
+    \item \textbf{Generazione delle Chiavi: \textit{Alice}}
+    \begin{enumerate}
+        \item fissa la curva $E_{a,b}(\mathbb{Z}_p)$ e un punto base $P \in E_{a,b}(\mathbb{Z}_p)$.
+        \item determinato un numero $N = \#E_{a,b}(\mathbb{Z}_p)$ di punti sulla curva genera a caso un elemento $a \in \mathbb{Z}_p^+$ che conserva come \textbf{chiave privata}.
+        \item calcola $A = a \cdot P$ e rende noto ($E_{a,b}(\mathbb{Z}_p)$, \textit{A}) come chiave \textbf{chiave pubblica}.
+    \end{enumerate}
+    \item \textbf{Firma del Messaggio: \textit{Alice}}
+    \begin{enumerate}
+        \item applica una funzione \textbf{hash} (pubblicamente nota) al messaggio \textit{M} da firmare, generando $h = hash(M) \bmod N$.
+        \item sceglie a caso un numero $k \; | \; 0 < k < N \land gcd(k, N) = 1$ e calcola il punto $Q = k \cdot P$ sulla curva, $Q(x_q, y_q)$.
+        \item Pone $r = Q_x \bmod N$ e $s = k^{-1} \cdot (h + r \cdot a) \bmod N$
+        \item invia la $(M, (r, s))$.
+    \end{enumerate}
+    \item \textbf{Verifica della Firma: \textit{Bob}}
+    \begin{enumerate}
+        \item calcola l'\textbf{inverso moltiplicativo} di \textit{s} modulo \textit{N} cioè $w = s^{-1} \bmod N = k \cdot (h + r \cdot a)^{-1} \bmod N$.
+        \item calcola i due prodotti
+        \begin{center}
+                $u = hash(M) \cdot w$ \\
+                $v = r \cdot w$
+        \end{center}
+        \item determina il punto $R = (uP + vA) \bmod N$.
+        \item accetta solo se $x_r = r$
+    \end{enumerate}
+\end{itemize}
+
+\newpage
+La \textbf{correttezza} dell'algoritmo è verificata in quanto (i calcoli sono modulo \textit{N}):
+\begin{center}
+    \begin{math}
+        \begin{aligned}
+            R &= u \cdot P + v \cdot A \\
+            &= (h \cdot w) \cdot P + (r \cdot w) \cdot A \\
+            &= h \cdot w \cdot P + r \cdot w(a \cdot P) \\
+            &= w \cdot (h + r \cdot a) \cdot P \\
+            &= (k \cdot (h + r \cdot a)^{-1}) \cdot (h + r \cdot a) \cdot P \\
+            &= k \cdot P \\
+            &= Q
+        \end{aligned}
+    \end{math}
+\end{center}
+Il valore casuale \textit{k} deve essere usato una sola volta, altrimenti è vulnerabile. Supponiamo che due messaggi $M_1 \text{ e } M_2$ con corrispondenti valori di hash $h_1 \text{ e } h_2$ vengano firmati con lo stesso valore \textit{k}. Questo porta ad avere anche lo stesso valore di \textit{r}, che è la coordinata \textit{x} (modulo \textit{N}) del punto $Q = k \cdot P$. \\
+Indichiamo con $(r, s_1)$ e $(r, s_2)$ le due firme, l'attaccante può calcolare la quantità:
+\begin{center}
+    \begin{math}
+        \begin{aligned}
+            s_1 - s_2 &= k^{-1} \cdot (h_1 + r \cdot a) - k^{-1} \cdot (h_2 + r \cdot a) \\
+            &= (h_1 + r \cdot a - h_2 - r \cdot a) \cdot k^{-1} \\
+            &= (h_1 - h_2) \cdot k^{-1} \\
+        \end{aligned}
+    \end{math}
+\end{center}
+Riuscendo ad ottenere:
+$$k = (s_1 - s_2)^{-1} \cdot (h_1 - h_2) \bmod N$$
+Una volta ottenuto il \textit{k} per risalire alla chiave privata bisogna utilizzare una delle due firme:
+\begin{center}
+    \begin{math}
+        \begin{aligned}
+            s_1 &= k^{-1} \cdot (h_1 + r \cdot a) \\
+            k \cdot s_1 &= (h_1 + r \cdot a) \\
+            k \cdot s_1 - h_1 &= r \cdot a \\
+            (k \cdot s_1 - h_1) \cdot r^{-1} &= a
+        \end{aligned}
+    \end{math}
+\end{center}

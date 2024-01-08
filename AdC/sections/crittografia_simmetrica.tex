@@ -279,6 +279,7 @@ dove indicheremo con \textbf{\textit{E}} la funzione realizzata dal cifrario per
     \caption{Source: J.P. Aumasson, Serious Cryptography, No Starch Press (2018)}
 \end{figure}
 
+\newpage
 \subsection{Cipher Block Chaining - CBC}
 In questo differente \textit{mode of operation} la cifratura avviene nel seguente modo: 
 \begin{center}
@@ -305,3 +306,43 @@ Il \textit{vettore di inizializzazione} può essere scelto in vario modo ma la s
     \item Lo schema di \textbf{padding \textit{ISO/IEC 9797-1}} e con qualsiasi cifrario a blocchi che operi unitamente al \textbf{mode of operation \textit{CBC}}.
     \item \textit{Eve} deve poter effettuare \textbf{query di decifrazione} (quindi sarà unicamente necessario che \textit{Eve} conosca \textbf{un} ciphertext) ad un server che risponde e \textbf{sollevi un eccezione} in caso di \textbf{\textit{padding malformato}} 
 \end{enumerate}
+
+\newpage
+\subsection{Cipher FeedBack Mode - CFB}
+È simile come funzionamento al \textbf{\textit{CBC}} infatti viene utilizzato l'output del blocco precedente per generare la \textit{round key} attraverso un blocco di un cifrario (che può essere \textbf{\textit{DES}}, \textbf{\textit{AES}}). Definendo la \textit{round key} come $K_i, \; i = 1, 2, ..$ avremo che $K_i = E(C_{i - 1}, K)$, è chiaro che durante la cifratura del primo blocco il nostro $C_{i - 1}$ sarà un \textit{initialization vector} che dovrà essere un \textbf{\textit{nonce}}. Per ottenere il blocco cifrato $C_{i}$ verrà posto il \textit{xor} la \textit{round key} e il \textit{plaintext}. Avendo come risultato:
+\begin{center}
+    \begin{math}
+        \begin{cases}
+            C_1 = E(IV, k) \oplus P_1 \\
+            C_i = E(C_{i - 1}, k) \oplus P_i
+        \end{cases}
+    \end{math}
+\end{center}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth, valign=c]{CFB.png}
+\end{figure}
+\   \\
+\textbf{Attacchi su CFB}: ovviamente se per due cifrazioni diverse viene riutilizzata la stessa coppia \textit{key} - \textit{initialization vector} è possibile risalire allo \textit{xor} dei \textit{plaintext} del primo blocco. È quindi necessario utilizzare \textit{iv} diversi per diversi \textit{plaintext}. Riutilizzare la coppia \textit{key} - \textit{initialization vector} permette di effettuare anche un \textbf{\textit{replay attack}}. \\
+Un altro tipo di attacco è stato trovato sull'implementazione di \textbf{\textit{CFB}} di \textbf{OpenPGP}. (descrizione dell'attacco: \url{https://eprint.iacr.org/2005/033.pdf})
+
+\newpage
+\subsection{Output FeedBack Mode - OFB}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth, valign=c]{OFB.png}
+\end{figure}
+
+% https://www.educative.io/answers/what-is-ofb
+
+
+\subsection{The Counter Mode - CTR}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth, valign=c]{OFB.png}
+\end{figure}
+
+% https://www.educative.io/answers/what-is-ctr

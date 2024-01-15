@@ -1,4 +1,4 @@
-# Abstracs of Master's Degree Exams
+# Abstracts of Master's Degree Exams
 * [Cryptographic Algorithms](https://github.com/EdoardoTorrini/ExamAbstract/tree/master/AdC)
     * Introduction and notes on symmetric cryptography
     * Algorithms and mathematical foundations for asymmetric cryptography

@@ -14,7 +14,7 @@ Una \textbf{funzione} o \textbf{applicazione} tra due insiemi A e B è rappresen
         \begin{center}
             $\forall b \in B, \exists a \in A \; | \; f(a) = b$    
         \end{center}
-    \item una funzione $f : A \rightarrow B$ si dice \textbf{biiettiva} o \textbf{biunivoca} se è contemporaneamente \textit{iniettiva} e \textit{suriettiva} ovvero se:
+    \item una funzione $f : A \rightarrow B$ si dice \textbf{biettiva} o \textbf{biunivoca} se è contemporaneamente \textit{iniettiva} e \textit{suriettiva} ovvero se:
         \begin{center}
             $\forall b \in B \; \exists ! a \in A \; t.c. \; f(a) = b $
         \end{center}
@@ -36,4 +36,92 @@ Un insieme A si dice \textbf{numerabile} se:
 \begin{center}
     $\exists f : A \rightarrow \mathbb{N}, \; f \; biunivoca$
 \end{center}
-In questo caso si dice che A ha cardinalità numerabile e si può rappresentare attraverso la lettera \textbf{aleph} (è la prima lettera dell'alfabeto ebraico): $card(A) = card(\mathbb{N}) = \aleph_0$.
+In questo caso si dice che A ha cardinalità numerabile e si può rappresentare attraverso la lettera \textbf{aleph} (è la prima lettera dell'alfabeto ebraico): $card(A) = card(\mathbb{N}) = \aleph_0$. \\
+Alcuni esempi: 
+\begin{enumerate}
+    \item l'insieme $\mathbb{Z}$ è \textbf{numerabile} ($\#\mathbb{N} = \#\mathbb{Z}$):
+        \begin{center}
+            $0 \rightarrow 1$ \\
+            $1 \rightarrow 2 \;\;\;\; -1 \rightarrow 3$ \\
+            $2 \rightarrow 4 \;\;\;\; -2 \rightarrow 5$
+        \end{center}
+    possiamo quindi mappare i valori \textbf{positivi} dell'insieme $\mathbb{Z}$ sono mappati nei valori \textbf{pari} dell'insieme $\mathbb{N}$ e in maniera complementare i valori \textbf{negativi} dell'insieme $\mathbb{Z}$ sono mappati nei valori \textbf{dispari} dell'insieme $\mathbb{N}$. È quindi possibile verificare la biunivocità dell'applicazione che mappa i valori da $\mathbb{Z}$ a $\mathbb{N}$.
+    \item l'insieme dei numeri \textbf{pari} $\mathbb{P}$ può definirsi numerabile, infatti: $\#\mathbb{P} = \#\mathbb{N}$, in questo caso avremo l'applicazione biunivoca del tipo:
+        \begin{center}
+            $f : \mathbb{P} \rightarrow \mathbb{N} \; | \; \forall p = 2n \in \mathbb{P}, \; f(p) = \frac{1}{2}p = n$
+        \end{center}
+\end{enumerate}
+
+Un insieme A si dice \textbf{discreto} se è \textbf{finito} o \textbf{numerabile}. \\
+Se A è finito di cardinalità \textbf{n}, i suoi elementi possono essere etichettati con gli elementi di $\mathbb{N}_n$:
+\begin{center}
+    $A = \{a_1, a_2, ..., a_n\}$    
+\end{center}
+Se A è numerabile, gli elementi possono essere ``etichettati'' con gli elementi di $\mathbb{N}$:
+\begin{center}
+    $A = \{a_1, a_2, ..., a_n, ...\} = \{a_i \; | \; i \in \mathbb{N} \}$
+\end{center}
+
+Dato un insieme discreto A ed un suo sottoinsieme $Y \subseteq A$ si dice \textbf{funzione caratteristica} di Y la funzione:
+\begin{figure}[h]
+    \begin{minipage}{0.5\textwidth}
+        \centering
+        $f_Y : A \rightarrow \{0, 1\} \; \forall a \in A$
+    \end{minipage}
+    \begin{minipage}{0.5\textwidth}
+        \centering
+        \begin{math}
+            f_Y(a) = 
+            \begin{cases}
+                1 \;\;\;\; se \; a \in A \\
+                0 \;\;\;\; se \; a \notin A
+            \end{cases}
+        \end{math}
+    \end{minipage}
+\end{figure} \\
+Nel caso in cui A sia un insieme finito avremo che: $\#A = \sum_{a \in A}{f_Y(a)}$. \\
+Se A è un insieme discreto, ed $f : A \rightarrow \{0, 1\}$ una applicazione a valori in $\{0, 1\}$, risulta univocamente determinato il sottoinsieme $Y \subseteq A$ tale che $f$ sia una funzione caratteristica di $Y$:
+\begin{center}
+    $Y = \{a \in A \; | \; f(a) = 1\}$
+\end{center}
+Un esempio, definiamo $A = \mathbb{N}$ e sia $f : A \rightarrow \{0, 1\}$ definita da una \textbf{funzione caratteristica} del tipo: $n \rightarrow \frac{1 + (-1)^{n}}{2}$. In questo caso la funzione $f$ identifica, a partire dall'insieme $\mathbb{N}$, il sottoinsieme $\mathbb{P}$ dei numeri pari. \\
+Utilizzando la \textbf{funzione caratteristica} si può ricavare la seguente proprietà degli insiemi discreti:
+\begin{itemize}
+    \item se A è finito di cardinalità \textit{n}, l'insieme $\mathcal{P}(a)$ delle \textbf{parti di A} è in corrispondenza biunivoca con l'\textbf{insieme delle n-ple} a valori in $\{0, 1\}$.
+    \item se A è numerabile, l'insieme $\mathcal{P}(a)$ delle parti di A è in corrispondenza biunivoca con l'\textbf{insieme delle successioni} a valori in $\{0, 1\}$.
+\end{itemize}
+
+\newpage
+\subsection{Proprietà 1}
+Se X e Y sono insiemi \textbf{finiti}, con $\#X = n, \; \#Y = m$ e con $X \cap Y = \emptyset$, allora $\#(X \cup Y) = n + m$. \\
+\textcolor{green}{\textbf{Dimostrazione}}: per Hp. esistono due funzioni biettive $f : X \rightarrow \mathbb{N}_n$ e $g : Y \rightarrow \mathbb{N}_m$. Per dimostrare la proprietà occorre costruire una funzione biettiva $h : X \cup Y \rightarrow \mathbb{N}_{n + m}$. Possiamo porre $\forall c \in X \cup Y$ come:
+\begin{center}
+    \begin{math}
+        h(c) = 
+        \begin{cases}
+            f(c) \qquad \;\; se \; c \in X \\
+            g(c) + n \; \;\; se \; c \in Y
+        \end{cases}
+    \end{math}
+\end{center}
+
+\subsection{Proprietà 2}
+Se X è un insieme \textbf{finito} con $\#X = n$ ed Y è un insieme \textbf{numerabile}, con $X \cap Y = \emptyset$ allora $\#(X \cup Y)$ è \textbf{numerabile}. \\
+\textcolor{green}{\textbf{Dimostrazione}}: per Hp. esistono due funzioni biettive $f : X \rightarrow \mathbb{N}_n$ e $g : Y \rightarrow \mathbb{N}$. Per dimostrare la proprietà occorre costruire una funzione biettiva $h : X \cup Y \rightarrow \mathbb{N}$. Possiamo porre $\forall c \in X \cup Y$ come:
+\begin{center}
+    \begin{math}
+        h(c) = 
+        \begin{cases}
+            f(c) \qquad \;\; se \; c \in X \\
+            g(c) + n \; \;\; se \; c \in Y
+        \end{cases}
+    \end{math}
+\end{center}
+
+\subsection{Proprietà 3}
+Se X e Y sono due insiemi \textbf{numerabili}, allora anche $X \cup Y$ è \textbf{numerabile}. 
+\newline \\
+\textcolor{purple}{\textbf{Off-Topic}}: \\
+\fbox{\begin{minipage}{\textwidth}
+    \textbf{Paradosso del Grand Hotel di Hilbert}: il paradosso del \textit{Grand Hotel} inventato dal matematico \textit{David Hilbert} per mostrare alcune caratteristiche del concetto di infinito e le differenze fra opzioni con insieme finiti ed infiniti. Hilbert immagina un hotel con infinite stanze, tutte occupate, e afferma che qualsiasi sia il numero di altri ospiti che sopraggiungano, sarà sempre possibile ospitarli tutti, anche se il loro numero è infinito, purché numerabile.
+\end{minipage}}

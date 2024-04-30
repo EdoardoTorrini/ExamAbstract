@@ -1,0 +1,39 @@
+\chapter{Introduzione}
+
+\section{Funzioni}
+Una \textbf{funzione} o \textbf{applicazione} tra due insiemi A e B è rappresentata:
+\begin{center}
+    $f : A \rightarrow B \; t.c. \; \forall a \in A \; \exists ! b \in B \; | \; f(a) = b$
+\end{center}
+\begin{enumerate}
+    \item la funzione si dice \textbf{iniettiva} se:
+        \begin{center}
+            $\forall a, a' \in A, \; f(a) = f(a') \Rightarrow a = a'$
+        \end{center}
+    \item la funzione si dice \textbf{suriettiva} se:
+        \begin{center}
+            $\forall b \in B, \exists a \in A \; | \; f(a) = b$    
+        \end{center}
+    \item una funzione $f : A \rightarrow B$ si dice \textbf{biiettiva} o \textbf{biunivoca} se è contemporaneamente \textit{iniettiva} e \textit{suriettiva} ovvero se:
+        \begin{center}
+            $\forall b \in B \; \exists ! a \in A \; t.c. \; f(a) = b $
+        \end{center}
+\end{enumerate}
+
+\newpage
+\section{Insiemi Discreti}
+Due insiemi A e B si dicono \textbf{equipotenti} (o con la stessa \textbf{cardinalità}) se:
+\begin{center}
+    $f : A \rightarrow B, \; f \; biunivoca$
+\end{center}
+E utilizzeremo come notazione: $card(A) = card(B)$, $|A| = |B|$ oppure $\#A = \#B$.
+Un insieme A si dice finito se:
+\begin{center}
+    $\exists n \in \mathbb{N}, \; f : A \rightarrow \mathbb{N}_n, \; f \; biunivoca$
+\end{center}
+In questo caso diremo che la \textbf{cardinalità} di A è \textbf{n}: $card(A) = card(\mathbb{N}_n) = n$ \\
+Un insieme A si dice \textbf{numerabile} se:
+\begin{center}
+    $\exists f : A \rightarrow \mathbb{N}, \; f \; biunivoca$
+\end{center}
+In questo caso si dice che A ha cardinalità numerabile e si può rappresentare attraverso la lettera \textbf{aleph} (è la prima lettera dell'alfabeto ebraico): $card(A) = card(\mathbb{N}) = \aleph_0$.

@@ -151,7 +151,7 @@ Se $\{A_i \; | \; i \in \mathbb{N}\} = \{A_1, A_2, ..., A_i, ...\}$ è un \textb
 \begin{center}
     $\#(\bigcup_{i \in \mathbb{N}}A_i) = \#\mathbb{N}$
 \end{center}
-\textcolor{green}{\textbf{Dimostrazione}}: senza perdere di generalità, supponiamo che gli insiemi siano fra loro \textbf{disgiunto}: $A_i \cap A_j = \emptyset, \; \forall i \in j$. Per dimostrare la tesi, utilizziamo il \textit{procedimento diagonale di \textbf{Cantor}}, enumerando per righe gli elementi di ciascun insieme:
+\textcolor{green}{\textbf{Dimostrazione}}: senza perdere di generalità, supponiamo che gli insiemi siano fra loro \textbf{disgiunto}: $A_i \cap A_j = \emptyset, \; \forall i \in j$. Per dimostrare la tesi, utilizziamo il \textit{procedimento diagonale di \textbf{Cantor}}, enumerando per righe gli elementi di ciascun insieme, dove avremo come primo indice l'identificativo dell'insieme e come secondo indice quello della colonna:
 
 \begin{center}
     \begin{tabular}{ccccccc}
@@ -163,20 +163,31 @@ Se $\{A_i \; | \; i \in \mathbb{N}\} = \{A_1, A_2, ..., A_i, ...\}$ è un \textb
         ... & ... & .. & ... & ... & ... & ... \\
     \end{tabular}
 \end{center}
-
-Consideriamo le diagonali \textcolor{red}{$D_1$}, \textcolor{blue}{$D_2$}, ..., \textcolor{green}{$D_k$}, ..., dove: $D_k = \{a_{ij} \; | \; i + j = k + 1\}$. Per dimostrare che $\#(\bigcup_{i \in \mathbb{N}}A_i)$ è \textbf{numerabile}, occorre costruire una applicazione biunivoca, tale che:
+Consideriamo le diagonali \textcolor{red}{$D_1$}, \textcolor{blue}{$D_2$}, ..., \textcolor{green}{$D_k$}, ..., dove: $D_k = \{a_{ij} \; | \; i + j = k + 1\}$. E notiamo che sono composte da finiti elementi. Per dimostrare che $\#(\bigcup_{i \in \mathbb{N}}A_i)$ è \textbf{numerabile}, occorre costruire una applicazione biunivoca, tale che:
 \begin{center}
     $h : \bigcup_{i \in \mathbb{N}_n} A_i \rightarrow \mathbb{N}$
 \end{center}
+Idealmente, vorremmo etichettare, ogni generico elemento $a_{ij}$ che apparterrà alla $k-esima$ diagonale:
+\begin{center}
+    $a_{ij} \in D_{k}$ \\
+    $k = i + j - 1$ \\
+    $a_{ij} \in D_{(i + j - 1)}$
+\end{center}
 Scorrendo ogni diagonale a partire dall'elemento che sta nell'insieme con indice maggiore, incontrerò l'elemento $a_{ij}$ come j-esimo elemento della diagonale a cui esso appartiene, ovvero come j-esimo elemento della diagonale $D_{i+j-1}$. \\
-Osservando che $\#D_k = k$ si ha che:
+Se noi vogliamo numerare la cardinalità delle \textit{n} diagonali già prese in considerazione prima del nuovo elemento $a_{ij}$ che stiamo esaminando, consideriamo $\#D_k = k$ e avremo:
 \begin{center}
     $\sum_{k=1}^{i+j-2}\#D_k = \frac{(i + j - 2)(i + j - 1)}{2}$
 \end{center}
-Si ottiene così una applicazione biunivoca $h : \bigcup_{i \in \mathbb{N}_n}A_i \rightarrow \mathbb{N}$ definita, $\forall a_{ij} \in \bigcup_{i \in \mathbb{N}_n} A_i$, da:
+Vista la costruzione delle diagonali questa somma non sarà altro che la somma dei primi $i + j - 2$ numeri naturali:
+\begin{center}
+    $\sum_{k=1}^{n} k = \frac{n(n + 1)}{2} \;$ \\
+    $\sum_{k=1}^{i + j - 2} k = \frac{(i + j - 2)(i + j - 2 + 1)}{2}$ 
+\end{center}
+In questo modo abbiamo trovato un metodo di etichettare tutte le diagonali (e quindi i loro elementi) fino alla diagonale che contiene l'lelemento $a_{ij}$, ma siccome sappiamo che l'elemento $a_{ij}$ è nella $j-esima$ posizione della diagonale $i+j-1$ allora possiamo definire una applicazione biunivoca che associa ogni elemento dell'unione degli insiemi a $\mathbb{N}$ $h : \bigcup_{i \in \mathbb{N}_n}A_i \rightarrow \mathbb{N}$ definita, $\forall a_{ij} \in \bigcup_{i \in \mathbb{N}_n} A_i$, da:
 \begin{center}
     $h(a_{ij}) = j + \frac{(i + j - 2)(i + j - 1)}{2}$
 \end{center}
+In questo modo siamo riusciti a ``etichettare'' tutti gli elementi una e una sola volta.
 
 \textbf{Conseguenze}:
 \begin{itemize}
@@ -185,8 +196,9 @@ Si ottiene così una applicazione biunivoca $h : \bigcup_{i \in \mathbb{N}_n}A_i
     \item $\mathbb{Q}$ è numerabile.
 \end{itemize}
 
+\newpage
 \section{Confronto tra Cardinalità}
-Si dice che un insieme A ha \textbf{cardinalità minore o uguale} ad un insieme B (e si indica con: $\#A <=\#B$) se: $\exists f : A \rightarrow B, \; f \; è \; iniettiva$. \\
+Si dice che un insieme A ha \textbf{cardinalità minore o uguale} ad un insieme B (e si indica con: $\#A \leq \#B$) se: $\exists f : A \rightarrow B, \; f \; è \; iniettiva$. \\
 \textbf{Proprietà}:
 \begin{itemize}
     \item \textbf{riflessività}: $\forall A, \; \#A \leq \#A$.
@@ -198,4 +210,25 @@ La relazione ``$\leq$'' fra cardinalità è una relazione di ordine totale. \\
 $A \subseteq B \subseteq C$ con $\#A = \#B \Rightarrow \#A = \#B = \#C$. \\
 \newline
 \textbf{Teorema di Cantor-Bernstein-Schroeder}: Se $\exists f : A \rightarrow B, \; f \; iniettiva$ ed $\exists g : B \rightarrow A, \; g \; iniettiva$ allora $\exists h : A \rightarrow B, \; h \; biunivoca$. \\
-\textcolor{green}{\textbf{Dimostrazione}}
+\textcolor{green}{\textbf{Dimostrazione}}: poiché $f$ e $g$ sono iniettive se le restriangamo alla loro immagine biunivoca:
+\begin{center}
+    $\#A = \#f(A) \; con \; f(A) \subseteq B$ \\
+    $\#B = \#g(B) \; con \; g(B) \subseteq A$ \\
+\end{center}
+Avremo:
+\begin{center}
+    $g(f(A)) \subseteq g(B) \subseteq A \Rightarrow \#g(f(A)) = \#f(A) = \#A$
+\end{center}
+e per il \textcolor{blue}{lemma} possiamo dire che $\#g(B) = \#A$ e $\#g(B) = \#B$ e quindi avremo che $\#A = \#B$, questo implica che esiste una funzione $h : A \rightarrow B$ biunivoca. \\ \newline
+\textbf{Teorema di Cantor}: se $A$ è un insieme \textbf{numerabile} allora $\mathcal{P}(A)$ ha cardinalità \textbf{maggiore} di $A$:
+\begin{center}
+    $\#A \leq \#\mathcal{P}(A) \; con \; \#A \neq \#\mathcal{P}(A)$
+\end{center}
+\textcolor{green}{\textbf{Dimostrazione}}: 
+\begin{itemize}
+    \item dimostriamo per prima cosa che $\#A \leq \#\mathcal{P}(A)$ basta trovare una funzione definita $f : A \rightarrow \mathcal{P}(A)$ che sia \textbf{iniettiva} e non biunivoca.
+    \begin{center}
+        $f(a) = \{a\}$
+    \end{center}
+    Utilizziamo una \textbf{dimostrazione per} \textcolor{blue}{\textbf{assurdo}}: sappiamo che $\mathcal{P}(A)$ è in corrispondenza biunivoca con le successioni a valori in $\{0,1\}$; allora se $\mathcal{P}(A)$ fosse numerabile sarebbe possibile elencare tutte le successioni a valori in $\{0,1\}$:
+\end{itemize}

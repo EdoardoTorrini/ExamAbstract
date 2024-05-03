@@ -1,4 +1,4 @@
-\chapter{Introduzione}
+\chapter{Complementi su insiemi e relazioni}
 
 \section{Funzioni}
 Una \textbf{funzione} o \textbf{applicazione} tra due insiemi A e B è rappresentata:
@@ -219,7 +219,9 @@ Avremo:
 \begin{center}
     $g(f(A)) \subseteq g(B) \subseteq A \Rightarrow \#g(f(A)) = \#f(A) = \#A$
 \end{center}
-e per il \textcolor{blue}{lemma} possiamo dire che $\#g(B) = \#A$ e $\#g(B) = \#B$ e quindi avremo che $\#A = \#B$, questo implica che esiste una funzione $h : A \rightarrow B$ biunivoca. \\ \newline
+e per il \textcolor{blue}{lemma} possiamo dire che $\#g(B) = \#A$ e $\#g(B) = \#B$ e quindi avremo che $\#A = \#B$, questo implica che esiste una funzione $h : A \rightarrow B$ biunivoca.
+
+\newpage
 \textbf{Teorema di Cantor}: se $A$ è un insieme \textbf{numerabile} allora $\mathcal{P}(A)$ ha cardinalità \textbf{maggiore} di $A$:
 \begin{center}
     $\#A \leq \#\mathcal{P}(A) \; con \; \#A \neq \#\mathcal{P}(A)$
@@ -229,6 +231,48 @@ e per il \textcolor{blue}{lemma} possiamo dire che $\#g(B) = \#A$ e $\#g(B) = \#
     \item dimostriamo per prima cosa che $\#A \leq \#\mathcal{P}(A)$ basta trovare una funzione definita $f : A \rightarrow \mathcal{P}(A)$ che sia \textbf{iniettiva} e non biunivoca.
     \begin{center}
         $f(a) = \{a\}$
+
     \end{center}
     Utilizziamo una \textbf{dimostrazione per} \textcolor{blue}{\textbf{assurdo}}: sappiamo che $\mathcal{P}(A)$ è in corrispondenza biunivoca con le successioni a valori in $\{0,1\}$; allora se $\mathcal{P}(A)$ fosse numerabile sarebbe possibile elencare tutte le successioni a valori in $\{0,1\}$:
 \end{itemize}
+\begin{center}
+    \begin{tabular}{ccccccc}
+        $S_1$: & \textcolor{yellow}{$S_{11}$} & $S_{12}$ & $S_{13}$ & ... & $S_{1n}$ & ... \\
+        $S_2$: & $S_{21}$ & \textcolor{green}{$S_{22}$} & $S_{23}$ & ... & $S_{2n}$ & ... \\
+        $S_3$: & $S_{31}$ & $S_{32}$ & \textcolor{blue}{$S_{33}$} & ... & $S_{3n}$ & ... \\
+        ... & ... & ... & ... & ... & ... & ... \\
+        $S_j$ & $S_{j1}$ & $S_{j2}$ & $S_{j3}$ & ... & $S_{jn}$ & ... \\
+        ... & ... & ... & ... & ... & ... & ... \\
+    \end{tabular}
+\end{center}
+Consideriamo la successione a valori in $\{0, 1\}$:
+\begin{center}
+    $\bar{S} = \textcolor{yellow}{\bar{S_1}}, \; \textcolor{green}{\bar{S_2}}, \; \textcolor{blue}{\bar{S_3}}, \; ..., \; \bar{S_j}, \; ...$ || dove $\bar{S_j} \neq S_{jj}$
+\end{center}
+In questo modo la successione $\bar{S}$ non coincide con nessuna delle successioni $s_j, \; \forall j \in \mathbb{N}$, poiché differisce dalla j-esima successione nel j-esimo elemento e quindi arriviamo ad un \textbf{assurdo}.
+Quindi l'insieme delle successioni a valori in $\{0, 1\}$  non può essere numerabile e, quindi, \textbf{non} è \textbf{numerabile} nemmeno $\mathcal{P}(A)$. \\ \newline
+\textbf{La Cardinalità di $\mathbb{R}$}: anche $\mathbb{R}$ \textbf{non} è \textbf{numerabile}, infatti: $\#\mathbb{R} = \# ]0,1[$, consideriamo un'applicazione biunivoca tale che $f : \mathbb{R} \rightarrow ]0,1[$, ad esempio:
+\begin{center}
+    $f(x) = \frac{x}{ |x| + 1 } \; \forall x \in \mathbb{R}$
+\end{center}
+che stabilisce biunivocità tra $\mathbb{R}$ e $] -1, 1[$ possiamo affermare che $\#\mathcal{P}(\mathbb{N}) = \#]0,1[$, infatti considerando $\forall x \in ]0, 1[$ come la rappresentazione binaria (con virgola) di $x$; se $\epsilon_n$ è l'n-esima cifra dopo la virgola di tale sviluppo $(\epsilon_1, \epsilon_2, ..., \epsilon_n, ...)$ è una successioni a valori in $\{0, 1\}$ quindi
+\begin{center}
+    $0,\bar{9} = 1 \in \mathbb{R}$ || viene a perdersi la biunivocità \\
+    $\Rightarrow \#\mathbb{R} = \# \mathcal{P}(\mathbb{N})$
+\end{center}
+Questa tipologia di cardinalità viene definita \textbf{cardinalità del continuo} e si denota con \textbf{c} o con $2^{\aleph_0}$. \\
+\textbf{Congettura} (ipotesi del continuo): non esistono cardinalità comprese fra $\#\mathbb{N}$ e $\#\mathbb{R} $. \\
+\textbf{Congettura} (ipotesi generalizzata del continuo): non esistono cardinalità comprese tra $\#X$ e $\mathcal{P}(X) = 2^{\#X} \; \forall X$ di cardinalità non finita.
+
+\newpage
+\section{Relazioni di Equivalenza}
+Una \textbf{relazione} $\mathcal{R}$ tra due insiemi A e B è un \textbf{sottoinsieme} del \textbf{prodotto cartesiano} fra A e B, ovvero $\mathcal{R} \in A \times B$. \\
+\textcolor{yellow}{\textbf{Esempio}}: $\mathcal{R} = '\leq'$ è relazione tra i due insiemi $A = \mathbb{N}$ e $B = \mathbb{N}$, poiché definisce un sottoinsieme del prodotto cartesiamo $\mathbb{N} \times \mathbb{N}$. \\
+Ad esempio: $(1, 2) \in \mathcal{R} \; \text{e} \; (2, 1) \notin \mathcal{R}$. \\ \newline
+Una relazione $\mathcal{R}$ su A si dice \textbf{relazione di equivalenza} se sono vere le seguenti proprietà:
+\begin{itemize}
+    \item \textit{riflessività}: $\forall a \in A \Rightarrow a\mathcal{R}a$
+    \item \textit{simmetria}: $\forall a,b \in A \; : \; a\mathcal{R}b \Rightarrow b\mathcal{R}a$
+    \item \textit{transitività}: $\forall a,b,c \in A \; : \; a\mathcal{R}b \; e \; b\mathcal{R}c \Rightarrow a\mathcal{R}c$
+\end{itemize}
+\textbf{Definizione}: sia $\mathcal{R}$ una \textbf{relazione di equivalenza} su A. Per ogni $a \in A$ si dice \textcolor{red}{\textbf{classe di equivalenza}} $[a] = \{x in A \; | \; x\mathcal{R}a\}$.

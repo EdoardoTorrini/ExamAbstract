@@ -327,4 +327,9 @@ L'insieme delle classi resto modulo $n$ è costituito da:
 Occorre provare che le n classi $[0], [1], ..., [n-1]$ sono a due a due disgiunte, ovvero che $\forall r,s \in \mathbb{Z}, \; 0 \leq r < s < n \Rightarrow [r] \neq [s]$. Per \textbf{assurdo} supponiamo $[r] = [s]$, questo significherebbe che che $\exists h \in \mathbb{Z} \; | \; s - r = h \cdot n$. Per ipotesi $s > r$, per cui $0 < s - r < n$; quindi $s - r$ \textbf{non} può essere multiplo intero di $n$. \\
 \textbf{Divisione euclidea}: $\forall a,b \in \mathbb{Z}, \, b \neq 0 \Rightarrow \exists q,r \in \mathbb{Z}, \; 0 \leq r < |b| \; | \; a = b \cdot q + r$. \\
 Sia A un insieme; un sottoinsieme $\mathcal{B} \subseteq \mathcal{P}(A)$ è detto \textbf{ricoprimento} di A se $\forall x \in A, \; \exists B \in \mathcal{B} \; | \; x \in B$. \\
-$\mathcal{B} \subseteq \mathcal{P}(A)$ è detto \textbf{partizione} di A se $\emptyset \notin \mathcal{B}$ e $\forall c \in A, \; \exists ! B \in \mathcal{B} \; | \; x \in B$.
+$\mathcal{B} \subseteq \mathcal{P}(A)$ è detto \textbf{partizione} di A se $\emptyset \notin \mathcal{B}$ e $\forall c \in A, \; \exists ! B \in \mathcal{B} \; | \; x \in B$. \\
+Se $\mathcal{R}$ è relazione di equivalenza su A, allora l'insieme quoziente $\frac{A}{\mathcal{R}} = \mathcal{B}$ è una partizione di A. 
+Viceversa se $\mathcal{B}$ è una partizione di A, $\exists ! \mathcal{R}$ relazione di equivalenza su A tale che $\frac{A}{\mathcal{R}} = \mathcal{B}$ allora $\mathcal{R}$ è definita da:
+\begin{center}
+    $x\mathcal{R}y \Leftrightarrow \exists B \in \mathcal{B} \; | \; x, y \in B$
+\end{center}

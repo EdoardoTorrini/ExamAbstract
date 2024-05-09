@@ -275,4 +275,56 @@ Una relazione $\mathcal{R}$ su A si dice \textbf{relazione di equivalenza} se so
     \item \textit{simmetria}: $\forall a,b \in A \; : \; a\mathcal{R}b \Rightarrow b\mathcal{R}a$
     \item \textit{transitività}: $\forall a,b,c \in A \; : \; a\mathcal{R}b \; e \; b\mathcal{R}c \Rightarrow a\mathcal{R}c$
 \end{itemize}
-\textbf{Definizione}: sia $\mathcal{R}$ una \textbf{relazione di equivalenza} su A. Per ogni $a \in A$ si dice \textcolor{red}{\textbf{classe di equivalenza}} $[a] = \{x in A \; | \; x\mathcal{R}a\}$.
+\textbf{Definizione}: sia $\mathcal{R}$ una \textbf{relazione di equivalenza} su A. Per ogni $a \in A$ si dice \textcolor{red}{\textbf{classe di equivalenza}} $[a] = \{x \in A \; | \; x\mathcal{R}a\}$. \\ \newline
+\textbf{Proprietà}:
+\begin{itemize}
+    \item $\forall a \in A, \; a \in [a]$ \\
+          \textcolor{green}{\textbf{Dimostrazione}}: è conseguenza diretta della proprietà riflessiva.
+    \item $\forall a,b \in A, \; a \in [b] \Rightarrow [b] = [a]$ \\
+          \textcolor{green}{\textbf{Dimostrazione}}: poiché $a \in [b], \; a\mathcal{R}b$. Se $x \in A, \; x \in [a]$, allora $x\mathcal{R}a$; per la \textbf{proprietà transitiva} segue $x\mathcal{R}v$ ovvero $x \in [b]$. Resta così dimostrato che $[a] \subseteq [b]$. Analogamente, se $y \in A, \; y \in [b]$, allora $y\mathcal{R}b$ per la \textbf{proprietà di simmetria}, $a\mathcal{R}b \Rightarrow b\mathcal{R}a$, per cui la transitività assicura $y\mathcal{R}a$, ovvero $y \in [a]$. Resta così dimostrato che $[b] \subseteq [a]$ e quindi $[b] = [a]$.
+    \item $\forall a,b \in A, \; [a] = [b] \; oppure \; [a] \cap [b] \neq \emptyset$ \\
+          \textcolor{green}{\textbf{Dimostrazione}}: se $\exists c \in [a] \cap [b]$, si ha $c \in [a] e c \in [b]$, ovvero $c\mathcal{R}a$ e $c\mathcal{R}b$. Applicando la \textbf{proprietà di simmetria} a $c\mathcal{R}a$ si ottiene $a\mathcal{R}c$, per cui la proprietà transitiva assicura $a\mathcal{R}b$, ovvero $a \in [b]$. La seconda proprietà implica $[a] = [b]$. Quindi, se due classi hanno un elemento in comune, le due classi coincidono.
+\end{itemize}
+\textbf{Insieme Quoziente}: sia A un insieme ed $\mathcal{R}$ una relazione di equivalenza su A. Si definisce \textbf{insieme quoziente} di A rispetto ad $mathcal{R}$,
+\begin{center}
+    $\frac{A}{\mathcal{R}} = \{[a] \; | \; a \in A\}$
+\end{center}
+\textbf{Rappresentante di una classe d'equivalenza}: sia A un insieme ed $\mathcal{R}$ una relazione di equivalenza su A. Ogni elemento $x \in [a]$, si dice \textbf{Rappresentante} di $[a] \in \frac{A}{\mathcal{R}}$. \\
+Sia $\mathcal{R}$ la relazione di equivalenza su $\mathbb{R}$ definita da:
+\begin{center}
+    $(a, b) \in \mathbb{R}$ se e solo se $a - b \in \mathbb{Z}$
+\end{center}
+L'insieme quoziente $\frac{\mathbb{R}}{\mathcal{R}}$ è in corrispondenza biunivoca con $[0, 1[$: ogni classe può infatti avere come rappresentante significativo il suo unico elemento nell'intervallo $[0, 1[$. \\
+\textcolor{yellow}{\textbf{Esempio}}: sia $\mathcal{R}$ la relazione di equivalenza su $\mathbb{N}_0 \times \mathbb{N}_0$ definita da:
+\begin{center}
+    $(a,b)\mathcal{R}(a',b')$ se e solo se $a+b' = a'+b$
+\end{center}
+In generale:
+\begin{itemize}
+    \item se $a=b$, $[(a,b)] = \{(n,n) \; | \; n \in \mathbb{N}\}$
+    \item se $a<b$, $[(a,b)] = \{(n,n+b-a) \; | \; n \in \mathbb{N}\}$
+    \item se $a>b$, $[(a,b)] = \{n+a-b,n\ \; | \; n \in \mathbb{N}\}$
+\end{itemize}
+Allora l'insieme quoziente $\frac{\mathbb{N}_0 \times \mathbb{N}_0}{\mathcal{R}}$ è in relazione biunivoca con $\mathbb{Z}$. \\ 
+
+\section{Congruenza modulo n}
+\textbf{Definizione}: fissa un intero $n \in \mathbb{N}$, si definisce una relazione di equivalenza $\equiv_n$ su $\mathbb{Z}$:
+\begin{center}
+    $x \equiv_n y$ se e solo se $\exists h \in \mathbb{Z} \; | \; y - x = h \cdot n$
+\end{center}
+Verifichiamo che $\equiv_n$ è una \textbf{relazione di equivalenze}:
+\begin{itemize}
+    \item \textbf{riflessività}: $\forall x \in \mathbb{Z}, \; x \equiv_n x$ è verificato, poiché $x - x = h \cdot n$ considerando $h = 0 \in \mathbb{Z}$.
+    \item \textbf{simmetria}: se $x \equiv_n y$, per definizione $\exists h \in \mathbb{Z}$ tale che $y - x = h \cdot n$. Per dimostrare che $y \equiv_n x$ devo trovare un $h' \in \mathbb{Z} \; | \; x-y = h' \cdot n$. Basta prendere $h'=-h$.
+    \item \textbf{transitività}: se $x \equiv_n y$ e $y \equiv_n <$, allora $\exists h \in \mathbb{Z} \; | \; y - x = h \cdot n$ ed $\exists k \in \mathbb{Z} \; | \; z - y = k \cdot n$. Sommando membreo a membro, si ottiene $z - x = (h + k) \cdot n$; siccome $h + k \in \mathbb{Z}$ segue che $x \equiv_n z$.
+\end{itemize}
+\textbf{Insieme delle classi resto modulo n}: l'insieme quoziente $\mathbb{Z}/ \equiv_n$ è detto \textbf{insieme delle classi resto modulo} $n$ ed è indicato con $\mathbb{Z}_n$: $\mathbb{Z}_n = \frac{\mathbb{Z}}{\equiv_n}$. \\
+L'insieme delle classi resto modulo $n$ è costituito da: 
+\begin{center}
+    $\mathbb{Z}_n = \{[0], [1], [2], ..., [n-1]\}$
+\end{center}
+\textcolor{green}{\textbf{Dimostrazione}}: Per ogni $x \in \mathbb{Z}$, la divisione euclidea per $n$ assicura che $\exists q,r \in \mathbb{Z}, \; 0 \leq r < n$ tali che $x = q \cdot n + r$, ovvero che $x - r = q \cdot n$. Quindi, $x \equiv_n r$, da cui $[x] = [r]$, con $r \in \{0,1,..., n-1\}$. \\
+Occorre provare che le n classi $[0], [1], ..., [n-1]$ sono a due a due disgiunte, ovvero che $\forall r,s \in \mathbb{Z}, \; 0 \leq r < s < n \Rightarrow [r] \neq [s]$. Per \textbf{assurdo} supponiamo $[r] = [s]$, questo significherebbe che che $\exists h \in \mathbb{Z} \; | \; s - r = h \cdot n$. Per ipotesi $s > r$, per cui $0 < s - r < n$; quindi $s - r$ \textbf{non} può essere multiplo intero di $n$. \\
+\textbf{Divisione euclidea}: $\forall a,b \in \mathbb{Z}, \, b \neq 0 \Rightarrow \exists q,r \in \mathbb{Z}, \; 0 \leq r < |b| \; | \; a = b \cdot q + r$. \\
+Sia A un insieme; un sottoinsieme $\mathcal{B} \subseteq \mathcal{P}(A)$ è detto \textbf{ricoprimento} di A se $\forall x \in A, \; \exists B \in \mathcal{B} \; | \; x \in B$. \\
+$\mathcal{B} \subseteq \mathcal{P}(A)$ è detto \textbf{partizione} di A se $\emptyset \notin \mathcal{B}$ e $\forall c \in A, \; \exists ! B \in \mathcal{B} \; | \; x \in B$.

@@ -8,3 +8,4 @@
     * Elliptic curves, properties of key exchange algorithms (ECDH) and digital signature (ECDSA)
 * [Discrete Mathematics](https://github.com/EdoardoTorrini/ExamAbstract/tree/master/MD)
     * Complements on sets and relations
+    * Integers and the theory of divisibility

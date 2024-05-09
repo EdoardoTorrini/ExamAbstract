@@ -1,0 +1,70 @@
+\chapter{Parte 3}
+\section{Strutture algebriche elementari}
+Una \textbf{operazione binaria intera} su un insieme G è un'applicazione 
+\begin{center}
+    $\ast \; : \; G \times G \rightarrow G$
+\end{center}
+L'immagine della coppia $(x,y)$ si denoterà con $x \ast y$. 
+\begin{itemize}
+    \item $e \in G$ si dice \textbf{elemento neutro} rispetto a $\ast$ se:
+    \begin{center}
+        $g \ast e = e \ast g = g \; \forall g \in G$
+    \end{center}
+    \item un elemento $g \in G$ si dice invertibile se esiste $\bar{g} \in G$ tale che $g * \bar{g} = \bar{g} * g = e$
+\end{itemize}
+
+\subsection{Gruppi}
+La coppia $(G, \ast)$, con $\ast$ operazione su G, si dice \textbf{gruppo} se vengono rispettate le seguenti proprietà:
+\begin{itemize}
+    \item $\ast$ è \textbf{associativa}: $\forall g, g', g'' \in G$ si ha $(g \ast g') \ast g'' = g \ast (g' \ast g'')$
+    \item esiste l'elemento \textbf{neutro}
+    \item ogni elemento di G è invertibile
+\end{itemize}
+Il gruppo si dice \textbf{abeliano} o \textbf{commutativo} se: 
+\begin{center}
+    $\forall g, g' \in G, \; g \ast g' = g' \ast g$ (proprietà \textbf{commutativa})
+\end{center}
+Alcuni \textcolor{yellow}{\textbf{esempi}}:
+\begin{itemize}
+    \item $(\mathbb{N}, +)$, $(\mathbb{Z}, \cdot)$ non sono gruppi. in quanto non né in $\mathbb{N}$ e $\mathbb{Z}$ sono presenti per ogni elemento dell'insieme dell'elemento inverso, in $\mathbb{N}$ non sono presenti elementi negativi, quindi nessun elemento avrà un'altro che sommato a se stesso dia 0, viceversa l'insieme $\mathbb{Z}$ che sono presenti elementi positivi e negativi viene definita l'operazione $\cdot$ richiede i reciproci dei singoli elementi affiché possano essere definiti gli elementi inversi.
+    \item $(\mathbb{Z}, +)$, $(\mathbb{Q}, \cdot)$ sono gruppi abelliani
+\end{itemize}
+
+\subsection{Anelli}
+La terna $(\mathbb{A}, +, \cdot)$ con $\mathbb{A}$ un insieme e $+, \cdot$ (somma e prodotto) due operazione binarie interne a $\mathbb{A}$, si dice \textbf{anello} se:
+\begin{itemize}
+    \item $(\mathbb{A}, +, \cdot)$ è un gruppo \textbf{abeliano} (con elemento neutro 0).
+    \item il prodotto è \textbf{associativo}.
+    \item per ogni $x,y,z \in \mathbb{K}$ si ha $x \cdot (y + z) = (x \cdot y) + (x \cdot z)$ e $(x + y) \cdot z = (x \cdot z) + (y \cdot z)$ (il prodotto è distribuito rispetto alla somma).
+\end{itemize}
+Un anello $(\mathbb{A}, +, \cdot)$ è detto \textbf{commutativa} se il prodotto è commutativo, mentre è detto \textbf{unitario} o con \textbf{unità} se $(\mathbb{A}, \cdot)$ ammette l'elemento neutro. $(\mathbb{Z}, +, \cdot)$, $(\mathbb{Q}, +, \cdot)$, $(\mathbb{R}, +, \cdot)$, $(\mathbb{C}, +, \cdot)$ sono anelli.
+
+\newpage
+\subsection{Campi}
+La terna $(\mathbb{K}, +, \cdot)$ con $\mathbb{K}$ un insieme e $+, \cdot$ (somma e prodotto) due operazioni binarie interne a $\mathbb{K}$, si dice \textbf{campo} se:
+\begin{itemize}
+    \item $(\mathbb{K}, +)$ è un gruppo \textbf{abeliano} (con elemento neutro 0).
+    \item $(\mathbb{K} - \{0\}, \cdot)$ è un gruppo \textbf{abeliano} (con elemento neutro 1).
+    \item per ogni $x,y,z \in \mathbb{K}$ si ha $x \cdot (y + z) = (x \cdot y) + (x \cdot z)$ quindi il prodotto è distribuito rispetto alla somma.
+\end{itemize}
+In qualunque campo vale la \textbf{legge di annullamento del prodotto}:
+\begin{center}
+    $x \cdot y = 0 \rightarrow x = 0 \; \text{oppure} \; y = 0$
+\end{center}
+
+\subsection{Domini d'integrità}
+\textbf{Divisori dello zero}: sia $(A, +, \cdot)$ un anello. Due elementi $a,b \in A$ si dicono \textbf{divisori dello zero} se $a \neq 0$, $b \neq 0$, ma $a \cdot b = 0$. Ad \textcolor{yellow}{\textbf{esempio}} l'anello delle matrici quadrate presenta dei divisori dello zero. \\
+Un anello commutativo privo di divisori dello zero si dice \textbf{dominio di integrità}, ad \textcolor{yellow}{\textbf{esempio}} $(\mathbb{Z}, +, \cdot)$ è un anello commutativo unitario privo di divisori dello zero. Quindi è dominio di integrità.
+
+\section{L'anello dei numeri interi}
+È noto che $\exists h \; | \; h : \mathbb{Z} \rightarrow \frac{\mathbb{N}_0 \times \mathbb{N}_0}{\mathcal{R}}$ dove la relazione di equivalenza che si vuole definire è $\equiv_n$. Su questo insieme vengono \textbf{ben poste} le seguenti operazioni:
+\begin{center}
+    $\boxplus : \mathbb{Z} \times \mathbb{Z} \rightarrow \mathbb{Z}$ \\
+    $((m, n), (m', n')) \mapsto [(m, n)] \boxplus [(m', n')] \myeq [(m + m', n + n')]$
+
+    $\boxdot : \mathbb{Z} \times \mathbb{Z} \rightarrow \mathbb{Z}$ \\
+    $((m, n), (m', n')) \mapsto [(m, n)] \boxdot [(m', n')] \myeq [(mm' + nn', mn' + m'n)]$
+\end{center}
+Definito questo possiamo dire che $(\mathbb{Z}, \boxplus, \boxdot)$ è \textbf{dominio di integrità}.
+
+\section{Teoria della Divisibilità}

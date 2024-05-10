@@ -68,3 +68,27 @@ Un anello commutativo privo di divisori dello zero si dice \textbf{dominio di in
 Definito questo possiamo dire che $(\mathbb{Z}, \boxplus, \boxdot)$ è \textbf{dominio di integrità}.
 
 \section{Teoria della Divisibilità}
+\textbf{Divisibilità}: dati due numeri $a,b \in \mathbb{Z}$, si dice che $a$ \textbf{divide} $b$ (e si scrive $a|b$) se:
+\begin{center}
+    $\exists c \in \mathbb{Z} \; | \; b = a \cdot c$
+\end{center}
+\textbf{Transitività}: se $n|m$ e $m|q$ allora $n|q$. \\
+\textcolor{green}{\textbf{Dimostrazione}}: per ipotesi $\exists h \in \mathbb{Z} \; | \; m = h \cdot n$ e $\exists h' \in \mathbb{Z} \; | \; q = h' \cdot m$. Sostituendo la prima relazione nella seconda si ottiene $q = h' \cdot h \cdot n$. Poichè $h' \cdot h \in \mathbb{Z}$ abbiamo definito che $n|q$. \\ \newline
+Se $n|m$ e $m|n$, allora $m \pm n$. \\
+\textcolor{green}{\textbf{Dimostrazione}}: per ipotesi $\exists h \in \mathbb{Z} \; | \; m = h \cdot n$ e $\exists h' \in \mathbb{Z} \; | \; n = h' \cdot m$ andiamo a sostituire la seconda alla prima equazione:
+\begin{center}
+    \begin{align*}
+        n &= h' \cdot h \cdot m \\
+        n - h' \cdot h \cdot m &= 0 \\
+        n \cdot (1 - h' \cdot h) &= 0
+    \end{align*}
+\end{center}
+Essendo che $\mathbb{Z}$ è un \textbf{dominio di integrità}, segue che o $n = 0$ oppure $(1 - h' \cdot h) = 0 \rightarrow (h' \cdot h) = 1$, consideriamo che $n \leq 0$ e che quindi $h' \cdot h = 1$ sappiamo che $h$ ammette un inverso $h'$, da cui $h = h' = 1$ o $h = h' = -1$ (in $\mathbb{Z}$, gli unici elementi che ammettono inverso sono $1$ e $-1$). In questo modo sappiamo che $m=n$ oppure $m=-n$.
+
+\section{Massimo Comune Divisore}
+Dati $a,b \in \mathbb{Z}$ non entrambi nulli, si dice che $d \in \mathbb{Z}$ è \textbf{UN massimo comune divisore} tra $a$ e $b$ se:
+\begin{itemize}
+    \item $d|a$ e $d|b$
+    \item $\forall d' \in \mathbb{Z} \; | \; d'|a, \; d'|b \Rightarrow d'|d$
+\end{itemize}
+Se $d$ e $d'$ sono due massimi comuni divisori tra $a$ e $b$ allora $d' = \pm d$.

@@ -1,1 +1,69 @@
 \chapter{Non Real-time scheduling algorithms}
+Lo \textit{scheduling} è l'attività che permette di selezionare quale processo o \textit{thread} bisogna eseguire come successivo. In generale nei sistemi operativi, possiamo distinguere tre tipologie di \textit{scheduling}:
+\begin{itemize}
+    \item \textbf{\textit{long term scheduling}}: prima di creare il processo, viene deciso se attivarlo o meno. Viene implementato tramite un \textbf{test di ammissione}, se il processo passa questo controllo allora viene inserito nella \textit{ready queue}, se no viene interrotto finché non gli viene permesso di essere \textit{schedulato} [ se il \textit{load} del processore è troppo alto il nuovo task rischia di essere solo di ``intralcio'' ].
+    \item \textbf{\textit{medium term scheduling}}: permette di decidere se un processo deve essere \textit{preemptato} o meno.
+    \item \textbf{\textit{short term scheduling}}: decide quale processo deve essere eseguito come successivo. Possiamo distinguere:
+    \begin{itemize}
+        \item \textbf{\textit{selection function}}: decide quale processo viene selezionato dalla \textit{ready queue}, seguendo alcune regole.
+        \item \textbf{\textit{decision mode}}: quando la decisione è stata presa si può comportare in maniera \textbf{\textit{preemptive}} oppure \textbf{\textit{non-preemptive}}.
+    \end{itemize}
+\end{itemize}
+\textbf{\textit{Scheduling Criteria}}: come si possono valutare le performance di uno \textit{scheduler}:
+\begin{itemize}
+    \item \textbf{\textit{user-oriented}}: si va ad analizzare il \textit{response-time} del processo.
+    \item \textbf{\textit{system-oriented}}: si va ad analizzare il \textit{throughput}, ovvero quanto lavoro il sistema può eseguire in un certo intervallo di tempo.
+\end{itemize}
+Per quanto le performance siano importanti in certe circostate ci possono interessare la \textbf{predicibitilà} (\textit{real-time system}) o la \textbf{\textit{fairness}}. \\
+Tra i processi possiamo differenziare anche il tipo di risorsa che viene utilizzanta: \textbf{\textit{CPU-Bound}} e \textbf{\textit{I/O Bound}}, nel primo caso il processo è orientato a lavorare sul processore, mentre nel secondo caso i processi possono essere in attesa di un \textit{I/O device}. La stragrande maggioranza dei processi è un mix dei due. \\ \newline
+Uno \textit{schedule} $\sigma$ si dice \textbf{fattibile} (\textbf{\textit{feasible}}) se tutti i \textit{tasks} sono capaci di completare entro un insieme di vincoli. \\
+Un \textit{tasks set} $\mathcal{T}$ si dice \textbf{\textit{schedulable}} se esiste uno \textit{schedule} fattibile per esso. \\ \newline
+\textbf{\textit{The General Scheduling Problem}}: dato un \textit{tasks set} $\mathcal{T}$ di $n$ \textit{tasks}, un set $\mathcal{P}$ di $m$ processori e un set $\mathcal{R}$ di $r$ risorse, trovare un assegnamento di $\mathcal{P}$ e $\mathcal{R}$ per $\mathcal{T}$ che produce uno \textit{schedule} fattibile. \\
+È stato dimostrato nel 1975 da Garey e Johnson che il \textit{general scheduling problem} rientra nella categoria \textbf{\textit{NP hard}}. È però possibile, rilassando i vincoli e specificando certe condizioni, ricordurci ad un algoritmo \textit{polynomial time}. \\
+Per il ora consideriamo:
+\begin{itemize}
+    \item processore singolo
+    \item \textit{fully preemptive tasks}
+    \item attivazione simultanea
+    \item nessun vincolo di precedenza
+    \item nessun vincolo sulle risorse
+\end{itemize}
+
+\begin{tabular}{ |p{7.25cm}|p{7.25cm}| }
+    \hline
+    \multicolumn{2}{|c|}{\textbf{Algorithm taxonomy}} \\
+    \hline
+    \textbf{\textit{preemptive}} & \textbf{\textit{non-preemptive}} \\
+    \hline
+    \textbf{\textit{off line}}: & \textbf{\textit{on line}}: \\
+    tutte le decisioni sullo scheduling vengono prese prima dell'attivazione dei task, normalmente lo \textit{schedule} viene salvato in una tabella (\textbf{\textit{table-driven scheduling}}) & le decisioni di scheduling vengono prese \textit{runtime} sul set dei tasks attivi \\ \hline
+    \textbf{\textit{static}}: & \textbf{\textit{dynamic}}: \\
+    le decisioni di scheduling vengono prese basandosi su parametri fissati, staticamente assegnati al task prima dell'attivazione & le decisioni di scheduling vengono prese su parametri che possono variare nel tempo \\ \hline
+    \textbf{\textit{best effort}}: & \textbf{\textit{optimal}}: \\
+    trova sempre uno \textit{schedule} fattibile, se \textbf{esiste} & fa del suo meglio per trovare uno \textit{schedule} fattibile, se esiste, ma non lo garantisce. \\ \hline
+\end{tabular}
+\\ \newline
+Le \textit{policies} classiche di \textbf{\textit{scheduling}}, che però non sono adatte per sistemi \textit{real-time}, sono:
+\begin{enumerate}
+
+    \item \textbf{\textit{First Come First Served} (FCFS)}: assegna l'utilizzo della CPU al task basandosi sull'ordine di arrivo, non è \textit{preemptive}, è dinamico, online e \textit{best effort}. \\
+    $\rightarrow$ molto \textbf{impredicibile}: il \textit{response time} è fortemente dipendente dall'ordine di arrivo dei task.
+
+    \item \textbf{\textit{Shorter Job First} (SJF)}: seleziona il task che ha il minor \textit{computational time}, può essere sia \textit{preemptive} che \textit{non-preemptive}, è statico (il parametro $C_i$ è fissato da configurazione), può essere usato sia \textit{online} che \textit{off-line} e permette di minimizzare la \textit{response time} \textbf{media}. \\
+    \textcolor{green}{\textbf{Dimostrazione dell'ottimalità di SJF}}: consideriamo uno scheduler $\sigma \neq \text{SJF}$ e un'altro scheduler $\sigma'$ che è uguale a SJF fino all'istante $f_s$
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.4\textwidth]{img/sjf_opt}    
+    \end{figure}
+    \\ 
+    Presi due task $L$ e $S$ che hanno \textit{request time} $r_i \; i \in \{L, S\}$ e \textit{finish time} $f_i \; i \in \{L, S\}$. Lo \textit{schedule} $\sigma$ schedula il task $L$ prima (non conforme con SJF), mentre $\sigma'$ schedula il task $S$ come primo (conforme a SJF). Possiamo dire che $f'_L = f_S$ in quanto la somma del tempo dei due task non cambia, ma cambia solo l'ordine di schedulazione. È intuitivo che il \textit{finish time} del primo task è però sbilanciato verso lo scheduler $\sigma'$ infatti avremo $f'_S < f_L$. \\
+    Avremo perciò $f'_S + f'_L \leq f_S + f_L$ 
+    \begin{center}
+        $\rightarrow \qquad \bar{R}(\sigma') = \frac{1}{n} \cdot \sum_{i = 1}^{n}{(f'_i - r_i)} \leq \frac{1}{n} \cdot \sum_{i = 1}^{n}{(f_i - r_i)} = \bar{R}(\sigma)$
+    \end{center}
+    Lo scheduler $\sigma'$ è equivalente a SJF solo fino all'istante $f'_L = f_S$, bisogna andare quindi ad iterare su ogni scheduler $\sigma \in \{\sigma', \sigma'', ..., \sigma^*\}$, andando a riproporre l'analisi appena condotta avremo che: $\bar{R}(\sigma) \geq \bar{R}(\sigma') \geq \bar{R}{\sigma''} \geq \cdots \geq \bar{R}(\sigma^*)$ \\
+    $\rightarrow$ $\sigma^* = \sigma_{sjf}$ e quindi avremo che $\bar{R}(\sigma_{SJF})$ è la \textbf{minima \textit{response time} media} ottenibile da ogni \textbf{algoritmo}. \\
+    \textbf{SJF non è un algoritmo fattibile per il \textit{Real-Time}}.
+
+    \item \textbf{\textit{Priority Scheduling}}
+\end{enumerate}

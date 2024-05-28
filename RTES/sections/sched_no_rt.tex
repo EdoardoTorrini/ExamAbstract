@@ -65,5 +65,34 @@ Le \textit{policies} classiche di \textbf{\textit{scheduling}}, che però non so
     $\rightarrow$ $\sigma^* = \sigma_{sjf}$ e quindi avremo che $\bar{R}(\sigma_{SJF})$ è la \textbf{minima \textit{response time} media} ottenibile da ogni \textbf{algoritmo}. \\
     \textbf{SJF non è un algoritmo fattibile per il \textit{Real-Time}}.
 
-    \item \textbf{\textit{Priority Scheduling}}
+    \item \textbf{\textit{Priority Scheduling}}: ad ogni task viene assegnata una \textbf{priorità}, il task con la priorità maggiore viene eseguito come primo, mentre per i task con pari priorità siene eseguito uno scheduler o FCFS o RR. Può essere utilizzato per fini \textit{real-time} se le priorità sono assegnate seguendo specifiche regole. Lo \textit{scheduler POSIX} è uno scheduler con 99 priorità. Può essere sia statico che dinamico.
+    \begin{itemize}
+        \item può avere problemi di \textbf{\textit{starvation}} infatti dei task a bassa priorità possono accumulare ritardo per via della \textit{preemption} dovuto a task con più alta priorità.
+        \item Una possibile \textbf{soluzione} è quella dell'\textbf{\textit{aging}} ovvero che la priorità viene incrementata con il passare del tempo: \\
+        \begin{center}
+            $p_i \propto \frac{1}{C_i} \simeq \text{SJF}$ \\ 
+            $p_i \propto \frac{1}{r_i} \simeq \text{FCFS}$
+        \end{center}
+    \end{itemize} 
+
+    \item \textbf{\textit{Round Robin}}: la \textit{ready queue} viene servita con un \textbf{FCFS}, ma il sistema conosce il concetto di \textbf{\textit{time quantum} (Q)}, ogni task $\tau_i$ non può eseguire più un \textbf{Q} unità di tempo. Quando \textbf{Q} scade, $\tau_i$ viene riaccodato nella \textit{ready queue}.
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.4\textwidth]{img/rr}
+    \end{figure}
+    \\
+    Introduce il concetto di \textbf{\textit{time sharing}}: ovvero che ogni task esegue in solitaria su un ``processore virtuale'' $n$ volte più lento rispetto a quello reale.
+    \begin{center}
+        $R_i \simeq (n\mathcal{Q}) \frac{C_i}{\mathcal{Q}} = nC_i$
+    \end{center}
+    Se $Q > \max(C_i)$ allora RR $\equiv$ FCFS, e se consideriamo che ogni volta che viene \textit{preemptato} un task bisogna eseguire un \textit{context switch} definito da un tempo $\delta$ allora avremo che:
+    \begin{center}
+        $R_i \simeq n \cdot (\mathcal{Q} + \delta) \frac{C_i}{\mathcal{Q}} = nC_i \cdot (\frac{\mathcal{Q} + \delta}{\mathcal{Q}})$
+    \end{center}
+
+    \item \textbf{\textit{Multiple-feedback Queues}}: questo \textit{scheduler} consiste in: $N$ code, ognuna delle quali viene ordinata tramite FIFO a unità di tempo \textit{quantum} fisse. Lo \textit{scheduler} sceglie il primo processo dalla coda con più alta priorità e imposta un timer a \textbf{Q}. Consideriamo $\text{RQ}_k$ come la coda priorità maggiore che ha un task pronto per essere eseguito. Se il processo viene completato entro o si blocca prima che il scada bisogna selezionare il processo successivo dalla coda con più alta priorità e impostare il timer, se no sposta il processo nella coda $\text{RQ}_{k + 1}$. Quindi in maniera periodica, se un processo non viene completato allora viene ``spostato'' nella priorità più alta (questo viene fatto per evitare \textit{starvation}).
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.5\textwidth]{img/mfq}
+    \end{figure}
 \end{enumerate}

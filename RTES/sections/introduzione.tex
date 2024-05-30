@@ -6,14 +6,18 @@ Può essere un processo o un thread in base al sistema operativo.
         \node (1) at (-2,1)   [draw, ellipse]   {READY};
         \node (2) at (1,3)    [draw, rectangle]    {BLOCKED};
         \node (3) at (4,1)    [draw, ellipse]   {RUNNING};
+        \node (4) at (-5,1)   [draw, rectangle] {activation};
+        \node (5) at (7.5,1)    [draw, rectangle] {termination};
         \draw[->] (1)to[out=20,in=165,looseness=1](3)node[above]{dispacthing};
         \draw[<-] (1)to[out=340,in=200,looseness=1](3)node[below]{preemption};
         \draw[->] (3)to[out=100,in=0,looseness=1](2)node[above right]{wait};
         \draw[<-] (1)to[out=100,in=180,looseness=1](2)node[above left]{signal};
+        \draw[->] (4)to(1);
+        \draw[->] (3)to(5);
     \end{tikzpicture}
 \end{center}
 
-\textbf{\textit{Ready Queue}}: i task ``pronti'' (\textit{ready}) sono contenuti all'interno di una coda di attesa, anche nota come \textit{ready queue}. La strategia con cui vengono scelti i task dalla coda per essere eseguiti sulla \textit{CPU} sono gli \textbf{\textit{scheduling algorithms}}.
+\textbf{\textit{Ready Queue}}: i task ``pronti'' (\textit{ready}) sono contenuti all'interno di una coda di attesa, anche nota come \textit{ready queue}. Le strategie con cui vengono scelti i task dalla coda per essere eseguiti sulla \textit{CPU} sono gli \textbf{\textit{scheduling algorithms}}.
 
 \begin{center}
     \begin{tikzpicture}[node distance=3cm, every node/.style={transform shape, font=\sffamily}]

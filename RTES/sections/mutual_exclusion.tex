@@ -83,5 +83,42 @@ Se definiamo $n$ come il numero di task a più bassa priorità che può bloccare
 \end{figure}
 Il task $\tau_1$ può essere bloccato una volta da $\tau_2$ (o nella sezione critica $A_2$ o $C_2$) e una volta da $\tau_3$ (o nella sezione critica $B_3$ oppure $D_3$), $\tau_2$ può essere bloccato una volta in $\tau_3$ (o nella sezione critica $B_3$ o $D_3$), mentre $\tau_3$ non può essere bloccato. \\
 Nel \textbf{\textit{chained blocking}} con \textbf{PIP} $\tau_i$ può essere bloccato al massimo una volta da ogni task con più bassa priorità.
-
+\newpage
 \section{Priority Ceiling Protocol}
+Il \textit{priority ceiling protocol} può essere visto come il \textbf{PIP} ma ha un \textit{access test}, un task può entrare in una sezione critica solo se è libera e non c'è il rischio di un \textit{chainged blocking}, per implementarlo il task viene bloccato sull'ingresso della \textit{critical sections} [\textit{ceiling blocking}]. \\
+Definiamo il \textbf{\textit{ceiling}} di una risorsa come la priorità più alta di tutti quei task che richiederanno accesso ad una certa risorsa. Viene assegnato ad ogni semaforo $s_k$ un \textit{ceiling}: $C(s_k) = max{P_j \; | \; T_j \; \text{uses} \; s_k}$. Un task $\tau_i$ può accedere ad una \textit{critical sections} se e solo se \[P_i > max\{C(s_k) \; | \; s_k \text{ locked by task } \neq \tau_i\}\]
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{img/pcp_1}
+    \end{minipage}
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{img/pcp_2}
+    \end{minipage}
+\end{figure}
+\\
+Nella prima figura è possibile osservare come il $t_1$ il task $\tau_2$ viene bloccato da \textit{PCP} in quando la priorità di $\tau_2$ è minore del valore del \textit{ceiling} sulla risorsa rossa ($C(s_1) = P_1$).
+\begin{center}
+    \begin{tabular}{ p{7.25cm} | p{7.25cm} }
+        \textcolor{green}{\textbf{Vantaggi}} & \textcolor{red}{\textbf{Svantaggi}} \\
+        \textbf{-} il bloccaggio su una sezione critica è ridotto ad una sola & \textbf{-} non è trasparente al programmatore bisogna definire per ogni semaforo il suo \textit{ceiling} \\
+        \textbf{-} evita i \textit{deadlock} [vedi figura a destra] &  \\
+    \end{tabular}
+\end{center}
+Ricordiamo che \textit{PCP} è un \textbf{\textit{resource access protocol}} dobbiamo ora scegliere il \textit{scheduling algorithm}, l'idea è quella di calcolare il \textbf{\textit{maximum blocking times}} $B_i$ per ogni task. Per \textit{rate monotonic - RM} \[\forall \tau \in \mathcal{T} \sum_{k=1}^{i-1}\frac{C_k}{T_k} + \frac{C_i + B_i}{T_i} \leq i \cdot (\sqrt[i]{2} - 1)\]
+Mentre per \textit{earliest deadline first - EDF} \[\forall \tau \in \mathcal{T} \sum_{k=1}^{i-1}\frac{C_k}{T_k} + \frac{C_i + B_i}{T_i} \leq 1\]
+\textcolor{yellow}{\textbf{Esercizio}}
+
+
+\section{Stack Resource Policy (SRP)}
+Possiamo vederlo come \textit{HLP} applicato ad \textit{EDF}, ad ogni \textit{hard task} (periodici e sporadici) gli viene assegnato:
+\begin{itemize}
+    \item una \textit{priority} $p_i$.
+    \item un \textit{preemption level} $\pi_i$, possiamo considerarla una priorità fittizia visto che in \textit{EDF} non esistono \[\pi_i = \frac{1}{T_i}\]
+    \item ad ogni risorsa $r_i$ viene assegnato un \textit{ceiling} statico definito come: $C(r_k) = max_i\{\pi_i \; | \; \tau_i \text{ needs } r_k\}$
+    \item e viene definito un \textbf{\textit{dynamic system ceiling}} come: $\Pi_s(t) = max\{C(r_k) \; | \; R_k \text{ è occupata in t}\}$
+\end{itemize}
+Il \textbf{\textit{SRP}} ha come ``regola'' per l'ammissione all'esecuzione i task che enuncia: un \textit{job} con priorità più alta è autorizzato ad eseguire se il \textit{preemption level} è maggiore del \textit{system ceiling}. Questo permette che una volta che un thread è in esecuzione non verrà mai bloccato fino al completamento e potrà essere \textit{preemptato} solamente da thread con priorità maggiore. \textit{SRP} previene i deadlock e prviene le \textit{preemption} ``inutili'', infatti nessun task può essere \textit{preemptato} se non ci sono risorse sufficienti. Permette di avere un tempo massimo di bloccaggio $B_i$ \textbf{limitato} definendolo come la massima lunghezza della sezione critica del task con priorità minore che ha accesso ad una risorsa condivisa con un task che ha priorità uguale o maggiore. Un \textit{task set} $\mathcal{T}$ può essere \textit{schedulato} sotto \textit{EDF + SRP} se: \[\forall i \; 1 \leq i \leq n \qquad (\sum_{k=1}^i \frac{C_k}{T_k}) + \frac{B_i}{T_i} \leq 1\]
+\textbf{\textit{SRP}} permette hai task di \textbf{condividere} un singolo \textbf{\textit{user-level stack}}.

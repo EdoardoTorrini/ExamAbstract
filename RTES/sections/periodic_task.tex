@@ -21,8 +21,8 @@ Per ogni task periodico, bisogna garantire che:
 \end{itemize}
 Anche nel caso di \textbf{task aperiodici} possiamo definirli $\tau_i(C_i,T_i)$, in questo caso però $T_i$ non è il periodo nel quale per il quale si ripete il task ma indica il \textit{deelay} minimo di attivazione tra un task $\tau_{ik}$ e un task $\tau_{i(k+1)}$, infatti bisogna garantire per ogni task sporadico che:
 \begin{itemize}
-    \item ogni job $\tau_{ik}$ viene attivato in un istante $r_{ik} \geq r_{i(k+1)} + T_i$.
-    \item ogni job $\tau_{ik}$ completi la sua esecuzione entro una \textit{deadline} relativa $d_{ik} = r_{ik} + D_{ik}$
+    \item ogni job $\tau_{ik}$ viene attivato in un istante $r_{ik} \geq r_{i(k-1)} + T_i$.
+    \item ogni job $\tau_{ik}$ completi la sua esecuzione entro una \textit{deadline} relativa $d_{ik} = r_{ik} + D_i$
 \end{itemize}
 
 \section{Timeline Scheduling}

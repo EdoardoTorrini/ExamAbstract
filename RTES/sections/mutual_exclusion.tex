@@ -19,7 +19,7 @@ In questa figura possiamo notare che il \textit{task set} è composto da $\mathc
     \item \textbf{\textit{Highest Locker Priority} (HLP)}
     \item \textbf{\textit{Priority Inheritance Protocol} (PIP)}
     \item \textbf{\textit{Priority Ceiling Procol} (PCP)}
-    \item \textbf{\textit{Stack Resource Polcy} (SRP)}
+    \item \textbf{\textit{Stack Resource Policy} (SRP)}
 \end{itemize}
 \newpage
 \section{Non Preempive Protocol}
@@ -45,7 +45,7 @@ Quando un task entra nella sezione critica ottiene la priorità più alta su le 
     \includegraphics[width=0.5\textwidth]{img/hlp}
 \end{figure}
 \\
-In questo caso la $P_{CS} = max\{P_k \; | \; \tau_k uses \mathbf{ CS}\}$ in questo caso se $\tau_2$ è bloccato, ma $\tau_1$ può comunque eseguire andando a \textit{preemptare} $\tau_3$. Può esserci una casistica in cui utilizzare il \textit{highest locker priority} è sconveniente, ovvero quando un task $\tau_i$ ha due rami, in uno è presente una sezione critica, mentre nell'altro no, come possiamo differenziarlo a priori per definire quali sono i task con quelle predefinite sezioni critiche.
+In questo caso la $P_{CS} = max\{P_k \; | \; \tau_k \text{ uses } \mathbf{CS}\}$ in questo caso se $\tau_2$ è bloccato, ma $\tau_1$ può comunque eseguire andando a \textit{preemptare} $\tau_3$. Può esserci una casistica in cui utilizzare il \textit{highest locker priority} è sconveniente, ovvero quando un task $\tau_i$ ha due rami, in uno è presente una sezione critica, mentre nell'altro no, come possiamo differenziarlo a priori per definire quali sono i task con quelle predefinite sezioni critiche.
 
 \section{Priority Inheritance Protocol}
 Un task in una \textit{critical section} aumenta la sua priorità solo se blocca altri task, oppure, un task in una sezione critica eredita la priorità maggiore delle priorità dei task bloccati sulla sezione critica. \[P_{CS} = max\{P_k \; | \; \tau_k \text{ blocked on CS}\}\]

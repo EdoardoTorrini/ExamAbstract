@@ -91,7 +91,7 @@ Un sistema operativo capace di gestire \textit{hard task} viene chiamato \textbf
     \begin{center}
         \begin{math}
             \begin{cases}
-                r_{i,k} = \Phi_i + (k+1) \cdot T_i \qquad k = 1 \rightarrow r_{i1}= \Phi_i \\
+                r_{i,k} = \Phi_i + (k-1) \cdot T_i \qquad k = 1 \rightarrow r_{i1}= \Phi_i \\
                 d_{i,k} = r_{i,k} + D_i
             \end{cases}
         \end{math}
@@ -141,7 +141,7 @@ Sui \textit{tasks} possono essere imposti dei vincoli, che si differenziano in:
         \end{minipage}
     \end{figure}
 \end{itemize}
-Mentre si analizza un \textit{tasks set} e si cerca che il tempo di esecuzion sia vincolato da vincoli imposti in fase di progettazione, ad esempio $t_r \leq 10$, anche se si aumenta il numero di processori, si diminuisce il tempo di esecuzione dei task o si rilassano i vincoli di precedenza, se non si uno \textbf{\textit{scheduler}} appropriato si rischia in ogni caso di missare i vincoli imposti. L'apporccio più \textbf{\textit{safe}} è quello di utilizzare meccanismi predicibili del kernel e analizzare il sistema per predirne il comportamento. La concorrenza deve essere progettata utilizzando:
+Mentre si analizza un \textit{tasks set} e si cerca che il tempo di esecuzion sia vincolato da vincoli imposti in fase di progettazione, ad esempio $t_r \leq 10$, anche se si aumenta il numero di processori, si diminuisce il tempo di esecuzione dei task o si rilassano i vincoli di precedenza, se non si ha uno \textbf{\textit{scheduler}} appropriato si rischia in ogni caso di missare i vincoli imposti. L'apporccio più \textbf{\textit{safe}} è quello di utilizzare meccanismi predicibili del kernel e analizzare il sistema per predirne il comportamento. La concorrenza deve essere progettata utilizzando:
 \begin{itemize}
     \item appropriati algoritmi di \textbf{\textit{scheduler}}.
     \item appropriati protocolli di \textbf{sincronizzazione}.

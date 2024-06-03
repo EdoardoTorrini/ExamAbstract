@@ -77,7 +77,7 @@ Definiamo l'utilizzazione della \textit{CPU} da parte di un task come $U_i = \fr
     \[U_p = \sum_{i = 1}^{n} \frac{C_i}{T_i} \qquad \leftarrow U_p \text{ processor load} \]
 \end{center}
 In questo modo riusciamo a valutare il \textbf{carico del processore} che però \textbf{non} è una condizione \textbf{sufficiente} per garantire la \textbf{\textit{schedulabilità}} di un \textit{task set}, ma solo \textbf{necessaria}, infatti ci può dire se il \textit{task set} non è schedulabile in quanto $U_p > 1$ indica che il processore è \textit{overloaded}, ma nel caso in cui $U_p < 1$ ci possono essere dei casi in cui il \textit{task set} non può essere schedulato tramite \textit{RM}. \\
-È possibile però identificare un punto, noto come $U_{lub}$ [\textit{least upper bound}] tale per cui sia possibile avere un \textbf{test di schedulabilità} sia \textbf{necessario} che \textbf{sufficiente}. Infatti nel caso in cui $U_p \leq U_{lub}$ il \textit{task set} è sicuramente schedulabile tramite \textit{RM}. Mentre nel caso in cui $U_{lub} < U_p \leq 1$ non possiamo dire niente di certo sulla fattibilità del \textit{task set}.
+È possibile però identificare un punto, noto come $U_{lub}$ [\textit{least upper bound}] tale per cui sia possibile avere un \textbf{test di schedulabilità} \textbf{sufficiente}. Infatti nel caso in cui $U_p \leq U_{lub}$ il \textit{task set} è sicuramente schedulabile tramite \textit{RM}. Mentre nel caso in cui $U_{lub} < U_p \leq 1$ non possiamo dire niente di certo sulla fattibilità del \textit{task set}.
 Per \textit{Rate Monotonic} $U_p^{RM} = n \cdot (2^{\frac{1}{n}} - 1)$ quindi avremo che: \[ \lim_{n\to\infty} U_{lub} = \log_2 2\]
 Definiamo il \textbf{\textit{Critical Instant}} come l'istante di tempo in cui è presente il \textit{response time} maggiore, è stato dimostrato che equivale, considernado un \textit{task set} $\mathcal{T}$ all'istante in cui arrivano in corrispondenza tutti i task a più alta priorità. \\
 Dal punto di vista della schedulabilità un task sporadico può essere considerato come un task periodico e quindi è possibile calcolarsi il suo $U_p$ e confrontarlo con l'$U_{lub}$ del \textit{task set}. \\
@@ -126,7 +126,7 @@ Il calcolo del \textbf{\textit{response time}} è invece iterativo:
     \begin{math}
         \begin{cases}
             R_i^0 = C_i \\
-            R_i^{(s+1)} = C_i + \sum_{k=1}^{i-1} \cdot \lceil \frac{R_i^{(s)}}{T_k} \rceil \cdot C_k
+            R_i^{(s+1)} = C_i + \sum_{k=1}^{i-1} \lceil \frac{R_i^{(s)}}{T_k} \rceil \cdot C_k
         \end{cases}
         \rightarrow R_i^{(s+1)} = R_i^{(s)}
     \end{math}
@@ -146,7 +146,7 @@ andiamo prima a valutare la \textit{schedulabilità} andando a calcolare l'\text
     \begin{math}
         \begin{aligned}
             U_p^* &= \frac{C_1}{D_2} + \frac{C_2}{D_2} + \frac{C_3}{D_3} \\
-            &= \frac{3}{6} + \frac{7}{28} + \frac{5}{28} = 0.93 \qquad \stackrel{\text{?}}{\leq} \qquad U_p^* = n \cdot (\sqrt[n]2 - 1) = 0.78\\
+            &= \frac{3}{6} + \frac{7}{28} + \frac{5}{28} = 0.93 \qquad \stackrel{\text{?}}{\leq} \qquad U_{lub}^* = n \cdot (\sqrt[n]2 - 1) = 0.78\\
         \end{aligned}
     \end{math}
 \end{center}
@@ -175,8 +175,8 @@ andiamo prima a valutare la \textit{schedulabilità} andando a calcolare l'\text
 Possiamo quindi affermare che l'intero \textit{task set} $\mathcal{T}$ è \textbf{schedulabile}, ed ha una complessità pari a: $\mathcal{O}(n \cdot D_{max})$.
 \newpage
 \section{Processor Demand Criterion}
-In ogni intervallo di tempo la \textit{computation demanded} dal \textit{task set} non deve essere maggiare del tempo disponbiie. Nel caso di \textbf{EDF} abbiamo priorità dinamiche ed è quindi impossibile utilizzare il \textit{response time analysis} per dire se un \textit{task set} è schedulabile. \\
-La \textbf{\textit{demand}} in $[t_1, t_2]$ è il \textit{WCET} di quei task che anno $r_i \geq t_1 \cap d_i \leq t_2$: \[ g(t_1, t_2) = \sum_{r_i \geq t_1}^{d_i \leq t_2} C_i\]
+In ogni intervallo di tempo la \textit{computation demanded} dal \textit{task set} non deve essere maggiare del tempo disponbile. Nel caso di \textbf{EDF} abbiamo priorità dinamiche ed è quindi impossibile utilizzare il \textit{response time analysis} per dire se un \textit{task set} è schedulabile. \\
+La \textbf{\textit{demand}} in $[t_1, t_2]$ è il \textit{WCET} di quei task che hanno $r_i \geq t_1 \cap d_i \leq t_2$: \[ g(t_1, t_2) = \sum_{r_i \geq t_1}^{d_i \leq t_2} C_i\]
 Consideriamo ora $t_1 = 0$ (ovvero il \textit{critical istance}) e $t_2 = \mathcal{L}$ e andiamo a calcolarci la \textbf{\textit{demand}} nell'intervallo di tempo $[0, \mathcal{L}]$ allora avremo che: \[g(0, \mathcal{L}) = \sum_{r_i \geq 0}^{d_i \leq \mathcal{L}} C_i = \sum_{i=1}^n \underbrace{\lfloor \frac{\mathcal{L} - D_i + T_i}{T_i} \rfloor}_{\text{Quando i task hanno }r_i\text{ e }d_i \text{ all'interno di }\mathcal{L}} \cdot C_i\]
 L'\textit{execution time demanded} dai singoli \textit{job} che hanno \textit{deadline} $d_i \leq \mathcal{L}$ su un intervallo di lunghezza $\mathcal{L}$ non può essere maggiore di $\mathcal{L}$ ovvero \[ \forall \mathcal{L} > 0 \; g(0, \mathcal{L}) \leq \mathcal{L} \qquad \leftarrow \text{è inapplicabile } \mathcal{L} \rightarrow \infty \]
 \begin{figure}[h]
@@ -207,7 +207,7 @@ Ora vogliamo trovare il punto di intersezione $\mathcal{L}^*$ tra $\mathcal{L}$ 
 \begin{equation}
     \begin{alignedat}{2}
         \mathcal{L} &= G(0, \mathcal{L}) \\
-        \mathcal{L} &= \mathcal{L}U \cdot \sum_{i=1}^n (T_i - D_i) \cdot U_i \\
+        \mathcal{L} &= \mathcal{L}U + \sum_{i=1}^n (T_i - D_i) \cdot U_i \\
         \mathcal{L} - \mathcal{L}U &= \sum_{i=1}^n (T_i - D_i) \cdot U_i \\
         \mathcal{L} \cdot (1 - U) &= \sum_{i=1}^n (T_i - D_i) \cdot U_i \\
         \mathcal{L}^* &= \frac{\sum_{i=1}^n (T_i - D_i) \cdot U_i}{1 - U}
@@ -378,7 +378,7 @@ Identifichiamo come prima cosa la nostra $D$:
             [ \textbf{\textit{Processor Demand Criterion}}
                 [test sia \textbf{sufficente} che \textbf{necessario} per \textit{EDF}]
                 [$\forall \mathcal{L} \; g(0; \mathcal{L}) \leq \mathcal{L}$
-                    [\textit{psuedo-polynomial} $U \stackrel{\text{?}}{<}1$]
+                    [\textit{psuedo-polynomial} $U \stackrel{\text{?}}{>}1$]
                 ]
             ]
         ]

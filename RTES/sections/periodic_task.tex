@@ -141,11 +141,11 @@ Consideriamo un \textit{task set} del tipo:
         \tau_3 = (5, 28, 30)
     \end{cases}
 \end{math} \\ \newline
-andiamo prima a valutare la \textit{schedulabilità} andando a calcolare l'\textit{utiliation bound} modificata, visto che c'è almeno un task che ha $T_i \neq D_i$.
+andiamo prima a valutare la \textit{schedulabilità} andando a calcolare l'\textit{utiliation bound} modificata (quindi con le \textit{deadline} e non con i periodi), visto che c'è almeno un task che ha $T_i \neq D_i$.
 \begin{center}
     \begin{math}
         \begin{aligned}
-            U_p^* &= \frac{C_1}{T_2} + \frac{C_2}{T_2} + \frac{C_3}{T_3} \\
+            U_p^* &= \frac{C_1}{D_2} + \frac{C_2}{D_2} + \frac{C_3}{D_3} \\
             &= \frac{3}{6} + \frac{7}{28} + \frac{5}{28} = 0.93 \qquad \stackrel{\text{?}}{\leq} \qquad U_p^* = n \cdot (\sqrt[n]2 - 1) = 0.78\\
         \end{aligned}
     \end{math}
@@ -177,7 +177,7 @@ Possiamo quindi affermare che l'intero \textit{task set} $\mathcal{T}$ è \textb
 \section{Processor Demand Criterion}
 In ogni intervallo di tempo la \textit{computation demanded} dal \textit{task set} non deve essere maggiare del tempo disponbiie. Nel caso di \textbf{EDF} abbiamo priorità dinamiche ed è quindi impossibile utilizzare il \textit{response time analysis} per dire se un \textit{task set} è schedulabile. \\
 La \textbf{\textit{demand}} in $[t_1, t_2]$ è il \textit{WCET} di quei task che anno $r_i \geq t_1 \cap d_i \leq t_2$: \[ g(t_1, t_2) = \sum_{r_i \geq t_1}^{d_i \leq t_2} C_i\]
-Consideriamo ora $t_1 = 0$ (ovvero il \textit{critical istance}) e $t_2 = \mathcal{L}$ e andiamo a calcolarci la \textbf{\textit{demand}} nell'intervallo di tempo $[0, \mathcal{L}]$ allora avremo che: \[g(0, \mathcal{L}) = \sum_{r_i \geq 0}^{d_i \leq \mathcal{L}} C_i = \sum_{i=1}^n \underbrace{\lfloor \frac{\mathcal{L} - D_i + T_i}{T_i} \rfloor}_{\text{Quando i task hanno }r_i\text{ e }T_i \text{all'interno di }\mathcal{L}} \cdot C_i\]
+Consideriamo ora $t_1 = 0$ (ovvero il \textit{critical istance}) e $t_2 = \mathcal{L}$ e andiamo a calcolarci la \textbf{\textit{demand}} nell'intervallo di tempo $[0, \mathcal{L}]$ allora avremo che: \[g(0, \mathcal{L}) = \sum_{r_i \geq 0}^{d_i \leq \mathcal{L}} C_i = \sum_{i=1}^n \underbrace{\lfloor \frac{\mathcal{L} - D_i + T_i}{T_i} \rfloor}_{\text{Quando i task hanno }r_i\text{ e }d_i \text{ all'interno di }\mathcal{L}} \cdot C_i\]
 L'\textit{execution time demanded} dai singoli \textit{job} che hanno \textit{deadline} $d_i \leq \mathcal{L}$ su un intervallo di lunghezza $\mathcal{L}$ non può essere maggiore di $\mathcal{L}$ ovvero \[ \forall \mathcal{L} > 0 \; g(0, \mathcal{L}) \leq \mathcal{L} \qquad \leftarrow \text{è inapplicabile } \mathcal{L} \rightarrow \infty \]
 \begin{figure}[h]
     \centering

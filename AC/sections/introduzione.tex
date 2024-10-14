@@ -1,0 +1,67 @@
+\chapter{Introduction}
+
+\section{Structure and Content}
+\begin{itemize}
+
+    \item \textbf{Module 1}: 
+    \begin{enumerate}
+        \item \textbf{\textit{intra-vehicles communications}}: nodes, sensors, ECU
+        \item \textbf{\textit{signal busses}}: CAN, LIN, FlexRay, MOST, Ethernet [ T1/T1S]
+        \item \textbf{\textit{car domain and OS}}
+    \end{enumerate}
+    
+    \item \textbf{Module 2}:
+    \begin{enumerate}
+        \item \textbf{\textit{inter-vehicles communications}}: \textit{V2V} and \textit{V2X} (car is a node)
+        \item \textbf{\textit{wireless technologies}}: Bluetooth, LoRa, C-V2X, IEE 802.11p (bd)
+        \item application, messages, broadcast, GPS
+    \end{enumerate}
+
+\end{itemize}
+Different \textbf{domain} or \textbf{application} needs different \textit{communications protocols}, is important to understand how each nodes in domain communicate each other (inside the car).
+
+\newpage
+\section{Intra-Vehicles}
+From the 80's, where the car's control unit are isolated an there was a dedicated wires connect sensors and actuators with less electronic than now, until the reach the greates goal of evolution in the automotive sector: autonomous drive. The complexity of the number of connection from each ECU's to the other, also the number of ECU's for each car, is growing. While the number of signal increase in a liner way, the connection between ECU's is growing with a quadratic complexity $O(n^2)$.
+
+If we examine the evolutions of the ECUs number inside an ``Audi A6'' we can observe that in 1997 it has 5 ECUs and in the 2007 it has 50 ECUs, instead the ``Tesla M3'' in the 2017 has 70 ECUs. The quadratic increase of ECUs number, however has reach a cap for two main reason: the cost and the space inside the car. Traditionally one ECUs is responsible of one task, but nowadays it could be two type of trends:
+\begin{enumerate}[nosep]
+    \item \textit{distributed of function across ECUs}
+    \item \textit{integration of multiple function in one ECU}
+\end{enumerate}
+
+\section{Architectures}
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{img/domain_architecture}
+        \caption{\textit{Domain Architecture}}
+        
+        \begin{flushleft}
+            \begin{enumerate}[nosep]
+                \item central domain controller (\textbf{P}) or high performance computer
+                \item ability to handle more complex functions
+                \item cost optimization
+                \item cable harness is rigid and expensive
+            \end{enumerate}
+        \end{flushleft}
+
+    \end{minipage}
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{img/zonal_architecture}
+        \caption{\textit{Zonal Architecture}}
+        
+        \begin{flushleft}
+            \begin{enumerate}[nosep]
+                \item local ethernet per zone (\textbf{G})
+                \item ultra high-speed secured backbone between zone
+                \item centralized software
+                \item central computer storage
+            \end{enumerate}
+        \end{flushleft}
+        
+    \end{minipage}
+\end{figure}

@@ -86,3 +86,71 @@ The \textbf{CANBus} network is compose by two wires: \textbf{CAN High} and \text
     \item \textbf{CAN Controller}: is connect to the \textit{CAN Transceiver} by two pin (CANTX and CANRX) and is scope is to: message completion, control bus access, transmission and reception of the message, bit timing.
     \item \textbf{Microcontroller}: application software communicating with other ECUs via messages over the bus.
 \end{itemize}
+
+\begin{tabular}{ ||p{1cm}|p{2cm}|p{1cm}|p{2cm}|p{2cm}|p{2cm}|p{1cm}|p{1cm}|| } 
+    \hline
+    \multicolumn{8}{|c|}{ \textbf{CAN Message} } \\ \hline
+    1 bit & 29 bit & 1 bit & 6 bit & 0-64 bit & 16 bit & 2 bit & 7 bit\\ \hline
+    SOF & CAN-ID & RTR & Control & Data & CRC & ACK & EOF \\ \hline
+\end{tabular}
+
+\begin{itemize}[nosep]
+    \item \textbf{SOF}: is the \textbf{start of frame} is always set to \textit{dominant \textbf{0}} to tell the other ECUs that a message is coming.
+    \item \textbf{CAN-ID}: contains the message identifier - lower value have higher priority.
+    \item \textbf{RTR}: is the \textbf{remote transmission request} allow to ECUs to ``request'' message from other ECUs.
+    \item \textbf{Control}: informs the lenght of the \textit{Data} in bytes (0 to 8 bytes), two bits are \textit{reserved} for future implementation.
+    \item \textbf{Data}: contains the actual data values, which need to be ``scaled'' or converted to be readable an ready for analysis.
+    \item \textbf{CRC}: is the \textbf{cyclic rendundancy check} is used to ensure data integrity.
+    \item \textbf{ACK}: is the \textbf{acknoledgement} this slot indicates if the CRC is OK.
+    \item \textbf{EOF}: is the \textbf{end of frame} marks the end of CAN message.
+\end{itemize}
+The CANBus use a \textit{message passing} technologies, it means, when a message is sent through the wire by an ECUs all the CAN Transceiver reciver the message, but if a application layer of one of another ECUs doesn't need that message it could ignore or if it need it, it could accept that message, using the \textit{CAN-ID} as identifier. In other word the CANBus use the \textbf{receiver-selective} form of addressing. In the CANBus the bit logic is pretty simple, each ECUs reads the wire (through a buffer) and each ECUs \textbf{can} write on the line (through a transistor), in this way the \textbf{basic state} is \textbf{up} ($+5V$ or logical ones) when one or more ECUs want to set signal low turn on transistor conductive (diode), this connect the bus to signal ground in this case the bus level is \textbf{low} ($0V$, or logical zeros) indipendently from other ECUs. The \textbf{0} is named \textbf{dominant level}. It could be see the CANBus wires as \textbf{logical AND} (if an ECUs write zeros the state is \textit{zeros}). \\ \newline
+The CANBus is an \textbf{event-driven} bus system, it means that there is no need to wait a scheduled time slot and there is the possibility of collision over the communication channel. If an ECU $X$ registers an event $e$ it is authorized to access the busses immediately and send data, but if another ECU $Y$ is alredy transmitting data, then $X$ waits. We want to calculate how long it takes a message to be sent, the first thing to do is to calculate the maximum bits number that is allow in a CAN Message: 130 bits. The CANBus can have lots of different bus speed $B \in \{5 k \cdot \frac{bit}{s}, 125 k \cdot \frac{bit}{s}, 250 k \cdot \frac{bit}{s}, 500 k \cdot \frac{bit}{s}, 800 k \cdot \frac{bit}{s}, 1 M \cdot \frac{bit}{s}\}$, let's consider the average $B = 500 k \cdot \frac{bit}{s}$, the resulting time for sending a message is equal to $T_x(time) = \frac{M}{B} = \frac{130 bit}{500 k \cdot \frac{bit}{s}} = 0.25 ms$, but what is happen if two ECUs start the communication on the same time? Let's consider the case where there are three ECUs $X, Y, Z$, $X$ and $Y$ are waiting $Z$ because it is using the medium access, but probably they start to transmit in the same time when the busses is free, in this case we have a \textbf{collision}, the solution is how CANBus implement the \textbf{\textit{CSMA-CR}}, \textbf{carrier sense multiple access - collision resolution}, the two ingredients are how we can see the CAN busses (like a logical AND) and the \textbf{CAN-ID} to the logic prioritizing.
+\begin{enumerate}[nosep]
+    \item ECU $X$ want to send: it must check if the bus is free (\textit{carrier sense} - \textbf{CR}).
+    \item if it is busy the ECU have to wait.
+    \item when the bus is free, it could happen that one or more ECUs are ready to transmit, and start the communication together (\textit{multiple access} - \textbf{MA}).
+    \item the last incredient is how to avoid the impending damage born from the collsion? (\textit{collision resolution} - \textbf{CR}) $\rightarrow$ \textbf{\textit{bitwise arbitration}}.
+\end{enumerate}
+
+All the \textbf{\textit{bitwise arbitration}} is base on the first two field of the CANBus Message: \textbf{SOF} (it is for everyone a \textbf{dominant bit}: \textbf{\textit{0}}) and \textbf{CAN-ID} (it could be 11 bits, in the standard CANBus and 29 bits for the extended ones). We know that in CANBus the ones with the lower \textit{ID} has the greatest priority. Another basic know is that the CANBus network work like a \textit{wired-AND} so if a nodes wrote on the bus a \textbf{\textit{0}} the entire network has logically low value, also if someone else try to wrote a logically high value.
+
+\begin{center}
+    \begin{tabular}{ | c | c | c | c | c | c | c | c | c | c | c | c | } \hline
+        & \textbf{ID 10} & \textbf{ID 9} & \textbf{ID 8} & \textbf{ID 7} & \textbf{ID 6} & \textbf{ID 5} & \textbf{ID 4} & \textbf{ID 3} & \textbf{ID 2} & \textbf{ID 1} & \textbf{ID 0} \\ \hline
+        \textbf{A} & 1 & 1 & 0 & \textcolor{red}{\textbf{0}} & 1 & 0 & 0 & 1 & 1 & 0 & 0 \\ \hline
+        \textbf{bus} & 1 & 1 & 0 & \textcolor{red}{\textbf{\textit{0}}} & 1 & 0 & 0 & 1 & 1 & 0 & 0 \\ \hline
+        \textbf{B} & 1 & 1 & 0 & \textbf{1} & \multicolumn{7}{ | c }{\makecell{node B loses \textit{arbitration} \\ $\rightarrow$ stop sending and re-start sensing}} \\ 
+        \cline{1-5}
+    \end{tabular}
+\end{center}
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[t]{0.45\textwidth}
+        \begin{tabular}{ | c | c | c | } \hline
+            \multicolumn{3}{ | c | }{\textbf{wired-and bus logic}} \\ \hline
+            \textbf{sender $a$} & \textbf{sender $b$} & \textbf{bus level} \\ \hline
+            1 & 1 & 1 \\ \hline
+            1 & \textcolor{red}{0} & \textcolor{red}{0} \\ \hline 
+            \textcolor{red}{0} & 1 & \textcolor{red}{0} \\ \hline
+            \textcolor{red}{0} & \textcolor{red}{0} & \textcolor{red}{0} \\ \hline
+        \end{tabular}
+        \begin{flushleft}
+            We have three knowledge: the default value of the CANBus network is logically high, the bus work as \textit{wired-AND} and the logic \textbf{\textit{0}} si the \textbf{dominant} value, so if the \textit{sender a} or \textit{sender b} send over the bus the \textbf{\textit{0}} value, it win the \textit{arbitration} with the other \textit{sender}.
+        \end{flushleft}
+    \end{minipage}
+    \begin{minipage}[t]{0.45\textwidth}
+        \begin{tabular}{ | c | c | c | } \hline
+            \multicolumn{3}{ | c | }{\textbf{arbitration logic}} \\ \hline
+            \textbf{sender} & \textbf{bus} & \textbf{interpretation} \\ \hline
+            0 & 0 & \textbf{next} \\ \hline
+            0 & 1 & \textbf{\textit{fault}} \\ \hline
+            1 & 0 & \textbf{\textcolor{red}{stop}} \\ \hline 
+            1 & 1 & \textbf{next} \\ \hline
+        \end{tabular}
+        \begin{flushleft}
+            We alredy know that CANBus is \textit{carrier sense} if the sender sent over the network a logical \textbf{\textit{1}} but read logical \textbf{\textit{0}} knows that it losts the \textit{arbitration} with another \textit{sender} and have to stops the transmission.
+        \end{flushleft}
+    \end{minipage}
+\end{figure}

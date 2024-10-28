@@ -105,7 +105,7 @@ The \textbf{CANBus} network is compose by two wires: \textbf{CAN High} and \text
     \item \textbf{EOF}: is the \textbf{end of frame} marks the end of CAN message.
 \end{itemize}
 The CANBus use a \textit{message passing} technologies, it means, when a message is sent through the wire by an ECUs all the CAN Transceiver reciver the message, but if a application layer of one of another ECUs doesn't need that message it could ignore or if it need it, it could accept that message, using the \textit{CAN-ID} as identifier. In other word the CANBus use the \textbf{receiver-selective} form of addressing. In the CANBus the bit logic is pretty simple, each ECUs reads the wire (through a buffer) and each ECUs \textbf{can} write on the line (through a transistor), in this way the \textbf{basic state} is \textbf{up} ($+5V$ or logical ones) when one or more ECUs want to set signal low turn on transistor conductive (diode), this connect the bus to signal ground in this case the bus level is \textbf{low} ($0V$, or logical zeros) indipendently from other ECUs. The \textbf{0} is named \textbf{dominant level}. It could be see the CANBus wires as \textbf{logical AND} (if an ECUs write zeros the state is \textit{zeros}). \\ \newline
-The CANBus is an \textbf{event-driven} bus system, it means that there is no need to wait a scheduled time slot and there is the possibility of collision over the communication channel. If an ECU $X$ registers an event $e$ it is authorized to access the busses immediately and send data, but if another ECU $Y$ is alredy transmitting data, then $X$ waits. We want to calculate how long it takes a message to be sent, the first thing to do is to calculate the maximum bits number that is allow in a CAN Message: 130 bits. The CANBus can have lots of different bus speed $B \in \{5 k \cdot \frac{bit}{s}, 125 k \cdot \frac{bit}{s}, 250 k \cdot \frac{bit}{s}, 500 k \cdot \frac{bit}{s}, 800 k \cdot \frac{bit}{s}, 1 M \cdot \frac{bit}{s}\}$, let's consider the average $B = 500 k \cdot \frac{bit}{s}$, the resulting time for sending a message is equal to $T_x(time) = \frac{M}{B} = \frac{130 bit}{500 k \cdot \frac{bit}{s}} = 0.25 ms$, but what is happen if two ECUs start the communication on the same time? Let's consider the case where there are three ECUs $X, Y, Z$, $X$ and $Y$ are waiting $Z$ because it is using the medium access, but probably they start to transmit in the same time when the busses is free, in this case we have a \textbf{collision}, the solution is how CANBus implement the \textbf{\textit{CSMA-CR}}, \textbf{carrier sense multiple access - collision resolution}, the two ingredients are how we can see the CAN busses (like a logical AND) and the \textbf{CAN-ID} to the logic prioritizing.
+The CANBus is an \textbf{event-driven} bus system, it means that there is no need to wait a scheduled time slot for sending data and there is the possibility of collision over the communication channel. If an ECU $X$ registers an event $e$ it is authorized to access the busses immediately and send data, but if another ECU $Y$ is alredy transmitting data, then $X$ waits. We want to calculate how long it takes a message to be sent, the first thing to do is to calculate the maximum bits number that is allow in a CAN Message: 130 bits. The CANBus can have lots of different bus speed $B \in \{5 k \cdot \frac{bit}{s}, 125 k \cdot \frac{bit}{s}, 250 k \cdot \frac{bit}{s}, 500 k \cdot \frac{bit}{s}, 800 k \cdot \frac{bit}{s}, 1 M \cdot \frac{bit}{s}\}$, let's consider the average $B = 500 k \cdot \frac{bit}{s}$, the resulting time for sending a message is equal to $T_x(time) = \frac{M}{B} = \frac{130 bit}{500 k \cdot \frac{bit}{s}} = 0.25 ms$, but what is happen if two ECUs start the communication on the same time? Let's consider the case where there are three ECUs $X, Y, Z$, $X$ and $Y$ are waiting $Z$ because it is using the medium access, but probably they start to transmit in the same time when the busses is free, in this case we have a \textbf{collision}, the solution is how CANBus implement the \textbf{\textit{CSMA-CR}}, \textbf{carrier sense multiple access - collision resolution}, the two ingredients are how we can see the CAN busses (like a logical AND) and the \textbf{CAN-ID} to the logic prioritizing.
 \begin{enumerate}[nosep]
     \item ECU $X$ want to send: it must check if the bus is free (\textit{carrier sense} - \textbf{CR}).
     \item if it is busy the ECU have to wait.
@@ -154,3 +154,65 @@ All the \textbf{\textit{bitwise arbitration}} is base on the first two field of 
         \end{flushleft}
     \end{minipage}
 \end{figure}
+
+\textbf{\textit{Priorities instead of Collision}}: the bus logic and arbitration logic not only prevent collision, it ensure a priority-controlled bus access: smaller ECUs ID, higher priority. \\ \newline
+\textbf{\textit{CANBus Message Integrity}}: the idea is to use the Data field to generate a CRC to permit the check on the integrity of the message, but wee need some basic knowledge before start: \textit{polynomial division} and \textit{XOR}. 
+\begin{boxA}
+    \textbf{\textit{Polynomial Reminder Theorem}}: given two polynomials $M(x)$ (the dividend) and $G(x)$ (the divisor), asserts the existence (and the uniqueness) of a quotient $Q(x)$ and a remainder $R(x)$ such that:
+    \begin{center}
+        \begin{math}
+            M(x) = Q(x) \cdot G(x) + R(x)
+        \end{math}
+    \end{center}
+    N.B. the degree of $R(x)$ is stricly lower than the degree of $G(x)$.
+\end{boxA}
+In the calculation of \textit{CRC} depends on the arithmetic of modulo 2 polynomial. A modulo 2 polynomial is like:
+\begin{center}
+    $a_n \cdot x^n + a_{n-1} \cdot x^{n-1} + ... + a_2 \cdot x^2 + a_1 \cdot x + a_0$ \\
+    $a = \{0, 1\} \quad \forall a \in \{a_0, a_1, ..., a_n\}$
+\end{center}
+An example of the representation of a binary polynomial is like: $x^3 + x + 1 = 1011$. If exist an $x$ with a certain exponent $e$ like: $x^e$ in the binary representation the position $e$ is fill with a $1$. \\
+\begin{center}
+    \begin{tabular}{ | c | c | c | } \hline
+        \textbf{\textit{+}} & \textbf{0} & \textbf{1} \\ \hline
+        \textbf{0} & 0 & 1 \\ \hline
+        \textbf{1} & 1 & 0 \\ \hline
+    \end{tabular}
+\end{center}
+The \textbf{\textit{XOR}} is a digital logic gate that gives a true (logical 1) when the input number is odd, otherwise is false (logical 0). \\ \newline
+\textbf{\textit{CRC Encoding}}:
+\begin{enumerate}[nosep]
+    \item we need to transmit a \textit{n bits} \textbf{message} $M(x)$: $deg(M(x)) = n - 1$.
+    \item we have a \textit{m + 1 bits} \textbf{generator} $G(x)$: $deg(G(x)) = m$.
+    \begin{itemize}[nosep]
+        \item the \textbf{remainder} $R(x)$ of the division $\frac{M(x)}{G(x)}$ will have strictly lower degree respect to $G(x)$ and, in the worst case, the maximum value will be $deg(R(x)) = m - 1$.
+        \item $R(x)$ can always expressed with $m$ bits.
+    \end{itemize}
+    \item add $m$ zeros at the end of $M(x)$: this means to do the following $M(x) \cdot x^m$.
+    \item divide the \textbf{new message} $M(x) \cdot x^m$ with the \textbf{generator} $G(x)$ to obtain the \textbf{\textit{reminder}} of \textit{m} bits called \textbf{\textit{CRC}}.
+    \item the final message $B(x)$ is equal to $M(x) \cdot x^m + CRC$: this means to add the CRC bits at the end of the message replacing the $m$ zeros padded before.
+\end{enumerate}
+\textcolor{green}{\textbf{Example}}:
+\begin{center}
+    $M(x) = 1101011011 \qquad G(x) = 10011 \quad (m = 4)$ \\
+    $M(x) \cdot x^m = 11010110110000$
+\end{center}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.3\textwidth]{img/crc_cal}
+\end{figure}
+The final message $B(x)$ is equal to: $B(x) = \underbrace{1101011011}_\text{M(x)}\underbrace{10011}_\text{R(x)}$ \\ \newline
+\textbf{\textit{CRC Decoding}}
+\begin{enumerate}[nosep]
+    \item the receiver \textbf{acquire} $B(x) = M(x) \cdot x^m + CRC$.
+    \item the receiver \textbf{knows} $G(x)$.
+    \item the receiver \textbf{divides} the whole message by the generator: $B(x) = \frac{M_x \cdot x^m + CRC}{G(x)}$ 
+    \item if the receiver obtain \textbf{no reminder} the transmission was successfully (no errrors detected).
+\end{enumerate}
+\textbf{\textit{CRC Error Resistance}}: consider an error $E(x)$ occurs on the transmission channel and the receiver $B(x) + E(x)$ instead of simply $B(x)$, when the \textit{CRC logic} can failed? The problem occure when $E(x)$ is multiple of $G(x)$ in this way $\frac{B(x) + E(x)}{G(x)}$ gives no reminder, so the receiver mark $B(x) + E(x)$ as a correct message. To avoid this problem we need to choose in appropriate way the generator $G(x)$, this is the reason why the $G(x)$ it is standard in the \textit{CRC Encoding} (by the protocol). \\ \newline
+\textbf{\textit{CRC Design Priciples}}: $G(x)$ is extremely important in a way that $E(x)$ cannot easily be multiple of $G(x)$. For \textbf{detecting single bit of error}:
+\begin{itemize}[nosep]
+    \item $E(x) = x^i$ for error in i-th bit.
+    \item if $G(x)$ has more than 1 term it cannot divide $x^i$.
+\end{itemize}
+Mathematical theory help us to desing powerful $G(x)$ with fancy characteristics, in CANBus the generator is: $G(x) = x^{15}+ x^{14} + x^{10} + x^8 + x^7 + x^4 + x^3 + 1$. \textbf{sender} and \textbf{receiver} must to agree on the \textbf{generator}.

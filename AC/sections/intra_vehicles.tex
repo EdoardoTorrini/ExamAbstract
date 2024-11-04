@@ -101,8 +101,8 @@ The \textbf{CANBus} network is compose by two wires: \textbf{CAN High} and \text
     \item \textbf{Control}: informs the lenght of the \textit{Data} in bytes (0 to 8 bytes), two bits are \textit{reserved} for future implementation.
     \item \textbf{Data}: contains the actual data values, which need to be ``scaled'' or converted to be readable an ready for analysis.
     \item \textbf{CRC}: is the \textbf{cyclic rendundancy check} is used to ensure data integrity.
-    \item \textbf{ACK}: is the \textbf{acknoledgement} this slot indicates if the CRC is OK.
-    \item \textbf{EOF}: is the \textbf{end of frame} marks the end of CAN message.
+    \item \textbf{ACK}: is the \textbf{acknoledgement} this slot indicates if the CRC is OK all the bits must be \textbf{recessive} (\textit{logical 1}).
+    \item \textbf{EOF}: is the \textbf{end of frame} marks the end of CAN message all the bits must be \textbf{recessive} (\textit{logical 1}).
 \end{itemize}
 The CANBus use a \textit{message passing} technologies, it means, when a message is sent through the wire by an ECUs all the CAN Transceiver reciver the message, but if a application layer of one of another ECUs doesn't need that message it could ignore or if it need it, it could accept that message, using the \textit{CAN-ID} as identifier. In other word the CANBus use the \textbf{receiver-selective} form of addressing. In the CANBus the bit logic is pretty simple, each ECUs reads the wire (through a buffer) and each ECUs \textbf{can} write on the line (through a transistor), in this way the \textbf{basic state} is \textbf{up} ($+5V$ or logical ones) when one or more ECUs want to set signal low turn on transistor conductive (diode), this connect the bus to signal ground in this case the bus level is \textbf{low} ($0V$, or logical zeros) indipendently from other ECUs. The \textbf{0} is named \textbf{dominant level}. It could be see the CANBus wires as \textbf{logical AND} (if an ECUs write zeros the state is \textit{zeros}). \\ \newline
 The CANBus is an \textbf{event-driven} bus system, it means that there is no need to wait a scheduled time slot for sending data and there is the possibility of collision over the communication channel. If an ECU $X$ registers an event $e$ it is authorized to access the busses immediately and send data, but if another ECU $Y$ is alredy transmitting data, then $X$ waits. We want to calculate how long it takes a message to be sent, the first thing to do is to calculate the maximum bits number that is allow in a CAN Message: 130 bits. The CANBus can have lots of different bus speed $B \in \{5 k \cdot \frac{bit}{s}, 125 k \cdot \frac{bit}{s}, 250 k \cdot \frac{bit}{s}, 500 k \cdot \frac{bit}{s}, 800 k \cdot \frac{bit}{s}, 1 M \cdot \frac{bit}{s}\}$, let's consider the average $B = 500 k \cdot \frac{bit}{s}$, the resulting time for sending a message is equal to $T_x(time) = \frac{M}{B} = \frac{130 bit}{500 k \cdot \frac{bit}{s}} = 0.25 ms$, but what is happen if two ECUs start the communication on the same time? Let's consider the case where there are three ECUs $X, Y, Z$, $X$ and $Y$ are waiting $Z$ because it is using the medium access, but probably they start to transmit in the same time when the busses is free, in this case we have a \textbf{collision}, the solution is how CANBus implement the \textbf{\textit{CSMA-CR}}, \textbf{carrier sense multiple access - collision resolution}, the two ingredients are how we can see the CAN busses (like a logical AND) and the \textbf{CAN-ID} to the logic prioritizing.
@@ -155,7 +155,8 @@ All the \textbf{\textit{bitwise arbitration}} is base on the first two field of 
     \end{minipage}
 \end{figure}
 
-\textbf{\textit{Priorities instead of Collision}}: the bus logic and arbitration logic not only prevent collision, it ensure a priority-controlled bus access: smaller ECUs ID, higher priority. \\ \newline
+\textbf{\textit{Priorities instead of Collision}}: the bus logic and arbitration logic not only prevent collision, it ensure a priority-controlled bus access: smaller ECUs ID, higher priority.
+\newpage
 \textbf{\textit{CANBus Message Integrity}}: the idea is to use the Data field to generate a CRC to permit the check on the integrity of the message, but wee need some basic knowledge before start: \textit{polynomial division} and \textit{XOR}. 
 \begin{boxA}
     \textbf{\textit{Polynomial Reminder Theorem}}: given two polynomials $M(x)$ (the dividend) and $G(x)$ (the divisor), asserts the existence (and the uniqueness) of a quotient $Q(x)$ and a remainder $R(x)$ such that:
@@ -174,7 +175,7 @@ In the calculation of \textit{CRC} depends on the arithmetic of modulo 2 polynom
 An example of the representation of a binary polynomial is like: $x^3 + x + 1 = 1011$. If exist an $x$ with a certain exponent $e$ like: $x^e$ in the binary representation the position $e$ is fill with a $1$. \\
 \begin{center}
     \begin{tabular}{ | c | c | c | } \hline
-        \textbf{\textit{+}} & \textbf{0} & \textbf{1} \\ \hline
+        $\oplus$ & \textbf{0} & \textbf{1} \\ \hline
         \textbf{0} & 0 & 1 \\ \hline
         \textbf{1} & 1 & 0 \\ \hline
     \end{tabular}
@@ -224,9 +225,96 @@ Mathematical theory help us to desing powerful $G(x)$ with fancy characteristics
     Insertion of extra bits after $n$ consecutive identical bits $\rightarrow$ \textbf{\textit{Bit Stuffing}}. In CANBus $n=5$.
 \end{boxA}
 
+\newpage
 \textbf{\textit{Time Quanta (TQ)}}: is the smallest time slice it could be count. 
 \begin{center}
     \centering
     \includegraphics[width=0.75\textwidth]{img/time_quanta}
 \end{center}
 It is normally divided into four kind of field: \textit{synchronization segment}, \textit{propagation segment}, \textit{phase buffer segment 1} and \textit{phase buffer segment 2}. A \textit{bit} it is compose from 8 to 25 \textbf{time quanta} and it is the smallest discrete timing resolution used by CANBus node. Each \textbf{TQ} is generated by programmable divide of the oscillator. Each segment is composed by an integer number of TQs and segments are non-overlapping. The bitrate is selected by programming the width of the TQ and the number of TQ in the various segments.
+\begin{enumerate}[nosep]
+    \item \textbf{\textit{synchronization segment}}: it is used to synchronization the various node, only the receiver nodes have to adjust their own clock during the receiver of the payload. The lenght of the segment is always \textbf{1}.
+    \item \textbf{\textit{propagation segment}}: if one node transmits to another faraway ones (geographically speaking) how we can synchronize the first \textit{TQ} of the \textit{synchronization segment}? The \textbf{propagation segment} allow the signal propagation across the network and through the nodes. This segment it could be compose from \textit{1 TQ} to \textit{8 TQs} and it is necessary to compensate for signal propagation delays on the bus line and through the electornic interface circuit of the bus nodes.
+    \item \textbf{\textit{buffer segment one \& buffer segment two}}: this two segment it could have a programmable lenght between \textit{1 TQ} and \textit{8 TQs}. Between this two segment there is the \textbf{\textit{sample point}}. This point is used from the node to sample the information through the bus channel. This two segment are used to the \textbf{\textit{re-synchronization}}, in some circumstances we need to compensate the oscillator tolerances within the different CAN nodes. 
+\end{enumerate}
+\begin{boxA}
+    \textcolor{red}{\textbf{Jump Width}} \\
+    The \textit{jump width} is the amount of \textit{TQs} that we can add (in the \textit{phase buffer segment one}) or remove (in the \textit{phase buffer segment two}) that permit to adjust the lenght during the \textit{re-synch}.
+\end{boxA}
+Nowadays in many CANBus Modules the \textit{propagation time segment} and \textit{phase buffer segment one} are combined in a new segment named \textbf{\textit{timing segment 1}} (the \textit{phase buffer segment two} is renamed in \textbf{\textit{timing segment 2}}). \\ \newline
+\textbf{\textit{Dynamic Sample Position}}: programming the sample point position allow \textbf{flexibility}:
+\begin{enumerate}[nosep]
+    \item \textbf{\textit{early sample}}: decrease the sensitivity to oscillator tolerances and permit to use lower cost oscillators.
+    \item \textbf{\textit{late sampling}}: allow maximum signal propagation time (\textbf{reachability}), maximum bus lenght and poor bus topologies can be handled (more \textit{time quanta} in the \textit{propagation segment}).
+\end{enumerate}
+\textbf{\textit{CANBus Error}}: there are six possible different error:
+\begin{enumerate}[nosep]
+    \item \textbf{\textit{Bit-Error}}: write \textit{logical 0} over the bus and sense a \textit{logical 1} (or viceversa). In general if a transmitting ECU detects an \textbf{opposite bit} level on the CANBus we have a \textbf{bit-error}.
+    \begin{itemize}[nosep]
+        \item ECU writes \textit{logical 0} and reads \textit{logical 1} $\rightarrow$ very bad error.
+        \item ECU writes \textit{logical 1} and reads \textit{logical 0} $\rightarrow$ it is ``possible'' when there is the \textbf{bitwise arbitration} or it is expected that the bus state will change to dominant as other nodes acknoledge the message
+    \end{itemize}
+    \item \textbf{\textit{Stuff Error}}: reminder on the \textit{bit stuffing}: it needs one opposite bit stuffed each 5 consecutive bits, it is used only from the beginning of the frame to the CRC delimiter. From the ACK field to the end is used the \textbf{fixed-form bit fields}. Each node receiving a message that breaks the bit stuffing rules will transmit an \textbf{error frame}.
+    \item \textbf{\textit{Format Error}}: if one of the \textit{CRC delimiter field}, \textit{ACK field} or \textit{End Of Frame} have an divergent form, the receiving nodes perform a check to ensure these are correct, if not send a \textbf{error frame}.
+    \item \textbf{\textit{CRC Error}}: \textit{CRC delimiter field} is the only weapon to ensure the integrity of the message, it depends on the polynomials division, if the \textit{CRC checks} (the reminder of message plus CRC divided by the Generator) is not $0$ it generates a \textbf{CRC Error}.
+    \item \textbf{\textit{General Error}}: the seven \textbf{recessive} bits in the \textit{EOF} are used to inform the CANBus nodes about a general error occured during the transmission. If a receiver node found out an error, it writes six consecutive ``\textbf{zeros}'' forcing an error in the current frame that can be captured from everyone.
+    \begin{figure}[h]
+        \centering
+        \begin{minipage}[t]{0.45\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{img/ok_ack}
+        \end{minipage}
+        \begin{minipage}[t]{0.45\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{img/nok_ack}
+        \end{minipage}
+    \end{figure}
+        
+    \item \textbf{\textit{ACK Error}}: it happen when no one of the receiver nodes write on the buses an \textbf{dominant} bit in the \textit{ACK field} of the transmitting frame. \\
+    \begin{boxA}
+        \textbf{\textit{CANBus ACK}} \\
+        The transmitting nodes, after the DATA and the CRC, write in the bus a \textit{logical 1} (\textbf{recessive}) and it hopes, in the mean time, that \textbf{at least} one receiver write a \textit{logical 1} (\textbf{dominant}) in the ACK bit, if not the transmitting node (reads on the bus \textit{logical 1}) and will resend the message. \\
+        There is two bits for the \textit{ACK field} to absorbe possible delay. We need to allocate space for ``not perfect synchronized receiver'' to push a \textbf{dominant} bit on the bus.
+    \end{boxA}
+    The \textit{ACK} is triggered by another node so the voltage value could be slightly different. These technologies have some implication on the CANBus protocol, like:
+    \begin{itemize}[nosep]
+        \item also the recevier node/s can (have to) transmit during specific frame slot (the \textit{ACK field} or \textit{EOF}).
+        \item all the receiver must check the \textit{CRC} very quickly in order to know if the message have pass the integrity checks.
+        \item a CANBus network \textbf{\textit{must have at least two nodes to work}}, because with only one node no one can acknoledge a message.
+    \end{itemize}
+\end{enumerate}
+For the calculous of the time in the circuit (in the CANBus controller) it is normally used \textbf{\textit{time crystal}}, the smallest \textit{ICs} possible is the $8MHz$ \textit{time crystal}. If we consider each clock cycle for the smallest unit in CANBus (\textit{time quanta}) for each bit we have at least \textit{8 TQs} (up to \textit{25 TQs}). \\
+If we minimize the size of the of a single bit we have to consider \textit{8 TQs}. $\frac{8MHz}{8 TQs} = 1MHz$ we can obtain the maximum bitrate for the CANBus. \\ \newline
+\textbf{CANBus Recap}:
+\begin{enumerate}[nosep]
+    \item \textbf{\textit{low cost}}: the price is \textbf{always} a costraint, with it's two wires has a good price-performance tradeoff. This enables the use of CANBus outside the autonomotive domain.
+    \item \textbf{\textit{reliability}}: CANBus has sophisticated error detection and handling mechanisms. If failed the integrity checks of the frame it could repeat the sending of the same data and every nodes are informed about the error. CANBus has high immunity to EMI.
+    \item \textbf{\textit{latency}}: CANBus means real-time (soft) because there is low latency between transmission and request and actual start of transmission. CANBus has inherent arbitration on message priority due to the bitwise arbitration logic.
+    \item \textbf{\textit{flexibility \& speed}}: CANBus nodes are ``plug \& play'' and there are not limited number of nodes into a network.
+    \item \textbf{\textit{multi master operation}}: (ECU peers) each nodes is able to access to the bus, if there is a fulty nodes the bus communication is not disturbed and they switch-off from the communication.
+    \item \textbf{\textit{broadcast capabilities}}: message can be sento to single/multiple nodes and every node simultaneously receive common data. 
+    \item \textbf{\textit{Standardize}}: \textit{ISO-DIS 11898} (high speed), \textit{ISO-DIS 115192-2} low speed.
+\end{enumerate}
+
+\newpage
+\section{Controller Area Network Flexible Data-Rate}
+The \textbf{\textit{CAN-FD}} is the evolution of the \textit{CANBus}. The mainly disadvantages of CANBus are: $1MHz$ in some circumstances are not enough and only \textit{8 bytes} of payload are often restrictive. To be compliant to standard CANBus the \textit{arbitration phase} (before the data) and \textit{ACK phase} (after the data) must be mantein to the same frequency. \\
+CAN-FD data frames can be transmitted with two different bit-rates, in the \textit{arbitration phase} and in the \textit{ACK phase} the bitrate depends on the network topology and it is limited to $1MHz$, instead in the \textit{data phase} the bitrate is limited by the \textit{transceiver characteristics}:
+\begin{itemize}[nosep]
+    \item support a bitrate higher than $1MHz$.
+    \item support a payload larger than \textit{8 bytes}.
+\end{itemize}
+The increase of the frame speed is possible by shortening the bit time. We define the \textbf{\textit{Bit Rate Shift - BRS}} is the bit in the \textit{control field} used to inform \textbf{ALL} the nodes that sender will transmit faster in the \textit{data transmission phase} and the \textbf{\textit{Extended Data Lenght - EDL}}. The implication of this change are:
+\begin{itemize}[nosep]
+    \item \textbf{larger payload}: it needs more \textit{CRC bits} to maintain the robustness of CANBus, to have more \textit{CRC bits} it needs a \textbf{larger generator}.
+    \item \textbf{shorter bit-time}: new bit-time logic in the state machine, a \textit{factor} is introduce between the bit time during arbitration phase and the bit-time during the transmission. The tipical factor is 8 $\rightarrow$ considerering the fastest rate of CANBus \textit{arbitration phase} and the longer header and CRC, the final result is more or less $6MHz$.
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \label{img:canfd}
+    \includegraphics[width=0.75\textwidth]{img/can_fd}
+\end{figure}
+To summarize the \textbf{CAN-FD} could reach in the \textit{data transmission phase} the speed transmission of $6MHz$ and the possibility of sending a payload large up to \textbf{64 bytes}
+
+\newpage
+\section{Local Interface Network}

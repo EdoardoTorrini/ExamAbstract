@@ -318,3 +318,68 @@ To summarize the \textbf{CAN-FD} could reach in the \textit{data transmission ph
 
 \newpage
 \section{Local Interface Network}
+\begin{center}
+    \label{fig:can_lin}
+    \includegraphics[width=0.5\textwidth]{img/can_lin}
+\end{center}
+The \textbf{\textit{LIN}} is a message oriented communication protocol that is design and developed to create something cheaper than low speed CANBus, this purpose it was reach partaway. Like the CANBus, LIN, works on the first two layers of the ISO/OSI stack (physical and data link layers), but it uses a \textbf{master-slave} concept. Using this architecture, the LIN busses, can have only a quartz on the master that manage the synchronization on all the LIN network, to achieve without waste space on the vehicle, the master of the LIN mesh is part of the CANBus network. This is the reason why the LIN is also know like a \textbf{\textit{sub bus}} of CANBus (Fig. \ref{fig:can_lin}). As result on the communication we can say that LIN network is self-synchronize, but for this reason it needs to have lax timing constraints because only one node (the \textbf{master}) can schedule the order of the transmission. In addition to this, LIN busses, has other difference between CANBus:
+\begin{itemize}[nosep]
+    \item LIN is a \textbf{bidirectional one-wire line} and it can reach the frequency up to $20kHz$ (CANBus can reach $1MHz$).
+    \item The \textbf{voltage} for the analog transmission over the channel is 40V, instead the CANBus is only up to 5V.
+    \item \textbf{Bit Transmission} is \textit{UART} like:
+    \begin{center}
+        \begin{tabular}{ | c | c | c | } \hline
+            \multicolumn{3}{|c|}{\textbf{bit transmission}} \\ \hline
+            1 bit & 8 bits & 1 bit \\ \hline
+            \textbf{start bit} & \textbf{data bits} & \textbf{stop bit} \\ \hline
+        \end{tabular}
+    \end{center}
+\end{itemize}
+In LIN protocol there is a rudimental error detection on the frame, it is a sum of all the payload bytes modulo 256 (in this way it can be stored into a single byte), but also on the channel, if a sender while monitoring the bus, read an unexpected state abort the communication without correction. The \textbf{schedule} of the network is hardcoded on the \textbf{master's firmware} (static), the scheduler determines which node have to transmit in that specific slice of time. This consent to have a channel that is \textbf{mostly deterministic}, permit to the slave to not know how it is schedule the transmission and allow to the master to \textit{change the order of transmission runtime}. \\ \newline
+\textbf{\textit{LIN Message}}: is divide into two component: \textit{Message Header} and \textit{Message Response}. The first one is sent over the channel by the \textbf{maaster node} and is like a request for a specific slave, instead it is possible to see the second one like the slave response.
+\begin{center}
+    \begin{tabular}{ | p{2cm} | p{1cm} | p{2cm} | p{5cm} | p{2cm} | } \hline
+        \multicolumn{3}{|c|}{\textbf{Message Header}} & \multicolumn{2}{|c|}{\textbf{Message Response}} \\ \hline
+        \textit{Break} & \textit{Sync} & \textit{Identifier} & \textit{Data} & \textit{Checksum} \\ \hline
+        14 bits & 8 bits & 8 bits & 0 to 64 bits & 8 bits \\ \hline
+    \end{tabular}
+\end{center}
+Description for each field:
+\begin{enumerate}[nosep]
+    \item \textbf{\textit{Break}}: is composed by two kinds of fields: \textbf{13 low bits} (\textit{dominant}) and \textbf{1 high bit} (\textit{recessive}) that is used to delimiter of the field.
+    \item \textbf{\textit{Sync}}: is used to \textit{synchronize} the bit timing of the slave, it is always \textbf{0x55} (01010101) in this way follow the profile of the clock.
+    \item \textbf{\textit{ID}}: is used to individuate the right slave, different from the CANBus, in this identifier there are parity bit, to have a check on the integrity of the ID, because in this case is very important for the correct master-slave communication (\textbf{protected field}). ID is divide in two segment:
+    \begin{itemize}[nosep]
+        \item from \textbf{LIN 2.0} the first \textbf{2 MSB bits} define the lenght of the payload that could be 2, 4 or 8 bytes, previous version of LIN used static 8 bytes data lenght.
+        \item \textbf{4[6] bits} for the ``real'' ID.
+        \item \textbf{2 parity bits}:
+        \begin{center}
+            $p_0 = id_0 \oplus id_1 \oplus id_2 \oplus id_4$ \\
+            $p_1 = id_1 \oplus id_3 \oplus id_4 \oplus id_5$
+        \end{center}
+    \end{itemize}
+    \item \textbf{\textit{Data}}: contain the payload, and it was send by the slave selected by the master with the lenght settled in the identifier.
+    \item \textbf{\textit{Checksum}}: is this case, like said before, the checksum is the sum of all the payload bytes modulo 256, in that way it can be stored into a single byte.
+    \begin{center}
+        \begin{tabular}{ | c |  c |  c |  c |  c |  c |  c |  c |  c | } \hline
+            & $d_7$ & $d_6$ & $d_5$ & $d_4$ & $d_3$ & $d_2$ & $d_1$ & $d_0$ \\ \hline
+            \textbf{carry} & & \textcolor{red}{\textit{1}} & \textcolor{red}{\textit{1}} & \textcolor{red}{\textit{1}} & & \textcolor{red}{\textit{1}} & & \\ \hline
+            \textbf{first byte} & 0 & 0 & 0 & 1 & 0 & 1 & 1 & 0 \\ \hline
+            \textbf{second byte} & 0 & 0 & 0 & 1 & 0 & 1 & 1 & 1 \\ \hline
+            \textbf{third byte} & 0 & 0 & 0 & 1 & 0 & 1 & 1 & 0 \\ \hline
+            \textbf{forth byte} & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\ \hline
+            \textbf{fifth byte} & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\ \hline
+            \textbf{\textit{checksum}} & \textbf{0} & \textbf{1} & \textbf{1} & \textbf{0} & \textbf{0} & \textbf{0} & \textbf{1} & \textbf{1} \\ \hline
+        \end{tabular}
+    \end{center}
+\end{enumerate}
+LIN nodes are typically bundled in clusters each with a master that interfaces with the backbone CANBus. We have introduce the general message/frame format, but in LIN protocol there are six kinds of different messages (encoded in the ID field):
+\begin{enumerate}[nosep]
+    \item \textbf{\textit{Unconditional Frames}}: is defined by the ID \textbf{\textit{0x00 - 0x3B}} and is the default type of frame, where the master send a header over the channel and the request slave reply.
+    \item \textbf{\textit{Event Trigger Frames}}: is defined by the ID \textbf{\textit{0x00 - 0x3B}}, the master polls multiple slaves, the slave who have updated data response, if there are collision, the communication end and the master switch to \textit{unconditional frame}.
+    \item \textbf{\textit{Sporadic Frames}} is defined by the ID \textbf{\textit{0x00 - 0x3B}} in this type of message the master acts like a slave and reply to his own requests.
+    \item \textbf{\textit{Diagnostic Frames}} is defined by the ID \textbf{\textit{0x3C - 0x3D}} with this frame the communication becomes request-response, the \textbf{\textit{0x3C}} is the ID where the master make the request, instead the \textbf{\textit{0x3D}} is the ID where the slave reply.
+    \item \textbf{\textit{User Defined Frames}} is define by the ID \textbf{\textit{0x3E}} is a user-defined frame and it can contain any types of information.
+    \item \textbf{\textit{Reserved Frames}}: ID \textbf{\textit{0x3F}}
+\end{enumerate}
+There is a reason why the \textbf{data lenght} of CANBus and LIN are equal. Since LIN is also called CANBus sub system, for compatibility reason the payload is equal. Message of CANBus can be sent over LIN too and viceversa.

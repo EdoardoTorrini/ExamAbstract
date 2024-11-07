@@ -383,3 +383,21 @@ LIN nodes are typically bundled in clusters each with a master that interfaces w
     \item \textbf{\textit{Reserved Frames}}: ID \textbf{\textit{0x3F}}
 \end{enumerate}
 There is a reason why the \textbf{data lenght} of CANBus and LIN are equal. Since LIN is also called CANBus sub system, for compatibility reason the payload is equal. Message of CANBus can be sent over LIN too and viceversa.
+
+\newpage
+\section{FlexRay}
+This communication protocol it is design with the purpose of be more reliable in therm of determinism than the CANBus. To achieve this goal is necessary to increase the price, the \textbf{FlexRay} is more expensive than CANBus. The CANBus is prone to failure, the reason behind this problem are the topology of the network: if the channel is broken a frame could not be delivery to every node on the bus and there are not rendundant link to avoid that. \\
+The CANBus frequency is up to $1MHz$ ($6MHz$ is we consider CAN-FD), but it slowly regard the requirement of the modern vehicles (\textbf{\textit{X-by-Wire}}) moreover in CANBus there isn't the assurance that each node have its own time slice where it can write over the busses, this is because in CANBus there is \textbf{not} a firmware that implement the \textbf{event scheduler} 
+\begin{boxA}
+    \textcolor{red}{\textbf{\textit{X-by-Wire}}} \\
+    Drive/Brake/Steer can be bypassed as an \textbf{input device}, the reason behind that is that it must be possible to control the vehicle's actuation not only in manual but also in autonomous drive. This involves two main requirements: \textbf{error tolerances} and \textbf{time-determinism requirements}
+\end{boxA}
+\textbf{Requirements}:
+\begin{itemize}[nosep]
+    
+    \item \textbf{more resilient topology}: the topology of FlexRay is a \textbf{\textit{star-type}} with \textbf{bus termination} where the maximum distance between each line is up to 24 m. Each connection is compose by two lines for rendundancy purpose. The second line it could be used or for backup or it could use to increase the frequency speed of transmission. Each line can reach the speed of $10Mbps$ if we split the message between the two line we can obtain the increase of the velocity by a $2x$ factor. Like in CANBus the default value is set to \textit{logical 1} but the wire are \textbf{unshielded twisted pair}.
+    \begin{center}
+        \includegraphics[width=0.55\textwidth]{img/top_flexray}
+    \end{center}
+
+\end{itemize}

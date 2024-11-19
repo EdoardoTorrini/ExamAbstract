@@ -1,0 +1,34 @@
+\chapter{Processi e Thread}
+
+\section{Processi}
+
+\textbf{Processo}: è l'\textit{astrazione} di un programma in esecuzione. Il processo è l'astrazione più elementare e più importante che ci può fornire il sistema operativo. Riuscendo ad emulare il comportamento di esecuzione concorrente nonostante la presenza di una singola CPUs. \\
+Un altro paio di definizioni:
+\begin{itemize}[nosep]
+    \item \textbf{algoritmo}: in matematica ed informatica ci si riferisce ad algoritmo ad una sequenza finita di istruzioni rigorose matematiche che hanno l'obiettivo di risolvere una determinata classe di un problema specifico o di risolvere un calcolo.
+    \item \textbf{programma}: è la sequenza o l'insieme di istruzioni in liguaggio macchina che può essere eseguito.
+\end{itemize}
+I moderni computer possono eseguire diverse operazioni nello stesso istante. Descrivendo in maniera rigida quello che effettivamente succede, però, è che ogni CPU in \textit{ogni istante di tempo} esegue \textbf{uno e un solo} processo. Tendendo a 0 il tempo riservato a ogni singolo processo è però possibile simulare \textbf{parallelismo} definito anche come: \textbf{\textit{pseudoparallelism}}, che però va in contrasto con il vero parallelismo hardware (multi-CPUs). \\
+Il \textbf{\textit{Process Model}} definisce che tutti gli eseguibili del computer, a volte includendo il sistema operativo, vengano organizzati in una serie di \textbf{processi sequenziali}. Il processo è stato definito come l'istanza di un programma in esecuizione nel quale viene anche incluso il suo \textbf{\textit{PCB}} (\textbf{\textit{Process Control Block}}). Il \textbf{PCB}, anche noto come \textit{process descriptor} è una struttura che permette di salvare tutte le informazioni che riguardano un determinato processo, ad esempio: \textit{program counter}, i registri e le variabili. Concettualmente possiamo visualizzare che ad ogni processo è associata una CPU virtuale.
+\begin{boxA}
+    \textcolor{red}{\textbf{\textit{Process Switching}}} \\
+    È quando l'\textit{OS} cambia processo in esecuzione sulla CPU. 
+\end{boxA}
+Per ora considerermo che esista un'\textbf{unica CPU}. Questa assunzione non tiene normalmente conto dei moderni \textit{chip} che sono spesso multi-core. \\
+Possiamo visualizzare inizialmente il processo come una tupla che contiene: il programma, degli input, degli output e uno \textbf{stato}. Un singolo processore può essere condiviso da $n$ processi con un algoritmo di \textit{scheduling} (\textit{scheduler algorithm}) che viene utilizzato per determinare quando interrompere un processo (se può farlo) e servirne un altro. \\
+\begin{boxA}
+    \textcolor{blue}{\textbf{Processo vs. Programma}} \\
+    Un programma è qualcosa che può essere salvato su disco, statico; mentre un processo è qualcosa di dinamico e che varia ad ogni sua istanza. \\
+    Un programma può essere eseguito da più processi che però sono distinti l'uno dall'altro.
+\end{boxA}
+La \textbf{creazione di un processo} può essere indotta da:
+\begin{itemize}[nosep]
+    \item inizializzazione di sistema
+    \item un processo in esecuzione compie una \textit{system call} che inizializza un nuovo processo
+    \item un utente richiede l'esecuzione di un nuovo processo
+\end{itemize}
+I processi possono essere eseguiti in \textit{foreground}, ovvero con i quali un utente può interagire, oppure in \textit{background}, che sono ``nascosti'' all'utente e rispondono a certe specifiche funzioni. Su linux sono presenti decina di processi in background, alcuni anche noti come \textit{daemons}.
+\begin{boxA}
+    In \textbf{UNIX} è presente una solo \textit{system call} per creare un nuovo processo: \textbf{fork}. Dopo l'esecuzione della \textit{syscall} i due processi, il padre e il figlio, hanno la stessa immagine della memoria, le stesse stringhe di environment e gli stessi file aperti. Normalmente, dopo il figlio, esegue \textbf{execve} o una \textit{system call} simile per cambiare l'area di memoria ed eseguire un nuovo programma. \\
+    Alcuni implementazioni di \textbf{UNIX} condividono la sezione \textit{.text} tra i due visto che non può essere modificata. In alternativa altre implementazioni possono condividere tutta la memoria del padre, in questo caso la memoria è condivisa in maniera \textbf{\textit{copy-on-write}}, ovvero ogni volta che uno dei due vuole modificare parte della memoria, quel specifico \textit{chunck} viene copiato prima della modifica in una locazione privata della memoria
+\end{boxA}

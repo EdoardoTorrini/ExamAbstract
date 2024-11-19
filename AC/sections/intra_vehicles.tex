@@ -270,7 +270,7 @@ Nowadays in many CANBus Modules the \textit{propagation time segment} and \texti
         \end{minipage}
     \end{figure}
         
-    \item \textbf{\textit{ACK Error}}: it happen when no one of the receiver nodes write on the buses an \textbf{dominant} bit in the \textit{ACK field} of the transmitting frame. \\
+    \item \textbf{\textit{ACK Error}}: it happen when no one of the receiver nodes write on the busses an \textbf{dominant} bit in the \textit{ACK field} of the transmitting frame. \\
     \begin{boxA}
         \textbf{\textit{CANBus ACK}} \\
         The transmitting nodes, after the DATA and the CRC, write in the bus a \textit{logical 1} (\textbf{recessive}) and it hopes, in the mean time, that \textbf{at least} one receiver write a \textit{logical 1} (\textbf{dominant}) in the ACK bit, if not the transmitting node (reads on the bus \textit{logical 1}) and will resend the message. \\
@@ -395,9 +395,121 @@ The CANBus frequency is up to $1MHz$ ($6MHz$ is we consider CAN-FD), but it slow
 \textbf{Requirements}:
 \begin{itemize}[nosep]
     
-    \item \textbf{more resilient topology}: the topology of FlexRay is a \textbf{\textit{star-type}} with \textbf{bus termination} where the maximum distance between each line is up to 24 m. Each connection is compose by two lines for rendundancy purpose. The second line it could be used or for backup or it could use to increase the frequency speed of transmission. Each line can reach the speed of $10Mbps$ if we split the message between the two line we can obtain the increase of the velocity by a $2x$ factor. Like in CANBus the default value is set to \textit{logical 1} but the wire are \textbf{unshielded twisted pair}.
+    \item \textbf{more resilient topology}: the topology of FlexRay is a \textbf{\textit{star-type}} with \textbf{bus termination} where the maximum distance between each line is up to 24 m. Each connection is compose by two lines for rendundancy purpose (\textbf{boost error tolerance}). The second line it could be used or for backup or it could use to increase the frequency speed of transmission. Each line can reach the speed of $10Mbps$ if we split the message between the two line we can obtain the increase of the velocity by a $2x$ factor. Like in CANBus the default value is set to \textit{logical 1} but the wire are \textbf{unshielded twisted pair}.
     \begin{center}
         \includegraphics[width=0.55\textwidth]{img/top_flexray}
     \end{center}
 
+    \item \textbf{Determinism}: the busses operates using a \textbf{scheduler} that is replicated for each \textbf{time cycle} during the communication time. Each cycle is divided into four different kinds of \textit{segment}:
+    \begin{center}
+        \includegraphics[width=0.5\textwidth]{img/flexray_cycle}
+    \end{center}
+    \begin{itemize}[nosep]
+        \item \textbf{static segment}: is \textit{preallocated} into slices that permit to be more deterministic and allow time constraints addressing, for each nodes are allocated a fixed period (at least one) into this segment.
+        \item \textbf{dynamic segment}: the idea is like CANBus, nodes can take control over the channel if the bus is available (not busy) can simulate an behaviour \textit{event triggered}, normally used for event based data that does not require determinism.
+        \item \textbf{symbol windows}: typically used for network maintenance and signaling for starting the network.
+        \item \textbf{network idle time}: a know ``quite'' time used to maintain synchronization between node clocks. 
+    \end{itemize}
+
+    \item \textbf{different message class}: allow latency-constraints.
+
+    \item \textbf{other characteristics}:
+    \begin{itemize}[nosep]
+        \item differential signaling on each pair of wires reduces the effects of
+        external noise on the network without expensive shielding.
+        \item flexray busses require termination at the ends.
+        \item need synchronization clock in sender and receiver (and timestamp synchronization).
+    \end{itemize}
+
+\end{itemize}
+\textbf{\textit{FlexRay - Access to the bus}} \\
+The FlexRay uses the \textbf{\textit{TDMA}} as methods for access to the physical medium, this allow to all nodes to be synchronize (using the same clock). In \textit{TDMA} each nodes on the bus has its own turn (time slice of the cycle) where it can write on the channel. The \textit{TDMA} permit \textbf{time consistency} that allow to the communication protocol \textbf{determinism} (one of the constraints). \\
+While for the CANBus each node has to know only the commnuication baudrate, in this case nodes on flexray must know the schedule of the transmission and all pieces of the network to communicate. For the autonomotive domain, there the majority of nodes are \textit{embedded system} where there are a closed configuration and it is difficult to change firmware after the installation, this can be a problem for the scalarity of the system. After the installation it's difficult to add a nodes in the flexray network, but thanks to this there isn't the necessary for the nodes to use a discovery algorithm to understand how the network is composed. \\
+For a \textbf{TDMA} network (such flexray) to work correcly, all node must be configured in a correct way:
+\begin{itemize}[nosep]
+    \item in the \textit{embedded system} it is mandatory to have static configuration network.
+    \item there is an increment of \textbf{relaibility}, but \textbf{not flexibility} this leads to configuration tradeoff:
+    \begin{itemize}[nosep]
+        \item data rate
+        \item deterministic volume
+        \item dynamic data volume
+        \item topology
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[h]
+    \centering
+    \label{fig:flexray_tdma}
+    \includegraphics[width=0.5\textwidth]{img/flexray_tdma}
+    \caption{FlexRay Cycle}
+\end{figure}
+The \textbf{static segment} must be decided \textbf{a priori}, in this way it is possible to divide the segment in at least $n$ slot, $n$ as the number of the nodes on the network. In each slot a defined node can transmit data over the bus, while the other nodes have to wait their slot. In this way we know exactly when the nodes are going to transmit, this is the definition of \textbf{determinism}. The disadvantage of the \textit{TDMA} is that, if the ECU number two doesn't have nothing to transmit we loose resource (time). If we are all synchronize there is no way to collide. \\
+The \textbf{dynamic segment} use a different protocol to access the medium, in this segmente there is the same as the CANBus, \textbf{CSMA-CR}. The segment is divide in mini-slot, each slot is assign to a specific ECU, for each slot the defined ECU sense from the bus if no one is broadcasting data, it can start to transmit, when it ends the time slice, the transmission interrupt, but the next node scheduled sensing the bus finds a busy state, so it doesn't start to sense. It could be possible for some ECU to lose each type of arbitration on the \textit{dynamic segment}. \\ \newline
+\textbf{\textit{FlexRay: Frame}} \\
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{img/flexray_frame}
+    \caption{FlexRay Message Frame}
+\end{figure}
+FlexRay communicate using frames, each frame contains data as \textbf{bytes} $b_0... b_{m-1}$, and it is structure like:
+\begin{itemize}[nosep]
+    \item \textbf{first bit} is part of the start signal (\textbf{BSS0}).
+    \item \textbf{second bit} is part of the start signal (\textbf{BSS1}).
+    \item there are $n$ bits for the data.
+\end{itemize}
+The framing of data is usefull for the \textbf{determinism}. Bit stuffing is not used in this standard because given the number of bytes of a message you exactly know the amount of frame bits needed for the transmission. \\ \newline
+\textbf{\textit{FlexRay: Message Format}} \\ \newline
+\begin{tabular}{ | p{2cm} | p{2cm} |  p{2cm} |  p{2cm} |  p{2cm} |  p{2cm} |  p{2cm} | } \hline
+    5 bits & 11 bits & 7 bits & 11 bits & 6 bits & $n$ bits & 24 bits \\ \hline
+    \textbf{control bits} & \textbf{frame ID} & \textbf{lenght} & \textbf{header CRC} & \textbf{cycle counter} & \textbf{payload} & \textbf{CRC} \\ \hline
+\end{tabular}
+ \\
+\begin{itemize}[nosep]
+    \item \textbf{\textit{Control Bits}}:
+    \begin{enumerate}[nosep]
+        \item $b_0$ is reserved: always \textbf{zero}.
+        \item $b_1$ is used to distinguish static/dynamic slot message.
+        \item $b_2$ is \textit{null frame} indicator, it is used to sign a frame without payload (also in static segment).
+        \item $b_3$ is \textit{synch frame} indicator, it is used to sign a frame used for synchronizing clock, to be send to a few ``reliable'' ECUs.
+        \item $b_4$ is \textit{startup frame} indicator, used for synchronization during bootstrap and it is send by cold start node.
+    \end{enumerate}
+    \item \textbf{\textit{Frame ID}}: identify the message.
+    \item \textbf{\textit{Lenght}}: lenght of payload.
+    \item \textbf{\textit{Header CRC}}
+    \item \textbf{\textit{Cycle Counter}}: global counter of passed bus cycles (it is important to always know the time).
+    \item \textbf{\textit{Payload}}: it could be from 0 to 254 bytes.
+    \item \textbf{\textit{CRC}}: it is used to check the integrity of payload.
+\end{itemize}
+\textbf{\textit{Time Synchronization}} \\
+In flexray is important to have synchronize all the clock of each node inside the network, it is important to have synchronize bit clock and slot counter. In flexray we do not want to have a dedicated node for that goal, but something distributed. Normally there are three nodes named \textit{cold start node}. This node has the goal of the \textbf{\textit{cold start procedure}} that consist:
+\begin{enumerate}[nosep]
+    \item check if bus is \textit{idle}, if not abort the trasmission.
+    \item \textbf{transmit wakeup} [ \textbf{WUP} ] pattern, if collision occure abort the transmission, if not this is the \textbf{leading cold start node}.
+    \item the \textit{leading cold start node} send over the bus a \textbf{\textit{Collision Avoidance Symbol}} (\textbf{CAS}). It need to start regular operation (cycle counter start at 0) and to set the BSS0 and BSS1.
+    \item after the \textbf{CAS} signal the other cold stard node wait \textbf{4 frames} before start the cycle counter (for the other cold node start from 4).
+    \item they start the regular operation (BSS0 and BSS1).
+    \item other \textbf{regular} ECUs wait other \textbf{2 frames} before starting regular operation.
+\end{enumerate}
+\begin{tabular}{ | p{1.5cm} | p{1cm} | p{1cm} | p{1cm} | p{0.5cm} | p{0.5cm} | p{0.5cm} | p{0.5cm} | p{0.5cm} | p{0.5cm} | p{0.5cm} | p{0.5cm} | p{0.5cm} | p{0.5cm} | } \hline
+    \textbf{leading} & \textbf{wup} & \textbf{wup} & \textbf{cas} & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & ... \\ \hline
+    \textbf{cold} & \textbf{wup} & \textit{abort} & & & & & & 4 & 5 & 6 & 7 & 8 & ...\\ \hline
+    \textbf{cold} & \textit{abort} & & & & & & & 4 & 5 & 6 & 7 & 8 & ... \\ \hline
+    \textbf{regular} & & & & & & & & & & 6 & 7 & 8 & ... \\ \hline
+    \textbf{regular} & & & & & & & & & & 6 & 7 & 8 & ... \\ \hline
+\end{tabular}
+
+\textbf{\textit{Comparison}} 
+\begin{center}
+    \begin{tabular}{ | c | c | c | c | } \hline
+        \textbf{bus} & LIN & CANBus & FlexRay \\ \hline
+        \textbf{speed} & 40 kbit/s & 1 Mbit/s & 10 Mbit/s \\ \hline
+        \textbf{cost} & \$ & \$\$ & \$\$\$ \\ \hline
+        \textbf{wires} & 1 & 2 & 2 o 4 \\ \hline
+    \end{tabular}
+\end{center}
+If we consider the typical application:
+\begin{itemize}[nosep]
+    \item \textbf{LIN}: body electornics $\rightarrow$ mirrors, power seats, accesories.
+    \item \textbf{CANBus}: powertrain $\rightarrow$ engine, transmission, ABS.
+    \item \textbf{FlexRay}: High performance Powertrain Safety (\textit{X-by-Wire}) $\rightarrow$ active suspension, adaptive cruise control, keep lane assist.
 \end{itemize}

@@ -513,3 +513,83 @@ If we consider the typical application:
     \item \textbf{CANBus}: powertrain $\rightarrow$ engine, transmission, ABS.
     \item \textbf{FlexRay}: High performance Powertrain Safety (\textit{X-by-Wire}) $\rightarrow$ active suspension, adaptive cruise control, keep lane assist.
 \end{itemize}
+
+\newpage
+\section{Ethernet}
+
+\subsection{Access}
+Ethernet use the \textbf{\textit{CSMA/CD}}:
+\begin{itemize}[nosep]
+    \item \textbf{CS}: \textit{carrier sense}: if the bus is busy, do not transmit.
+    \item \textbf{MA}: \textit{multiple access}: once the transmission start, the collision could be happen.
+    \item \textbf{CD}: \textit{collision detection}: listen while communicate the information over the bus, if collision detected, jamming sequence.
+\end{itemize}
+The problem of this type of access protocol has a problem when two distant node (geographically speaking) try to transmit information in the same time, if the propagation of the frame over the channel it's not fast enough, the two different node does not see the collision and generate some noise. This case cannot happen into the autonomotive domain, it is necessary to fulfill a codition: the frame sent from a node have to reach \textbf{all} node before the end of the transmission. \\
+The idea is to work on the \textbf{frame lenght} and the \textbf{bitrate}, ad example given the minimum frame lenght is possible to reach the maximum bitrate.
+\begin{boxA}
+    \textbf{Hp} \\
+    $F$ is the minimum frame size, $b$ is the maximum bitrate \\
+    $c$ speed of light (considering a costant) \\
+    $t = \frac{F}{B}$ is the transmission time \\
+    $l = c \cdot t$ $l$ is the distance covered by the transmission \\
+    $d_{max} = \frac{l}{2}$ $d_{max}$ is the maximum lenght between the two terminal node.
+\end{boxA}
+Ethernet \textbf{topology} was born like \textit{bus}, but nowadays it have changed into \textit{star} topology; and it is configured using a switch (layer 2 TCP/IP) or router (layer 3 TCP/IP) with all node connected with this component. \\
+Ethernet use a two different type of \textbf{bit coding}:
+\begin{itemize}[nosep]
+    \item \textbf{\textit{Non Return to Zero Inverted - NRZI}} (used until the ethernet version of $10Mbps$): the logical value is determine by the transition of the analog signal. If nothing change in the signal the logical value is \textbf{0}, but during the falling edge it will be a logical \textbf{1}.
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.3\textwidth]{img/nrzi}
+    \end{figure}
+    \item \textbf{\textit{4B5B}} (used in the ethernet version of $100Mbps$): it maps 4 bits words in 5 bits group on the medium, using the \textbf{NRZ} (it prevents three equal consecutive bit).
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.5\textwidth]{img/4b5b}
+    \end{figure}
+\end{itemize}
+
+\subsection{Ethernet Frame}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{img/eth_frame}
+\end{figure}
+\begin{itemize}[nosep]
+    \item \textbf{\textit{Preamble}}: it is used for the synchronization of the receiver (it is 8 bytes that alternating a logical 1 and a logical 0).
+    \item \textbf{\textit{Destination MAC Address}}: is the destination address of the ethernet interface (\textbf{MAC - Medium Access Control}).
+    \item \textbf{\textit{Source MAC Address}}: same as before, but for the source node.
+    \item \textbf{\textit{Ethernet}}: is used for indicating the type of data carried by the frame or the data lenght.
+    \item \textbf{\textit{Data}}: the data to be transmitted, for the incapsulating principes, inside it can be found the \textbf{iP Datagram}.
+    \item \textbf{\textit{CRC}}: is compose by 4 bytes of \textbf{checksum} that it is calculate on the entire frame (without the \textit{preamble}). It is always calculated like the remainder of the polynomial division by a known generator (\textit{Standardize CRC-32}):
+    \begin{center}
+        $x^{32} + x^{26} + x^{23} + x^{22} + x^{16} + x^{12} + x^{11} + x^{10} + x^8 + x^7 + x^5 + x^4 + x^2 + x + 1$
+    \end{center}
+\end{itemize}
+
+\subsection{Ethernet in the Autonomotive Domain}
+\begin{boxA}
+    \textcolor{red}{\textbf{\textit{Previous Limititation}}} \\
+    Ethernet is a 45 years old protocol, but why only now is started the interest by the autonomotive company in the ethernet protocol, and why it coul be used right now?
+    \begin{enumerate}[nosep]
+        \item ethernet produce to much EMI/RFI, for the automotive domain.
+        \item ethernet could not guarantee latency down to the low microsecond range (not guarantee time constraints).
+        \item ethernet did not have a way to control bandwidth allocation to different stream so it could not be used to transmit shared data from multiple types of source.
+        \item ethernet did not have a way of synchronizing time between device and having multiple device sample data at the same time.
+    \end{enumerate}
+\end{boxA}
+The big need for find something like ethernet for the autonomotive domain is the current research for the fully \textbf{\textit{autonomous driving}} system for the autonomotive.
+For resolve these problem, it was born the \textbf{\textit{One-Pair EtherNet (OPEN) alliance}}, that is a non-profit, special interest group (SIG) of mainly automotive industry and technology providers collaborating to encurage wide scale adoption of Ethernet-based communication.
+\begin{boxA}
+    \textcolor{green}{\textbf{\textit{Solution}}}
+    \begin{enumerate}[nosep]
+        \item change the waveform of the signal we can put into effect the reduction of the EMI/RFI. The \textbf{\textit{100Base-tx}} is the standard ethernet that has \textbf{fast rise time} and \textbf{three clear level}, instead; in the \textbf{\textit{100Base-t1}} the autonomotive ethernet it is posssible to notice that there is \textbf{slower rise time} and the \textbf{three level are not very clear}. This reduce the pollution of the EMI/RFI.
+        \item to solve the problem to not guarantee time constraints, the \textit{autonomotive ethernet} define a new type of frame: \textbf{\textit{Express Packet}}. For these type of frame is possible to interrupt the transmission of existing packet, that can be reload when the \textit{express packet} have finished its work. The \textbf{express packet} can ``guarantee'' latency in the single microsecond range.
+        \item to control bandwidth allocation to different streams it is create two different approchs:
+        \begin{itemize}[nosep]
+            \item \textbf{\textit{stream reservation}}: simple reservation protocol to notify the various network elements in a path to reserve the resources necessary to support a particular stream.
+            \item \textbf{\textit{queuing and forwarding for AV bridges}}: defines rules to ensure that an AV stream will pass through the network within the delay specified in the reservation.
+        \end{itemize}
+        \item for the synchronization purpose it is created a new standard \textbf{\textit{IEEE 802.1AS}} (Timing and Synchronization for Time-Sensitive Application in Bridge Local Area Network), this standard introduce simpler/faster methods for choosing master clocks.
+        \item (\textbf{bonus}) to reduce the wiring needed in a car, it is choose to use \textbf{\textit{Power on Ethernet - PoE}}
+    \end{enumerate}
+\end{boxA}

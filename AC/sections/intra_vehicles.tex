@@ -623,3 +623,154 @@ For resolve these problem, it was born the \textbf{\textit{One-Pair EtherNet (OP
 
 \newpage
 \section{10BASE-T1S}
+First of all, it makes sense have a recap of why it is important ethernet for the intra-vehicle communication:
+\begin{itemize}[nosep]
+    \item provide more bandwidth than any other commnuication protocol (intra-vechicle). Up to $10Gbps$.
+    \item iP based. Allow easily integration of many tech.
+    \item Alredy used into Infotainment Application.
+    \item switch based flexibility.
+\end{itemize}
+The main problem of the introduction of ethernet in the autonomotive domain is the different topology used between ethernet and the alredy used technologies of the intra-vechiles communication.
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{img/bus_eth}
+
+        \begin{flushleft}
+            \begin{itemize}[nosep]
+                \item CANBus/FlexRay have bus topology.
+                \item no intermediate device.
+                \item low bandwidth.
+                \item cheaper than 10Base-t1.
+            \end{itemize}
+        \end{flushleft}
+    \end{minipage}
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{img/star_eth}
+
+        \begin{flushleft}
+            \begin{itemize}[nosep]
+                \item physical layer is point to point (p2p).
+                \item the network is iP based.
+                \item large bandwidth.
+                \item significantly more expensive.
+            \end{itemize}
+        \end{flushleft}
+    \end{minipage}
+\end{figure}
+
+\begin{boxA}
+    \textcolor{red}{\textbf{\textit{Motivation \& Goal of 10BASE-T1S}}} \\
+    10BASE-T1S can provide an iP-based (ethernet) solution over the current topologies of automotive domain. It can allow transparent iP network with a simple design and deploy, without introduce the complexity of the gateway. Reduce the number of the wire of ``normal'' ethernet using the \textbf{PoE} technology (\textbf{Power over Ethernet}), but could introduce a little more complexity.
+\end{boxA}
+
+The \textbf{\textit{10BASE-T1S}}, also named \textbf{Ethernet over twisted-pair} is a technology that allow to have the \textbf{physical layer} similar to CANBus and FlexRay, because it uses a \textbf{\textit{Single Twisted Pair (STP)} copper cabling} and introduce a new algorithm for \textbf{network access}: \textbf{\textit{Physical Layer Collision Avoidance (PLCA)} Method}. This new algorithm allow the bus access to be deterministic (unlike the CANBus family), but reduce the number of node into a single channel and the lenght: maximum \textbf{8 nodes}, for \textbf{25m} of coverage. Increase the bitrate (not too much) up to $12.5Mbps$ and support \textbf{PoE}.
+
+\newpage
+\subsection{Bit Coding}
+\begin{boxA}
+    \textbf{\textit{Differential Manchester Encoding (DME)}} is a line code in digital frequency modulation in which data and clock signal are combined to form a single two-level self-synchronizing data stream. Each data bit is encoded by a presence or absense of signal level transition in the middle of the bit period, followed by the mandatory level transition at the beginning. Recap:
+    \begin{itemize}[nosep]
+        \item there are at least one transition of each clock period, this permit the synchronization of the clock between nodes.
+        \item values are encoded based on transition: if into the clock period there is another transition it will be encode \textbf{logical 0} else if there is not other transition is \textbf{logical 1}. This behaviour allow to have better EMI immunity.
+    \end{itemize}
+    \begin{center}
+        \includegraphics[width=0.75\textwidth]{img/dme}
+    \end{center}
+\end{boxA}
+
+\newpage
+
+The 10BASE-T1S use the \textbf{\textit{4B5B}} that maps groups of 4 bits of data onto groups of 5 bits for transmission. These 5-bit words are predetermined in a dictionary and they are chosen to ensure that there will be sufficient transictions in the line state to produce a \textbf{self-clocking singal} (this introduce a 20\% of overhead on the data).
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[t]{0.45\textwidth}
+        It can be noticed that not all the permutations of five bits are used. For the remaining codes, the \textbf{bit coding} is mapped into a \textbf{special function}. For this reason, the \textbf{4b5b} mapping is a non-surjective function:
+        \begin{enumerate}[nosep]
+            \item $11111_{(2)}$: \textbf{silence}
+            \item $11000_{(2)}$: \textbf{sync/commit}
+            \item $10001_{(2)}$: \textbf{esderr}
+            \item $01101_{(2)}$: \textbf{esd/hb}
+            \item $00111_{(2)}$: \textbf{esdok/esbrs}
+            \item $00100_{(2)}$: \textbf{ssd}
+            \item $01000_{(2)}$: \textbf{beacon}
+            \item $11001_{(2)}$: \textbf{esjab}
+        \end{enumerate}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \textbf{\textit{4B5Bs} encoding}
+        \begin{center}
+            \begin{tabular}{| c | c | c |} \hline
+                \textbf{name} & \textbf{4b} & \textbf{5b} \\ \hline
+                \textbf{0} & 0000 & 11110 \\ \hline
+                \textbf{1} & 0001 & 01001 \\ \hline
+                \textbf{2} & 0010 & 10100 \\ \hline
+                \textbf{3} & 0011 & 10101 \\ \hline
+                \textbf{4} & 0100 & 01010 \\ \hline
+                \textbf{5} & 0101 & 01011 \\ \hline
+                \textbf{6} & 0110 & 01110 \\ \hline
+                \textbf{7} & 0111 & 01111 \\ \hline
+                \textbf{8} & 1000 & 10010 \\ \hline
+                \textbf{9} & 1001 & 10011 \\ \hline
+                \textbf{A} & 1010 & 10110 \\ \hline
+                \textbf{B} & 1011 & 10111 \\ \hline
+                \textbf{C} & 1100 & 11010 \\ \hline
+                \textbf{D} & 1101 & 11011 \\ \hline
+                \textbf{E} & 1110 & 11100 \\ \hline
+                \textbf{F} & 1111 & 11101 \\ \hline
+            \end{tabular}
+        \end{center}
+    \end{minipage}
+\end{figure}
+
+\subsection{Medium Access}
+\textbf{\textit{PHY-Level Collision Avoidance}}: in this type of scheme all nodes are assigned unique sequential numbers (IDs) in the range $1,2, ..., N$. The 0th ID corresponds to a special \textbf{master} node that during the idle interval transmits the synchronization \textit{beacon} (a special \textbf{heartbeat} frame). After the beacon each nodes gets its \textit{transmission opportunity} (TO). Each opportunity interval is very short (typically 20 bits), in that way the overhead for the silent nodes is low. If the PLCA circuit discovers that the node's TO cannot be used (the other node with a lower ID have started its transmission and the channel is busy at the beginning of the TO for this node), it asserts the ``local collision'' input for the MAC thus delaying the transmission. The condition is cleared once the node gets its TO. A standard MAC reacts to the local collision with a \textbf{backoff}, however, since this is the first and only backoff for this frame, the backoff interval is equal to the smallest possible frame - and the backoff timer will definitely expire by the time the TO is granted, so there is no additional loss of performance.
+\begin{boxA}
+    \textcolor{blue}{\textbf{\textit{Recap}}}
+    \begin{itemize}[nosep]
+        \item each node on the BUS has an \textbf{ID}.
+        \item the \textbf{ID 0} is the \textbf{coordinator} (master).
+        \item at the begin of each TX cycle, the \textit{coordinator} node sends a \textbf{beacon} wich means ``we are starting a new tx cycle''.
+        \item slave node (called \textbf{drop nodes}) are given a \textbf{transmit opportunity} (TO) in order of their assign IDs.
+        \item like a round-robin scheduler without handshake, TO are counted by each node (it's a mix between flexray static and dynamic segment).
+    \end{itemize}
+\end{boxA}
+
+\textcolor{green}{\textbf{Example}} \\
+Try to consider four nodes, in Fig~\ref{fig:example_t1s} is possible to see the behaviour of a network where only the first and the thrid node have something to transmit, instead the other two keep quite.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{img/t1s_ex_1}
+    \caption{Communication between four nodes}
+    \label{fig:example_t1s}
+\end{figure}
+When a node want to transmit send over the channel an \textbf{commit} message (\textit{special function}) for indicates the start of data transmission and a \textbf{ESDOK} for notify other node that the transmission is finished, instead if the node does not have nothing to say, send over the bus an \textbf{transmit opportunity} that is long exactly 20bits. \\ \newline
+Is possible for each node to activate the \textbf{\textit{burst mode}} that allow to node to have more bandwidth and reduce latency (for audio/stream data).
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{img/t1s_ex_2}
+    \caption{Communication with \textbf{burst mode}}
+    \label{fig:example_bm}
+\end{figure}
+In Fig. \ref{fig:example_bm} is possible to see at the end of the transmission of node one the send of two package: \textbf{esd} and \textbf{esdok} that together they are named: \textbf{max\_bc}. \textbf{\textit{max\_bc}} is a configurable parameter that allow nodes to transmit more than one packet per transmit opportunity. Value are from 0 to 255.
+
+\subsection{Worst Case Latency}
+\begin{enumerate}[nosep]
+    \item \textbf{flexray}: worst case latency is ``wait the next static slot'' $~1.5ms$ (an entire cycle).
+    \item \textbf{10base-t1s}: worst case latency means to have a 8 nodes (full net), that in one cycle each of them have something to transmit the maximum size of the data segment (1500 bytes) at $10Mbps$ without \textbf{burst mode}. $~9ms$
+\end{enumerate}
+
+\section{CAN-XL}
+\textbf{Goal}:
+\begin{itemize}[nosep]
+    \item match the \textbf{bandwidth} of 10BASE-T1S.
+    \item priority based on the IDs.
+    \item \textbf{larger payload} (up to 2048 bytes) and \textbf{ethernet compatibility}.
+\end{itemize}

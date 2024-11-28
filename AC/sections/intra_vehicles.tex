@@ -559,7 +559,7 @@ Ethernet use a two different type of \textbf{bit coding}:
     \item \textbf{\textit{Destination MAC Address}}: is the destination address of the ethernet interface (\textbf{MAC - Medium Access Control}).
     \item \textbf{\textit{Source MAC Address}}: same as before, but for the source node.
     \item \textbf{\textit{Ethernet}}: is used for indicating the type of data carried by the frame or the data lenght.
-    \item \textbf{\textit{Data}}: the data to be transmitted, for the incapsulating principes, inside it can be found the \textbf{iP Datagram}.
+    \item \textbf{\textit{Data}}: the data to be transmitted, for the incapsulating principles, inside it can be found the \textbf{iP Datagram}.
     \item \textbf{\textit{CRC}}: is compose by 4 bytes of \textbf{checksum} that it is calculate on the entire frame (without the \textit{preamble}). It is always calculated like the remainder of the polynomial division by a known generator (\textit{Standardize CRC-32}):
     \begin{center}
         $x^{32} + x^{26} + x^{23} + x^{22} + x^{16} + x^{12} + x^{11} + x^{10} + x^8 + x^7 + x^5 + x^4 + x^2 + x + 1$
@@ -568,7 +568,7 @@ Ethernet use a two different type of \textbf{bit coding}:
 
 \subsection{Ethernet in the Autonomotive Domain}
 \begin{boxA}
-    \textcolor{red}{\textbf{\textit{Previous Limititation}}} \\
+    \textcolor{red}{\textbf{\textit{Previous Limitation}}} \\
     Ethernet is a 45 years old protocol, but why only now is started the interest by the autonomotive company in the ethernet protocol, and why it coul be used right now?
     \begin{enumerate}[nosep]
         \item ethernet produce to much EMI/RFI, for the automotive domain.
@@ -742,7 +742,7 @@ The 10BASE-T1S use the \textbf{\textit{4B5B}} that maps groups of 4 bits of data
 \end{boxA}
 
 \textcolor{green}{\textbf{Example}} \\
-Try to consider four nodes, in Fig~\ref{fig:example_t1s} is possible to see the behaviour of a network where only the first and the thrid node have something to transmit, instead the other two keep quite.
+Try to consider four nodes, in Fig~\ref{fig:example_t1s} is possible to see the behaviour of a network where only the first and the third node have something to transmit, instead the other two keep quite.
 
 \begin{figure}[h]
     \centering

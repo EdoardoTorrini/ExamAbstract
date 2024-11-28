@@ -445,18 +445,26 @@ For a \textbf{TDMA} network (such flexray) to work correcly, all node must be co
 \end{figure}
 The \textbf{static segment} must be decided \textbf{a priori}, in this way it is possible to divide the segment in at least $n$ slot, $n$ as the number of the nodes on the network. In each slot a defined node can transmit data over the bus, while the other nodes have to wait their slot. In this way we know exactly when the nodes are going to transmit, this is the definition of \textbf{determinism}. The disadvantage of the \textit{TDMA} is that, if the ECU number two doesn't have nothing to transmit we loose resource (time). If we are all synchronize there is no way to collide. \\
 The \textbf{dynamic segment} use a different protocol to access the medium, in this segmente there is the same as the CANBus, \textbf{CSMA-CR}. The segment is divide in mini-slot, each slot is assign to a specific ECU, for each slot the defined ECU sense from the bus if no one is broadcasting data, it can start to transmit, when it ends the time slice, the transmission interrupt, but the next node scheduled sensing the bus finds a busy state, so it doesn't start to sense. It could be possible for some ECU to lose each type of arbitration on the \textit{dynamic segment}. \\ \newline
-\textbf{\textit{FlexRay: Frame}} \\
+\textbf{\textit{FlexRay: Frame}}
+
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.5\textwidth]{img/flexray_frame}
+    \includegraphics[width=\textwidth]{img/flexray_frame}
     \caption{FlexRay Message Frame}
 \end{figure}
 FlexRay communicate using frames, each frame contains data as \textbf{bytes} $b_0... b_{m-1}$, and it is structure like:
-\begin{itemize}[nosep]
-    \item \textbf{first bit} is part of the start signal (\textbf{BSS0}).
-    \item \textbf{second bit} is part of the start signal (\textbf{BSS1}).
-    \item there are $n$ bits for the data.
-\end{itemize}
+\begin{enumerate}[nosep]
+    \item \textbf{Transmission Start Signal} (\textbf{TSS}): logical value \textbf{0}.
+    \item \textbf{Frame Start Signal} (\textbf{FSS}): logical value \textbf{1}.
+    \item $m$ bytes, composed each one of:
+    \begin{itemize}[nosep]
+        \item \textbf{first bit} is part of the start signal (\textbf{BSS0}).
+        \item \textbf{second bit} is part of the start signal (\textbf{BSS1}).
+        \item there are $n$ bits for the data.
+    \end{itemize}
+    \item \textbf{Frame End Signal} (\textbf{FES}): logical value \textbf{0}.
+    \item \textbf{Transmission End Signal} (\textbf{TES}): logical value \textbf{1}.
+\end{enumerate}
 The framing of data is usefull for the \textbf{determinism}. Bit stuffing is not used in this standard because given the number of bytes of a message you exactly know the amount of frame bits needed for the transmission. \\ \newline
 \textbf{\textit{FlexRay: Message Format}} \\ \newline
 \begin{tabular}{ | p{2cm} | p{2cm} |  p{2cm} |  p{2cm} |  p{2cm} |  p{2cm} |  p{2cm} | } \hline

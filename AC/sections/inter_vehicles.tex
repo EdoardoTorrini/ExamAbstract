@@ -132,3 +132,59 @@ $\Delta e$ is equal for all satellite, because all of them are perfectly synchro
     \includegraphics[width=\textwidth]{img/bluetooth_timeline}
     \caption{Bluetooth different version in the time}
 \end{figure}
+
+The bluetooth works at $2.4GHz$, like WiFi and ZigBee. A bluetooth network is named \textbf{piconet} and use a \textit{master}/\textit{slave} communication type. \\
+In a bluetooth network there is always a \textbf{master} and up to seven \textbf{slave}, each slave can be only connected to one master. The master coordinates communication throughout the \textit{piconet} it can send data to every one slave connect and can request data to each slave. The slaves can only talk with the master not between them. 
+
+\subsection{Address \& Names}
+The identifier for each node into a piconet (both for slave and master) its a \textbf{unique 48 bits address}, commonly abbreviated \textbf{\textit{BD\_ADDR}}, usually is show as 12digit hexadecimal value, similar to the MAC address.
+\begin{boxA}
+    \textbf{Name} is pretty different, it is also possible to give to each slave an user-frendly name. It can be up to 248 bytes long and two device can share the same name.
+\end{boxA}
+
+\subsection{Connection Process}
+
+\begin{figure}[h]
+    \centering 
+    \includegraphics[width=0.75\textwidth]{img/ble_con}
+    \caption{Connection Procedure in Bluetooth}
+    \label{fig:ble_con}
+\end{figure}
+
+Like show in Fig.~\ref{fig:ble_con}:
+\begin{itemize}[nosep]
+    \item \textbf{\textit{Inquiry Procedure}}: the goal of this part is to retrive the information of each nearby nodes. A node run an inquriy scan and any listening device for this type of request, replies with its address, name and other info.
+    \item \textbf{\textit{Paging Procedure}}: the purpose of this process is to create a connection between two bluetooth device. Each device \textbf{must knows} the address of the other. \textbf{\textit{FHS}}: \textbf{Frequency Hopping Sequence}.
+    \item \textbf{\textit{Connection Procedure}}: after the \textit{paging} process it is necessary to define the \textbf{connection state}.
+\end{itemize}
+
+\subsection{Connection}
+A bluetooth connection can have four kinds of mode:
+\begin{enumerate}[nosep]
+    \item \textbf{\textit{active mode}}: this is regular connected mode, where the device is actively transmitting or receiving data.
+    \item \textbf{\textit{sniff mode}}: the device is active periodically for a certain amount of time (\textit{power-saving mode}).
+    \item \textbf{\textit{hold mode}}: is a temporary, power-saving mode where a device sleeps for a defined period (not necessarily periodic) and then returns back to active mode when the interval passed. The master can command a slave device to hold.
+    \item \textbf{\textit{park mode}}: when the master command a slave to ``park'', that slave become inactive until the master tells it to wake up.
+\end{enumerate}
+
+\subsection{Pairing}
+\begin{boxA}
+    Paired devices automatically establish a connection whenever thery are close enough. No UI interaction are required.
+\end{boxA}
+When device pair up, they share their address, name and profiles. Usually all this information are stored in memory. They also share common \textbf{secret key}, which allow them to bond whenever they want. \\
+Pairing usually requires an \textbf{authentication process} where a user must validate the connection between devices, it could be different depending on the domain, some device ask to \textbf{press a button} (headset) or other can ask to \textbf{insert a code} (PC or smartphone).
+
+\newpage
+\subsection{Power Class}
+The transmit power and therefore range, of a bluetooth module is defined by its \textbf{power class}. There are three defined class power:
+\begin{center}
+    \begin{tabular}{ | c | c | c | c | } \hline
+        \textbf{Class number} & \textbf{Max Output Power}$_{dBm}$ & \textbf{Max Output Power}$_{mW}$ & \textbf{Max Range} \\ \hline
+        \textbf{class 1} & 20 & 100 & 100m \\ \hline
+        \textbf{class 2} & 4 & 2.5 & 10m \\ \hline
+        \textbf{class 3} & 0 & 1 & 10cm \\ \hline
+    \end{tabular}
+\end{center}
+
+\subsection{Profiles}
+While bluetooth \textbf{specification} define how the technology \textit{works}, \textbf{profiles} define how it is \textit{used}. Two bluetooth device are \textbf{compatible} if they \textbf{support the same profiles}.

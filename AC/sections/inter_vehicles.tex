@@ -54,7 +54,7 @@ Let's distinguish the study of the working principle in two hypotheses: \textbf{
 \begin{figure}[h]
     \centering 
     \includegraphics[width=0.45\textwidth]{img/hp_theory}
-    \caption{Satellite-Recevier clock synch}
+    \caption{Satellite-Receiver clock synch}
 \end{figure}
 In the first hypothesis, we know: \textbf{satellite position} (written in the NAV), \textbf{satellite clock} (written in the NAV) and the \textbf{speed of light} $c$. So it is possible to obtain:
 \begin{enumerate}[nosep]
@@ -187,4 +187,155 @@ The transmit power and therefore range, of a bluetooth module is defined by its 
 \end{center}
 
 \subsection{Profiles}
-While bluetooth \textbf{specification} define how the technology \textit{works}, \textbf{profiles} define how it is \textit{used}. Two bluetooth device are \textbf{compatible} if they \textbf{support the same profiles}.
+While bluetooth \textbf{specification} define how the technology \textit{works}, \textbf{profiles} define how it is \textit{used}. Two bluetooth device are \textbf{compatible} if they \textbf{support the same profiles}. Some explanation of the most common bluetooth profiles:
+\begin{itemize}[nosep]
+    
+    \item \textbf{\textit{Serial Port Profile}} (\textbf{\textit{SPP}}): permit to substitute a serial communication protocol (like RS-232 or UART). \textit{SPP} is great for sending data between two device
+
+    \item \textbf{\textit{Human Interface Device}} (\textbf{\textit{HID}}): is the profile to enable the receiving data from the user-input device (like mice, keyboard or joystick). \textbf{Bluetooth HID} substitute \textbf{HID} alredy defined for human input USB device, the innovation is the substitution of the USB cable for the communication.
+
+    \item \textbf{\textit{Hands-Free Profile}} (\textbf{\textit{HFP}}) and \textbf{\textit{Headset Profile}} (\textbf{\textit{HSP}}): \textit{HFP} implements a few features on top of \textit{HSP} to allow common phone interaction (accepting/rejecting calls, etc.) that occur while the phone remains in your pocket.
+
+    \item \textbf{\textit{Advanced Audio Distribution Profile}} (\textbf{\textit{A2DP}}): \textit{A2DP} define how audio can be transmitted from one bluetooth device to another. \textit{HFP} and \textit{HSP} have a bidiretion communication, instead \textit{A2DP} is one-way street, that permit higher quality potential.
+
+    \item \textbf{\textit{A/V Remote Control Profile}} (\textbf{\textit{AVRCP}}): the audio/video remote control profile allows for remote controlling of a bluetooth device. It is usually implemented alongside \textit{A2DP} to allow the remote speaker to tell the audio-sending device fast-forward, rewind, etc.
+
+\end{itemize}
+
+\subsection{Bluetooth Stack}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.85\textwidth]{img/ble_stack}
+    \caption{Bluetooth Stack}
+    \label{fig:ble_stack}
+\end{figure}
+
+The bluetooth protocol stack is split in two parts: a \textbf{controller stack} (in Fig.~\ref{fig:ble_stack} the blu/gray section) containing the timinig critical radio interface and \textbf{host stack} (in Fig.~\ref{fig:ble_stack} the biggest container) dealing with high level data. \\ \newline
+\textbf{\textit{Radio Layer}} \\
+The bluetooth radio layer is used for transmit bit from master to slave (or vice-versa) and it is similar to \textit{physical layer} in ISO/OSI model. It is a \textbf{low-power system} with 10 meters range operating in the same frequency of WiFi and ZigBee: $2.4GHz$. It defines the specification for the transceiver device:
+\begin{enumerate}[nosep]
+    \item \textbf{\textit{Frequency Bands and Channel Arrangement}} (\textbf{\textit{FHSS}})
+    \item \textbf{Transmitter Characteristics}
+    \item \textbf{Receiver Characteristics}
+\end{enumerate}
+The \textbf{\textit{Frequency Hopping Spread Spectrum}} is used for the transmission. The \textbf{Spectrum Spreading} is obtain by hopping between 79 frequency segments distributed between $2.402GHz$ and $2.480GHz$ ($1MHz$). The transmitter and receiver stay on one of this channels for a certain time and then hop to another channel. This system implement \textbf{Frequency Division Multiplexing} (\textbf{FDM}) and \textbf{Time Division Multiplexing}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{img/ble_fhss}
+    \caption{Frequency Hopping Spread Spectrum}
+\end{figure}
+The changes of frequency it could be performed in two different way:
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{img/ble_hop}
+\end{figure}
+\begin{itemize}[nosep]
+    
+    \item \textbf{\textit{slow hopping}}: the transmitter uses one frequency for several bit period:
+    \begin{itemize}[nosep]
+        \item typically cheaper (relaxed sync constraints, more time per slot)
+        \item not immune to narrowband interferances
+    \end{itemize}
+    
+    \item \textbf{\textit{fast hopping}}: the transmitter uses several frequencies for one period:
+    \begin{itemize}[nosep]
+        \item typically expensive (hard sync constraints, more slot jumps and high resync frequency)
+        \item almost immune to narrowband
+        \item rate 1600 hops/sec: $625 \mu s$ of slot time
+    \end{itemize}
+
+\end{itemize}
+\textbf{\textit{Baseband Layer}} \\
+While the \textbf{radio layer} is controlled by the transceiver, the \textbf{baseband layer} is implemented by the controller of a device how want to transmit in bluetooth. The \textit{baseband} is the \textbf{physical layer} of the bluetooth and is used to manages physical channel and links, but also \textit{error connection}, \textit{data whitening}, \textit{hop selection} and \textit{bluetooth security}. \\
+Is is used to managed \textbf{synchronous} and \textbf{asynchronous} links. It handles packet and perform the \textit{inquiry} and the \textit{paging} for create connection with nearby device. The baseband layer applies a \textbf{time division duplex} (\textbf{TDD}) scheme to alternating transmitter and receiver. Baseband handles two types of links:
+\begin{enumerate}[nosep]
+    \item \textbf{\textit{Synchronous Connection Oriented}} link (\textbf{\textit{SCO}}): is a symmectric point-to-point link between a master and a single slave in the piconet. The master maintains the \textit{SCO} link by using reserved slot at regular intervals:
+    \begin{itemize}[nosep]
+        \item \textit{SCO} is commonly used for the transmission of voice information.
+        \item master can support up to three simultaneously \textit{SCO} links, instead, slave only two (sometimes three).
+        \item \textit{SCO} packets are never re-transmitted, normally used for $64kB/s$ speech transmission.
+    \end{itemize}
+    \item \textbf{\textit{Asynchronous Connection Less}} link (\textbf{\textit{ACL}}): is point-to-multipoint between the master and all the slave present in the piconet. In the slot not reserved for the \textit{SCO} links, the master can establish an \textit{ACL} link to any slave
+    \begin{itemize}[nosep]
+        \item slave alredy into a \textit{SCO} communication are included.
+        \item only a single \textit{ACL} link can exist.
+        \item for most of \textit{ACL} packets, re-transmission is applied.
+    \end{itemize}
+\end{enumerate}
+These means that \textit{SCO} does not need a connection, there is not an acknoledgement (like \textbf{UDP}), instead the \textit{ACL} need the \textit{ACK} to check if the message needs to be re-transmitted (like \textbf{TCP}). \\
+\textbf{\textit{Bluetooth Packet}}
+\begin{center}
+    \begin{tabular}{ | c | c | c | c | } \hline
+        \textbf{bits} & 72 & 54 & 0 - 2745 \\ \hline
+        \textbf{description} & \textbf{access code} & \textbf{header} & \textbf{payload} \\ \hline
+    \end{tabular}
+\end{center}
+\begin{enumerate}[nosep]
+    \item \textbf{\textit{access code}}: is used for \textit{time synchronization}, \textit{offset compensation}, \textit{paging} and \textit{inquiry}.
+    \item \textbf{\textit{header}}: contains information for \textit{packet acknoledgement}, \textit{packet numbering} for out-of-order packet reordering, \textit{flow control}, \textit{slave address} and \textit{error check} for header.
+    \item \textbf{\textit{payload}}: can contain either voice field, data field or both. The payload will also contain a \textbf{payload header}.
+\end{enumerate}
+\textbf{\textit{Other Baseband Function}} \\
+The baseband makes other features available like:
+\begin{enumerate}[nosep]
+    \item \textbf{\textit{error correction}}:
+    \begin{itemize}[nosep]
+        \item $\frac{1}{3}$ \textbf{rate FEC} (\textbf{Forward Error Correction}): every bit is repeated three times (\textbf{rendundancy}), in this way the receiver can discard up to two bits and validate the transmission.
+        \item $\frac{2}{3}$ \textbf{rate FEC}: it use a \textit{polynomial generator} to \textbf{encode} ten bits code into fiftheen bits code.
+        \begin{boxA}
+            If i want to send $1010001111$ that is ten bits long, i divide into two pieces: $10100$ and $01111$ and i will compute the XOR: $10100 \oplus 01111 = 11011$. I will send the three concatenated values: $m = [10100, 01111, 11011]$. The receiver it could receive wrong the second value, but it can rebuild it performing the XOR between the first and third value. It allow only one ``wrong'' value, if not it can not reconstruct the original message.
+        \end{boxA}
+        \item \textbf{ARQ scheme} (\textbf{Automatic Repeat Request}): uses \textit{ACK}, \textit{NACK}, \textit{RTO}, etc.
+    \end{itemize}
+    \item \textbf{\textit{flow control}}: use \textbf{FIFO} queues both in \textit{ACL} and \textit{SCO} links for transmission and receive. In the case that the \textbf{RX FIFO} queues are full, \textbf{flow control} is used to avoid \textbf{congestion} and \textbf{packet drop}. The receiver send a \textbf{stop} indication, the transmitter \textbf{blocks} its \textbf{TX FIFO} queues. When the queues of the receiver are ready it sends an \textbf{go} signal to resume the transmission.
+    \item \textbf{\textit{synchronization}}: the piconet is sync using the master clock and it is needed for the transmission at least three information:
+    \begin{itemize}[nosep]
+        \item \textbf{channel hopping sequence}
+        \item \textbf{phase of the sequence}
+        \item \textbf{channel access code} to place on the packets (piconet code)
+    \end{itemize}
+    \item \textbf{\textit{security}}: at link layer, security is maintained by authentication of the peers and encryption of the information. For this basic security we need a public address which is unique for each device, two secret key (authentication keys and encryption keys) and a random number generator.
+\end{enumerate}
+\textbf{\textit{Link Manager Layer}} \\
+On top that layer it is used the \textbf{\textit{Link Manager Protocol}} (\textbf{\textit{LMP}}) that carries out link setup, authentication, link configuration and other protocol. The Link-Controller/Baseband provides services to \textbf{LMP} likes: \textit{authentication}, \textit{pairing}, \textit{encryption}, \textit{change link key}, \textit{slot/clock offset request}, \textit{switch master/slave role}, \textit{hold/sniff/park role} and \textit{quality of service}. \\
+\textbf{\textit{Automotive \& Bluetooth}}:
+\begin{itemize}[nosep]
+    \item \textbf{in-car infortainment system}: permit hands-free audio, calling and application control.
+    \item \textbf{remote keyless system}: smart phone are the new key, that use \textit{proximity detection} for locking and unlocking car.
+    \item \textbf{in-vehicle wearables}: permit to monitoring the driver health.
+    \item \textbf{under-the-hood \& connected maintenance}: allow to transfer diagnostic information.
+\end{itemize}
+\begin{center}
+    \begin{tabular}{ | c | c | c | } \hline
+        & \textbf{bluetooth} & \textbf{bluetooth low energy} \\ \hline
+        \textbf{freq. band} & $2.4GHz$ ISM Band & $2.4GHz$ ISM Band \\ \hline
+        \textbf{no. of channel} & 79, one $1MHz$ & 40, one $2MHz$ \\ \hline
+        \textbf{power consumption} & low & less \\ \hline
+        \textbf{data rate} & between $1Mbps$ and $3Mbps$ & $1Mbps$ \\ \hline
+        \textbf{latency} & $\approxeq$ 100ms & $\approxeq$ 6ms \\ \hline
+        \textbf{range} & < 30m & 50m (in open area: 150m) \\ \hline
+        \textbf{topology} & peer-to-peer (1:1) & \begin{tabular}{@{}c@{}}peer-to-peer (1:1) \\ star (many:1) \\ broadcast (1:many) \\ mesh (many:many) \end{tabular} \\ \hline
+        \textbf{device pairing} & required & not required \\ \hline
+        \textbf{voice capable} & yes & no \\ \hline
+        \textbf{node/active slave} & 7 & unlimited \\ \hline
+        \textbf{security} & 64bits or 128 bits & 128 bits AES \\ \hline
+        \textbf{smartphone compatibility} & 100\% & 100\% \\ \hline
+        \textbf{use cases} & 
+        \begin{tabular}{@{}c@{}}
+            streaming application \\ 
+            like audio streaming, \\ 
+            file transfer and
+            \\ headset 
+        \end{tabular} & 
+        \begin{tabular}{@{}c@{}}
+            location beacons, \\ 
+            smart home application, \\ 
+            medical deivces, \\ 
+            industrial monitoring \\ 
+            and fitness trackers 
+        \end{tabular} \\ \hline
+    \end{tabular}
+\end{center}

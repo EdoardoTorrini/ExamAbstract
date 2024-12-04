@@ -684,9 +684,12 @@ The \textbf{\textit{10BASE-T1S}}, also named \textbf{Ethernet over twisted-pair}
         \item there are at least one transition of each clock period, this permit the synchronization of the clock between nodes.
         \item values are encoded based on transition: if into the clock period there is another transition it will be encode \textbf{logical 0} else if there is not other transition is \textbf{logical 1}. This behaviour allow to have better EMI immunity.
     \end{itemize}
+
     \begin{center}
         \includegraphics[width=0.75\textwidth]{img/dme}
     \end{center}
+
+    There is another version of \textbf{Differential Manchester Encoding} that invert the digital encoding: if there is a transiction between two clock cycle it will encoded into \textbf{logical 1} otherwise, if there is not transiction, into \textbf{logical 0}.
 \end{boxA}
 
 \newpage

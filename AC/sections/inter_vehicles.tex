@@ -339,3 +339,113 @@ On top that layer it is used the \textbf{\textit{Link Manager Protocol}} (\textb
         \end{tabular} \\ \hline
     \end{tabular}
 \end{center}
+
+\newpage
+\section{LoRa: Long Range}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{img/lora}
+\end{figure}
+\textbf{LoRa} has an unlicenced frequency band equal to: $868MHz$ (in Europe) and very long range coverage: up to \textbf{10 km}. It is composed by two part:
+\begin{enumerate}[nosep]
+    \item \textbf{LoRa}: the \textit{physical layer} that is \textbf{proprietary}.
+    \item \textbf{LoRaWAN}: \textbf{Long Range Wide Area Network} that defines the upper layers (in particular MAC layer).
+\end{enumerate}
+
+\newpage
+\subsection{LoRa Stack}
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[t]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{img/lora_stack}
+        \caption{LoRa Stack}
+    \end{minipage}
+    \begin{minipage}[t]{0.65\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{img/lora_network}
+        \caption {LoRaWAN network architecture}
+        \label{fig:lora_net}
+    \end{minipage}
+\end{figure}
+\textbf{LoRaWan} defines the \textit{MAC Layer}, the point-to-point network, the communication protocol and the system architecture standard (Fig. \ref{fig:lora_net}). It, also, managed the \textit{frequency}, \textit{data rate} and \textit{power device}.
+\begin{itemize}[nosep]
+    \item \textbf{end device, node} an embedded object with low-power communication constraints.
+    \item \textbf{gateway} receive broadcast data and send data from/to the \textit{end device}.
+    \item \textbf{network server} route message from \textit{end device} to the right application, and back.
+\end{itemize}
+\textbf{\textit{Addressing}}: to each \textit{device} is assign an \textbf{unique identifier} (\textbf{DevEUI}) of 64 bits, instead to each \textit{application} is attribute \textbf{distinctive fingerprint} (\textbf{AppEUI}) of 64 bits, moreover after the access inside a network of a new device it receives a \textbf{dynamic} \textit{non-unique} address of 32 bits (\textbf{DevAddr}). \\ \newline
+\textbf{\textit{Frame Counter}} prevent \textbf{replay attack}, to prevent this each nodes (both \textit{end device} and \textit{server}) reject message that contain frame counter that is lower than the expected ones.
+
+\newpage
+The \textit{end device} could be classified into \textbf{three different classes}:
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{img/lora_classA}
+        \caption{\textbf{Class A}}
+
+        \begin{flushleft}
+            Support bidirectional communication (from/to gateway), transmission messages can be sent in any time (random), two possible receive windows at specific time (after 1s and after 2s) after a transmission message, the gateway can reply in one of this two windows.
+        \end{flushleft}
+    \end{minipage}
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{img/lora_classB}
+        \caption{\textbf{Class B}}
+
+        \begin{flushleft}
+            Extend \textit{class A} by adding scheduled receive windows for receiving message from the gateway/server. It use time-sync beacons transmitted by the gateway, the \textit{end device} periodically open receive window.
+        \end{flushleft}
+    \end{minipage}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{img/lora_classC}
+        \caption{\textbf{Class C}}
+
+        \begin{flushleft}
+            Extend \textit{class A} by keeping the receive window open unless they are transmitting. This allow \textbf{low latency} communication, but it consume more energy than \textit{class A} device.
+        \end{flushleft}
+    \end{minipage}
+\end{figure}
+
+\subsection{Secuirty}
+LoRaWAN specifies three different class of \textbf{security keys}: \textbf{\textit{NwSKey}}, \textbf{\textit{AppSKey}} and \textbf{\textit{AppKey}}, all have the lenght of 128 bits. The algorithm use for the encryption is \textbf{\textit{AES-128}}. \\
+When a device joins the network (called \textbf{activation} or \textbf{join}), an \textit{application session key} (\textbf{AppSKey}) and \textit{network session key} (\textbf{NwSKey}) are generated that will be used for the duration of the session. The \textbf{AppSKey} is the \textit{private key}, instead the \textbf{NwSKey} is the \textit{public key}. The \textbf{Network Session Key} is used for the interaction between the node and the server and it is used to validate the integrity of each message using the \textbf{Message Integrity Code} (\textbf{MIC}). The \textbf{MIC} is similar to checksum expect that it prevents intentional tampering with message (\textbf{AES-CMAC}), it is also used to map the \textbf{DevAddr} to both \textbf{AppEUI} and \textbf{DevEUI}. The \textbf{Application Session Key} is used for encryption and decryption of the payload. \\
+The \textbf{Application Key} (\textbf{AppKey}) is only know by the device and the application. The \textbf{NwSKey} and \textbf{AppSKey} are derived from this key. If you dinamically activate the device (\textbf{Over the Air Activation - OTAA}) the two sessione key are regenerate.
+
+\subsection{MAC Commands}
+The \textit{end device} and the \textit{server} use \textbf{MAC Commands} for configure the transmission and for the communication.
+\begin{itemize}[nosep]
+    \item checking connectivity
+    \item requesting the status of the device
+    \item adapting the data rate of the device
+    \item modify channel settings
+\end{itemize}
+
+\begin{center}
+    \begin{tabular}{ | c | c | } \hline
+        \textcolor{green}{\textbf{Pros}} & \textcolor{red}{\textbf{Cons}} \\ \hline
+        long range & not realtime data (packet each minutes) \\ \hline
+        low power & not use for domotic house (ZigBee or Bluetooth) \\ \hline
+        \begin{tabular}{@{}c@{}}
+            low cost \\ 
+            $\approxeq$ 20\$ per node
+        \end{tabular} & watch video (WiFi) \\ \hline
+        \begin{tabular}{@{}c@{}}
+            low bandwidth \\ 
+            between $250bit/s$ and $11kbit/s$
+        \end{tabular} & \\ \hline
+        \begin{tabular}{@{}c@{}}
+            secure: 128 bits \\ 
+            end-to-end encryption
+        \end{tabular} & \\ \hline
+    \end{tabular}
+\end{center}

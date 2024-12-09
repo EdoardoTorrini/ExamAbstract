@@ -746,7 +746,7 @@ The 10BASE-T1S use the \textbf{\textit{4B5B}} that maps groups of 4 bits of data
     \begin{itemize}[nosep]
         \item each node on the BUS has an \textbf{ID}.
         \item the \textbf{ID 0} is the \textbf{coordinator} (master).
-        \item at the begin of each TX cycle, the \textit{coordinator} node sends a \textbf{beacon} wich means ``we are starting a new tx cycle''.
+        \item at the begin of each TX cycle, the \textit{coordinator} node sends a \textbf{beacon} which means ``we are starting a new tx cycle''.
         \item slave node (called \textbf{drop nodes}) are given a \textbf{transmit opportunity} (TO) in order of their assign IDs.
         \item like a round-robin scheduler without handshake, TO are counted by each node (it's a mix between flexray static and dynamic segment).
     \end{itemize}

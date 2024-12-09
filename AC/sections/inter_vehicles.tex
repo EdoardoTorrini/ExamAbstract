@@ -892,3 +892,21 @@ To relax the state (from restrictive to relaxed) the same \textit{maxChannelLoad
 \end{figure}
 
 \subsection{ETSI Message}
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \textbf{\textit{Cooperative Awareness Message}} (\textbf{\textit{CAM}}) \\
+        Very based information according to the awareness which is used to increase safety (position, speed and heading $\rightarrow$ where the vehicle is pointing geographically speaking). Is a periodic message, where the period is between $[100ms, 1s]$ if something happen in that interval there is no way of notification. The \textbf{CAM} check if $\Delta angle > 4^{\circ}$ or $\Delta position > 5m$ or $\Delta speed > 1m/s$ if nothing of this param change significantly the \textbf{CAM} msg is sent every second. 
+    \end{minipage}
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \textbf{\textit{Decentralize Environmental Notification Message}} (\textbf{\textit{DENM}}) \\
+        decentralize because is something transmitted by who want, environment notification because is caused by event (\textbf{event-driven}) caused by vehicular sensor. Event like: hand braking, accident, construction work, imminente collision, low visibility, high wind, icy roads, etc. \\
+        Have local scope based on area, road topology and driving direction        
+    \end{minipage}
+\end{figure}
+\textbf{CAM} message is \textbf{strongly related} with \textbf{GPS}.
+
+\section{Broadcast \& Flooding}

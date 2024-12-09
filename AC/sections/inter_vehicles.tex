@@ -660,9 +660,8 @@ The \textbf{physical layer} of \textbf{C-V2X} is divide into \textbf{\textit{Res
 \end{figure}
 \textbf{TB} and \textbf{SCI} are transmitted in adjacent \textbf{RBs}, the \textbf{SCI} requires two adjacent \textbf{RB}. The idea behind the medium access is similar to bluetooth, where we change the frequency each time we want to transmit a piece of information, in this case we take a frequency for a certain amount of time for the entire duration of the transmission $\cong$ \textbf{\textit{Time Division Multiple Access}} (\textbf{\textit{TDMA}}) it is mandatory to have synchronize all nodes $\rightarrow$ need \textbf{GPS} and \textbf{GNSS} for the synchronization.
 
+\newpage
 \section{802.11p}
-
-Is the technologies adopt for the implementation of \textbf{V2X} also known as \textbf{\textit{Wireless Access in Vehicular Environment}} (\textbf{\textit{WAVE}}).
 
 \begin{figure}[h]
     \centering
@@ -699,7 +698,96 @@ Is the technologies adopt for the implementation of \textbf{V2X} also known as \
                 \item use of \textbf{\textit{Enhanced Distributed Channel Access}} (\textbf{\textit{EDCA}}) for prioritizing the message on the medium access (\textbf{QoS})
                 \item multi-frequency and multi-radio capabilities
             \end{enumerate}
-            The base idea is: there is no need of an iP you can listen and talk on a particular frequency. (Fig. \ref{fig:11p}), this idea is named: \textbf{\textit{Outside The Context of a BSS}} (\textbf{\textit{OCB}}).
         \end{flushleft}
     \end{minipage}
 \end{figure}
+The base idea is of \textbf{802.11p}: there is no need of an iP you can listen and talk on a particular frequency. (Fig. \ref{fig:11p}), is named: \textbf{\textit{Outside The Context of a BSS}} (\textbf{\textit{OCB}}). \textbf{802.11p} is the technologies adopt for the implementation of \textbf{V2X} also known as \textbf{\textit{Wireless Access in Vehicular Environment}} (\textbf{\textit{WAVE}}). Two new tipe of node: \textbf{\textit{RoadSide Unit}} (\textbf{\textit{RSU}}) and \textbf{\textit{On-Board Unit}} (\textbf{\textit{OBU}}).
+
+\subsection{Physical Access}
+There are two mainly actor in the \textbf{802.11p} network: the \textit{provider} and the \textit{user}, but there is no technical difference between them. The main task of the \textbf{provider} is to send a \textbf{\textit{On-Deamand Beacon}} ($\simeq$ beacon in \textbf{802.11}) that contain the information and parameter to join the network. The \textbf{physical access} is \textbf{wireless}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.55\textwidth]{img/802_11_dcf}
+\end{figure}
+\begin{boxA}
+    \textbf{\textit{Distributed Coordinator Function}} (\textbf{\textit{DCF}}) of \textbf{802.11} two main intervals (it is a time that a station have to wait before transmit):
+    \begin{enumerate}[nosep]
+        \item \textbf{\textit{SIFS}} - \textbf{\textit{Short Interframe Space}}: before the acknoledgement.
+        \item \textbf{\textit{DIFS}} - \textbf{\textit{Data Interframe Space}}: before the data.
+    \end{enumerate}
+    In a wireless environment it is not possible to anticipate what the other are going to do: \textbf{Carrier Sense} getting a look at the medium listen until is idle, \textbf{Avoid Collision} if the medium is congestionated you can increase the intervals.
+\end{boxA}
+
+\subsection{Quality of Service}
+Before continue the physical access part on the \textbf{802.11p} small introduction on what is the \textbf{QoS}. Differently from module 1, in this part of course we have \textbf{logical link}, but \textbf{channel/medium wireless}, in this way the priority it cannot be written in the protocol, but must be written in the message and we have to treat according to its rules (written in the msg). \\
+$\rightarrow$ give me a packet I will control and I will decided what to do according to the service that you want. \\ \newline
+\textbf{QoS} is the overall performance of a telephony or computer network (important for traffic with special requirements $\rightarrow$ different protocols means different requirements). We need to have a \textbf{dedicated QoS} for each \textbf{TCP/iP level}. 
+\begin{enumerate}[nosep]
+    
+    \item \textbf{\textit{H2N}} (include \textit{physical layer} and \textit{data link layer}) 3-bit field called \textbf{\textit{Priority Code Point}} (\textbf{\textit{PCP}}) identify the priority of that frame using these 3-bit:
+    \begin{itemize}[nosep]
+        \item the type of modulation that we have on the medium $\rightarrow$ \textbf{bitrate}.
+        \item bandwidth
+    \end{itemize}
+    \begin{figure}[h]
+        \centering
+        \begin{tabular}{ | p{1cm} | p{3cm} | p{7cm} | } \hline
+            \textbf{PCP} & \textbf{priority} & \textbf{traffic type} \\ \hline
+        \end{tabular} \\
+        \begin{tabular}{ | p{1cm} | p{3cm} | p{7cm} | } \hline
+            1 & 0 (lowest) & background \\ \hline
+            0 & 1 & best effort \\ \hline
+            2 & 2 & excellent effort \\ \hline
+            3 & 3 & critical application \\ \hline
+            4 & 4 & video $<100ms$ latency and jitter \\ \hline
+            5 & 5 & voice $<100ms$ latency and jitter \\ \hline
+            6 & 6 & internal control \\ \hline
+            7 & 7 (highest) & network control \\ \hline
+        \end{tabular}
+    \end{figure}
+
+    \item \textbf{\textit{Network (iP)}} is used for \textbf{packet schedule} and \textbf{routing protocol}:
+    \begin{itemize}[nosep]
+        \item \textbf{\textit{IntServ}}: rent a certain resourse for all the router on the path between you and the end node (impossible to actuate except for \textit{bank domain}).
+        \item \textbf{\textit{DiffServ}}: every single hop you try to do your best. If there is a packets more important than one other the router try to forward first the most important one. The \textbf{problem} is that this type of control affected the end-to-end performance with all the router performance (the scheduling complexity is not linear).
+        \begin{boxA}
+            \textbf{\textit{Different Services Code Point}} (\textbf{\textit{DSCP}}) is the method used in networking to classify and manage network traffic by assigning 6.bit value in the iP header, allowing for prioritization of different type of data. $2^6 = 64$ different class. The mainly used are the \textbf{\textit{Per-Hop Behaviour}} (\textbf{\textit{PHB}}):
+            \begin{itemize}[nosep]
+                \item (default) \textbf{best-effort}
+                \item \textbf{\textit{Expedited Forwarding}} (\textbf{\textit{EF}}): low loss and latency traffic.
+                \item \textbf{\textit{Assured Forwarding}} (\textbf{\textit{AF}}): assurance of delivery.
+                \item \textbf{class selector PHBs}: backword compatibility
+            \end{itemize}
+        \end{boxA}
+        We cannot have a one-to-one conversion from 3-bit of \textbf{H2N} to the 6-bit of \textbf{iP} so it was define a mapping between \textbf{PCP} and \textbf{DSCP}.
+        \begin{figure}[h]
+            \centering
+            \begin{tabular}{ | p{1cm} | p{2cm} | p{2cm} | c | } \hline
+                Lv2 & \multicolumn{2}{ | c | }{Lv3} & \multirow{2}{*}{\centering \textbf{Application}} \\ \cline{1-3}
+                \textbf{PCP} & \textbf{DSCP} & \textbf{PHB} & \\ \hline
+                0 & 0 & 0 & best effort \\ \hline
+                1 & 8 & CS1 & torrent \\ \hline
+                1 & 10 & AF11 & bulk data \\ \hline
+                2 & 16 & CS2 & network management \\ \hline
+                2 & 18 & AF21 & transactional data \\ \hline
+                3 & 24 & CS3 & call signaling \\ \hline
+                3 & 26 & AF31 & mission-critical data \\ \hline
+                4 & 32 & CS4 & streaming video \\ \hline
+                4 & 34 & AF41 & video conferancing \\ \hline
+                5 & 46 & EF & voice \\ \hline
+                6 & 48 & CS6 & routing \\ \hline
+                7 & 56 & CS7 & network control \\ \hline
+            \end{tabular}
+        \end{figure}
+    \end{itemize}
+
+    \item \textbf{\textit{Transport}}:
+    \begin{itemize}[nosep]
+        \item \textbf{TCP}: congestion control, fairness among flows and friendliness among TCP algorithm.
+        \item \textbf{UDP}: no congestion control, problem delegated at layer three.
+    \end{itemize}
+
+    \item \textbf{\textit{Application}}: it became \textbf{Quality of Experience}
+
+\end{enumerate}

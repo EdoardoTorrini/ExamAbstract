@@ -791,3 +791,104 @@ $\rightarrow$ give me a packet I will control and I will decided what to do acco
     \item \textbf{\textit{Application}}: it became \textbf{Quality of Experience}
 
 \end{enumerate}
+
+\subsection{Physical Access pt.2}
+\textbf{802.11} uses \textbf{DCF} for the medium access but for the \textbf{V2X} purpose there are some limitation:
+\begin{itemize}[nosep]
+    \item there is no congestion control: many station means many collision that produce lower bandwith and have not enough bandwidth means congestive collapse.
+    \item no QoS guarantees: there is no difference between packet with higher priority instead of the lower priority.
+\end{itemize}
+In some cases \textbf{DCF} is replaced by \textbf{\textit{Point Coordination Function}} (\textbf{\textit{PCF}}) but need an infrastructure, that in \textbf{V2X} can be present or not and uses a \textit{centralized function} (present in the \textbf{AP}) for enabling the QoS mechanism. \\ \newline
+\textbf{802.11p} uses a \textbf{\textit{Hybrid Coordination Function}} (\textbf{\textit{HCF}}) like policy for the medium access. 
+\begin{boxA}
+    \textbf{HCF} details:
+    \begin{itemize}[nosep]
+        \item include the \textbf{802.11e} amendment for the definition of a set of QoS enhancements for wireless LAN application through modification to the media access control layer.
+        \item convert the \textbf{DCF} into \textbf{\textit{Enhanced Distributed Channel Access}} (\textbf{\textit{EDCA}}).
+        \item convert the \textbf{DIFS} into the \textbf{\textit{Arbitration Interframe Space}} (\textbf{\textit{AIFS}}): it is close to what we have seen in CANBus, permit to associated a number which change according to the priority of the packet that you have to transmit.
+        \item defines \textbf{\textit{Traffic Categories}} (\textbf{\textit{TC}}).
+    \end{itemize}
+\end{boxA}
+The core idea is force an application to use an \textbf{AIFS} shorter or larger according to is priority: modify the \textbf{CSMA/CA} using shorter \textbf{AIFS} for higher priority packets.
+\begin{boxA}
+    \textbf{\textit{Enhanced Distributed Channel Accass}} (\textbf{\textit{EDCA}}) \\
+    It is a \textbf{\textit{TCMA}} protocol (\textbf{\textit{Tiered Contention Multiple Access}}) that define the \textbf{AIFS}. It classify user data in four \textbf{Access Categories} (\textbf{AC}): from \textbf{AC0} (lowest priority) to the \textbf{AC3} (highest priority). \\
+    It permit to enable \textbf{Burst Mode} using the \textbf{\textbf{Transmission Opportunity}} (\textbf{\textit{TXOP}}): is a bounded time interval during which a station can send many frames as possible, during this period the station does not need to use standard \textbf{EDCA} to access the channel. \\
+    Each \textbf{ACs} has different \textbf{\textit{Contention Window}} (\textbf{\textit{CW}}), \textbf{AIFS} and \textbf{TXOP}.
+\end{boxA}
+In \textbf{802.11p} te four access categories have its own queue and each of then compete in an indipendent way (Fig.~\ref{fig:edca}) to access to the medium (with its own algorithm), instead of \textbf{802.11} we have the \textit{scheduler}, but in the \textbf{11p} is not enough because a device $A$ have to transmit a new packet with higher priority than a packet that the device $b$ have to transmit it can collide with the last one. In this protocol the \textbf{access} is more important tha the \textbf{backbone}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.45\textwidth]{img/edca}
+    \caption{Medium Access - EDCA}
+    \label{fig:edca}
+\end{figure}
+\textbf{HCF} maps eight user priorities with four access categories $\rightarrow$ mapping:
+
+\begin{figure}[h]
+    \centering
+    \begin{tabular}{ | c | c | c | c | c | c | } \hline
+        & \multicolumn{3}{ | c | }{\textbf{802.11p}} & \multicolumn{2}{ | c | }{\textbf{802.11p QoS}} \\ \hline
+        priority & \textbf{PCP} & \textbf{Acronym} & \textbf{Traffic Type} & \textbf{AC} &  \textbf{Disignation} \\ \hline
+        lowest & 1 & BK & background & AC\_BK & background \\ \hline
+        & 2 & - & spare & AC\_BK & background \\ \hline
+        & 0 & BE & best effort & AC\_BE & best effort \\ \hline
+        & 3 & EE & excellent effort & AC\_BE & best effort \\ \hline
+        & 4 & CL & controlled load & AC\_VI & video \\ \hline
+        & 5 & VI & video & AC\_VI & video \\ \hline
+        & 6 & VO & voice & AC\_VO & voice \\ \hline
+        highest & 7 & NC & network control & AC\_VO & voice \\ \hline
+    \end{tabular}
+\end{figure}
+
+\newpage
+Another important table is the definition of the \textbf{EDCA} parameter for the \textbf{802.11p} communication for every type of \textbf{AC}
+
+\begin{figure}[h]
+    \centering
+    \begin{tabular}{ | c | c | c | c | c | } \hline
+        \textbf{AC} & \textbf{CW}$_{min}$ & \textbf{CW}$_{max}$ & \textbf{AIFS} & \textbf{Max TXOP} \\ \hline
+        AC\_BK & 15 & 1023 & 9 & 0 \\ \hline
+        AC\_BE & 15 & 1023 & 6 & 0 \\ \hline
+        AC\_VI & 7 & 15 & 3 & 3.008ms \\ \hline
+        AC\_VO & 3 & 7 & 2 & 1.504ms \\ \hline
+        legacy DCF & 15 & 1023 & 2 & 0 \\ \hline
+    \end{tabular}
+\end{figure}
+
+\subsection{802.11p Upper Layer}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{img/etsi_11p}
+    \caption{European Standard for 802.11p}
+    \label{fig:etsi_11p}
+\end{figure}
+\textbf{\textit{Decentralize Congestion Control}} (\textbf{\textit{DCC}}): the environment change based on where we are and so accordin with the environment and the application there are multiple parameter to continuosly read for avoid congestion. It is used an \textbf{\textit{Finite State Machine}} (\textbf{\textit{FSS}}) to know how to set the \textbf{802.11p} parameter for the transmission.
+There are three different state:
+\begin{enumerate}[nosep]
+    \item \textbf{relaxed}: low data rate and high range
+    \item \textbf{active}: neutral
+    \item \textbf{restrictive}: high data rate and low range
+\end{enumerate}
+To relax the state (from restrictive to relaxed) the same \textit{maxChannelLoad} must be in the correct range at least for five seconds, instead to limit the state (from relaxed to restrictive) the same \textit{minChannelLoad} must be in the correct range at least for one second, this difference between the transiction direction is to avoid the \textbf{isteresis} that means jumping from a state to another continuosly, polluting the transmission.
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \textbf{Input}: will allow us to understand uf we have to change the state, normally is based on the \textbf{channel load} or the \textbf{measured received power} (\textbf{RSS}).
+    \end{minipage}
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \textbf{Output}: each output have an associated value for each state:
+        \begin{itemize}[nosep]
+            \item \textbf{Transmission Power}: is the bulk movement of electrical energy from a generating site
+            \item \textbf{Minimum Packet Interval}: how fast modulate
+            \item \textbf{BitRate}: how dealing the contention
+        \end{itemize}
+    \end{minipage}
+\end{figure}
+
+\subsection{ETSI Message}

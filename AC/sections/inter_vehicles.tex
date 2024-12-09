@@ -237,7 +237,7 @@ The changes of frequency it could be performed in two different way:
     \item \textbf{\textit{slow hopping}}: the transmitter uses one frequency for several bit period:
     \begin{itemize}[nosep]
         \item typically cheaper (relaxed sync constraints, more time per slot)
-        \item not immune to narrowband interferances
+        \item not immune to narrowband Interference
     \end{itemize}
     
     \item \textbf{\textit{fast hopping}}: the transmitter uses several frequencies for one period:
@@ -549,7 +549,7 @@ It is possible to distinguish \textbf{VANET} in two different scenario:
         \includegraphics[width=0.75\textwidth]{img/v2x_urban}
 
         \begin{flushleft}
-            There are ``two direction'' for movement. The circumstances can change based on the environment: if the vechicle is driving it can have few neighboard (multiple hops to reach someone faraway), instead in a parking area the number of neighboard it can be easily increase. In the urban scenario it can be possible to have \textit{obstacles}: \textbf{GPS} not always work.
+            There are ``two direction'' for movement. The circumstances can change based on the environment: if the vechicle is driving it can have few neighbor (multiple hops to reach someone faraway), instead in a parking area the number of neighbor it can be easily increase. In the urban scenario it can be possible to have \textit{obstacles}: \textbf{GPS} not always work.
         \end{flushleft}
     \end{minipage}
 \end{figure}
@@ -910,3 +910,137 @@ To relax the state (from restrictive to relaxed) the same \textit{maxChannelLoad
 \textbf{CAM} message is \textbf{strongly related} with \textbf{GPS}.
 
 \section{Broadcast \& Flooding}
+\textbf{Flooding} (Multi-Hop Broadcast), simple protocol: if we receive a new message $\rightarrow$ send (retransmit, propagate), instead if we receive a duplicate message $\rightarrow$ do not do anything (idle).
+\begin{boxA}
+    \textcolor{red}{\textbf{Broadcast Storm}} is the problem that we want to avoid, because can carry to some consequences like:
+    \begin{itemize}[nosep]
+        \item \textbf{interference}: impact on other system
+        \item \textbf{collision}: impact on other user
+        \item \textbf{contention}: impact on other application
+    \end{itemize}
+\end{boxA}
+In \textbf{VANET} was found a specific solution to this type of problem: \textbf{Broadcast Suppression} where there is no needs of neighbor information, control message and permit to maximizes distance per hops and minimize packet loss.
+\begin{boxA}
+    \textit{
+        Upon receiving a packet from node $i$, node $j$ checks the packet ID and rebroadcasts with probability $p_{ij}$ if it receives the packet for the first time; otherwise , it discard the packet.
+    }
+\end{boxA}
+The probability can be compute on the \textbf{distance} from the sender to the receiver based on the transmission \textit{radius} (\textbf{GPS}) or based on the \textbf{RSS} knowledge. 
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \textbf{Broadcast Suppression: GPS based} \\
+        \begin{center}
+            \begin{math}
+                p_{ij} = 
+                \begin{cases}
+                    0, \qquad D_{ij} < 0 \\
+                    \frac{D_{ij}}{R}, \quad 0 \leq D_{ij} < R \\
+                    1, \qquad \text{otherwise}
+                \end{cases}
+            \end{math}
+        \end{center}
+        Where $D_{ij}$ is the \textbf{GPS} geographical distance between nodes $i$ and $j$.
+    \end{minipage}
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \textbf{Broadcast Suppression: RSS based} \\
+        \begin{center}
+            \begin{math}
+                p_{ij} = 
+                \begin{cases}
+                    0, \qquad \quad x_{ij} > x_{max} \\
+                    \frac{x_{max} - x_{ij}}{x_{max} - x_{min}}, x_{min} \leq x_{ij} < x_{max} \\
+                    1, \qquad \quad \text{otherwise}
+                \end{cases}
+            \end{math}
+        \end{center}
+        Where $x = RSS$, $RSS_{ij}$ is the receiver signal strength of the last broadcast packet received at node $j$. In case 0 and 1 update the min and max.
+    \end{minipage}
+\end{figure}
+The core idea is: in the close/dense scenario, the probability of retransmission is lower to avoid congestion/noise, otherwise in far/sparse scenarios, the probability of retransmission is higher to permit propagation. \\
+To the other side, the \textbf{problem}, of this algorithm is: the fragmentation of the network (due to an accident) or the undirected message dissemination (you cannot chose the direction of the flooding).
+
+\section{802.11bd - NGV}
+\textbf{\textit{New Generation V2X}} (\textbf{\textit{NGV}}). \\
+\textbf{Motivation}:
+\begin{figure}[h]
+    \begin{minipage}[t]{0.4\textwidth}
+        \begin{itemize}[nosep]
+            \item higher throughput
+            \item increase range
+            \item lower complexity receiver
+            \item ranging
+        \end{itemize}
+    \end{minipage}
+    \begin{minipage}[t]{0.5\textwidth}
+        \begin{itemize}[nosep]
+            \item mm-Wave support: new $60GHz$ spectrum for smart application sensing and radar
+            \item improvements benefitting 802.11p receiver
+        \end{itemize}
+    \end{minipage}
+\end{figure}
+The core idea of this transiction to a new \textbf{V2X} standard is to have the \textbf{Backwards Compatibility}, how it is perform? 
+\begin{enumerate}[nosep]
+    \item not changing at all the way we are accessing to the medium.
+    \item the initial part of \textbf{TX} message it must be equal (like CAN-FD).
+    \item a flag in the \textbf{TX} message to know if the station is \textbf{NGV} compliant.
+\end{enumerate}
+
+\textbf{802.11bd Message}
+\begin{center}
+    \begin{tabular}{ | c | c | c | c | c | c | c | c | c | } \hline
+        \multicolumn{3}{ | c | }{\textbf{802.11p preamble}} & \multicolumn{3}{ | c | }{\textbf{802.11bd NGV preamble}} & \multicolumn{3}{ | c | }{\textbf{802.11bd NGV data}} \\ \hline
+        STF & LTF & SIG & RL-SIG & NGV-SIG & RNGV-SIG & STF & LTF & DATA \\ \hline
+    \end{tabular}
+\end{center}
+
+The communication was create to being able to operate in both way: \textbf{802.11p} and \textbf{802.11bd}: the preamble is alway $10MHz$, instead when start the \textbf{802.11bd preamble} it can reach the $20MHz$, the fairness does not change: the QoS is mantain like the \textbf{11p} (\textbf{CSMA/CA}). The radio spectrum is used efficiently (using \textbf{DCC}).
+\begin{itemize}[nosep]
+    \item \textbf{\textit{Short Training Field}} (\textbf{\textit{STF}}): used for coarse synchronization.
+    \item \textbf{\textit{Long Training Field}} (\textbf{\textit{LTF}}): used for fine-sync and initial channel estimation.
+    \item \textbf{\textit{Signal Field}} (\textbf{\textit{SIG}}) is coded by the receiver to determine \textbf{TX} parameters, like: 24 rate bits, lenght and parity information.
+\end{itemize}
+In the \textbf{802.11p preamble} there are information that permit to a vehicle that speak only \textbf{802.11p} to understand when the \textbf{NGV transmission} ends, in this way the vehicles in \textbf{802.11p} can try to have access to the channel knowing what happen on it (otherwise of this type of vehicle the entire communication it could be like a noise). Using the technologies over the \textbf{802.11bd} is possible to increase the throughput by $8\%$. There are three possible communication way:
+\begin{itemize}[nosep]
+    \item \textbf{802.11p} to \textbf{802.11p}.
+    \item \textbf{802.11p} to \textbf{802.11bd} and viceversa.
+    \item \textbf{802.11bd} to \textbf{802.11bd} (it could be unicast or broadcast).
+\end{itemize}
+
+\textbf{\textit{802.11bd Technical Features}}:
+\begin{enumerate}[nosep]
+
+    \item \textbf{Modulation}:
+    \begin{itemize}[nosep]
+        \item \textbf{robustness}: \textbf{BPSK-DCM 1/2} is intended for use cases and applications requiring very low sensitivity.
+        \item \textbf{throughput}: \textbf{256-QAM} allow up to $39Mbit/s$ in a single $10MHz$ ($44\%$ more than \textbf{11p}).
+    \end{itemize}
+
+    \item \textbf{Signal Structure}:
+    \begin{itemize}[nosep]
+        \item \textbf{spacing}: same subcarrier spacing as \textbf{11p} ($156.25kHz$)
+        \item \textbf{subcarriers}: \textbf{11bd} uses a larger fraction of the channel.
+    \end{itemize}
+
+    \item \textbf{Channel Coding}: \textbf{\textit{Low Density Parity Check}} (\textbf{\textit{LDPC}}) forward \textbf{\textit{Error Correction Coding}} (\textbf{\textit{FEC}}) allow to use the same sensitivity to be able to use much more efficiently modulation scheme
+
+    \item \textbf{\textit{Channel Estimation and Tracking}}: every four block uou have a new estimation (\textbf{11bd}) $\rightarrow$ understand the channel conditions.
+
+    \item \textbf{\textit{MIMO}}: offering a potential gain in unicast transmission of 2 times higher throughput. This operational mode is not intended for the broadcast operation.
+
+    \item create two subchannel of $5.9GHz$ one for the \textbf{\textit{Control Channel}} (\textbf{\textit{CCH}}) used for safety message and network control and the second one, is the \textbf{\textit{Service Channel}} (\textbf{\textit{SCH}}) used for all other message.
+
+    \item \textbf{Fully backward compatible}: \textbf{11bd} operation utilizes two adjacent $10MHz$ channels to achive higher throughput. These two adjacent channel can simultaneously be utilized as a $20MHz$ channel or as independt $10MHz$ channels.
+
+    \item \textbf{Ranging for positioning support}: in \textbf{11bd} there is an alternative to \textbf{GNSS} (like in \textbf{GPS-denied} environment) which is a subset of the \textbf{\textit{Fine Timining Measurement}} (\textbf{\textit{FTM}}) $\rightarrow$ derived from \textbf{802.11az Enhanced Positioning}:
+    \begin{center}
+        $d^i = c \cdot t^i = c \cdot \frac{(t^i_4 -t^i_1) - (t^i_3 - t^i_2)}{2}$ \\
+        where $d^i$ is the distance computed in the i-th FTM iteration.
+    \end{center}
+
+    \item \textbf{\textit{Multichannel Operation}} (\textbf{\textit{MCO}})
+
+\end{enumerate}

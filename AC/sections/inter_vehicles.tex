@@ -134,7 +134,7 @@ $\Delta e$ is equal for all satellite, because all of them are perfectly synchro
 \end{figure}
 
 The bluetooth works at $2.4GHz$, like WiFi and ZigBee. A bluetooth network is named \textbf{piconet} and use a \textit{master}/\textit{slave} communication type. \\
-In a bluetooth network there is always a \textbf{master} and up to seven \textbf{slave}, each slave can be only connected to one master. The master coordinates communication throughout the \textit{piconet} it can send data to every one slave connect and can request data to each slave. The slaves can only talk with the master not between them. 
+In a bluetooth network there is always a \textbf{master} and up to seven \textbf{slave}, each slave can be only connected to one master. The master coordinates communication throughput the \textit{piconet} it can send data to every one slave connect and can request data to each slave. The slaves can only talk with the master not between them. 
 
 \subsection{Address \& Names}
 The identifier for each node into a piconet (both for slave and master) its a \textbf{unique 48 bits address}, commonly abbreviated \textbf{\textit{BD\_ADDR}}, usually is show as 12digit hexadecimal value, similar to the MAC address.
@@ -449,3 +449,257 @@ The \textit{end device} and the \textit{server} use \textbf{MAC Commands} for co
         \end{tabular} & \\ \hline
     \end{tabular}
 \end{center}
+
+\newpage
+\section{V2X}
+\textbf{\textit{Intelligent Transportation System}} (\textbf{\textit{ITS}}) add information and communications technology to transport infrastructures and vehicles in effort to improve their safety, relaibility, efficiency and quality $\rightarrow$ avoid congestion (easy work for the drivers). \\ 
+\textbf{\textit{European Telecommunication Standard Institute}} (\textbf{\textit{ETSI}}) standardize some new messages that allows to be transmitted into the network: \textbf{\textit{CAM}} and \textbf{\textit{DENM}} to permit safety, a new way to send broadcast message into the network, efficiency and enabling the \textbf{QoS} in the frame. \\
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[t]{0.3\textwidth}
+        \centering
+        \textbf{\textit{V2X}}
+    \end{minipage}
+    =
+    \begin{minipage}[t]{0.3\textwidth}
+        \centering
+        \textbf{\textit{IVC}} \\ 
+        (\textbf{\textit{Inter-Vehicles Communication}})
+    \end{minipage}
+    =
+    \begin{minipage}[t]{0.3\textwidth}
+        \centering
+        \textbf{\textit{VANET}} \\ 
+        (\textbf{\textit{Vehicle ad-Hoc Network}})
+    \end{minipage}
+\end{figure}
+Different name, but same thing. Today the most used and the standardize one is the \textbf{V2X}, that indicates multiples thigs that can be connect with the vehicle:
+\begin{itemize}[nosep]
+    \item \textbf{V2V}: vehicular-to-vehicular
+    \item \textbf{V2I}: vehicular-to-infrastructure network
+    \item \textbf{other}: it depends on top of which domain are created
+\end{itemize}
+It is possible identify two different \textbf{application} for \textbf{V2X}:
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[t]{0.35\textwidth}
+        \centering
+        \textbf{\textit{Non Safety Purpose}} \\ ($\cong$ Infotainment): many messages and high data-rate, low latency and low reliability demand.
+    \end{minipage}
+    \begin{minipage}[t]{0.55\textwidth}
+        \centering
+        \textbf{\textit{Safety Purpose}} ($\cong$ X-by-Wire): few message (sporadic) and small packet size, high latency and high reliability demand. It is not possible to tollerate false positive or true negative messages.
+    \end{minipage}
+\end{figure}
+Based on the requirements of the domain where we want deploy \textbf{V2X} we can have different application with different characteristics (latency, reliability, area and persistence).
+
+\newpage
+\textbf{\textit{Timeline}}
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[t]{0.2\textwidth}
+        \centering
+        \textbf{\textit{Traditional Network}}
+        \begin{itemize}[nosep]
+            \item wired
+            \item non-moving nodes
+            \item static configuration
+        \end{itemize}
+    \end{minipage}
+    $\rightarrow$
+    \begin{minipage}[t]{0.35\textwidth}
+        \centering
+        \textbf{\textit{Mobile ad-Hoc Network}} (\textbf{\textit{MANET}})
+        \begin{itemize}[nosep]
+            \item wireless
+            \item mobile nodes
+            \item dynamic configuration
+            \item infrastructure (optinal): WiFi and Mobile cellular line.
+        \end{itemize}
+    \end{minipage}
+    $\rightarrow$
+    \begin{minipage}[t]{0.35\textwidth}
+        \centering
+        \textbf{\textit{Vehicular ad-Hoc Network} (\textbf{\textit{VANET}})}
+        \begin{itemize}[nosep]
+            \item dynamic topologies (could be bus or star)
+            \item infrastructure(less)
+            \item broadcast or unicast messages
+        \end{itemize}
+    \end{minipage}
+\end{figure}
+It is necessary to change the name from \textbf{MANET} to \textbf{VANET} because there is two main different purpose of the network utilization moreover \textbf{VANET} could change its own topologies dynamically.
+It is possible to distinguish \textbf{VANET} in two different scenario:
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.75\textwidth]{img/v2x_freeway}
+
+        \begin{flushleft}
+            With only ``one direction'' for the movement we can have a \textit{stable connection} (if the vehicles are going in same the way) or \textit{unstable connection}, if the vehicles are not going in the same way (few second of connections).
+            \textbf{Autonomous Drive} is drammatic easy on freeway (no cross road or obstacles)
+        \end{flushleft}
+    \end{minipage}
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.75\textwidth]{img/v2x_urban}
+
+        \begin{flushleft}
+            There are ``two direction'' for movement. The circumstances can change based on the environment: if the vechicle is driving it can have few neighboard (multiple hops to reach someone faraway), instead in a parking area the number of neighboard it can be easily increase. In the urban scenario it can be possible to have \textit{obstacles}: \textbf{GPS} not always work.
+        \end{flushleft}
+    \end{minipage}
+\end{figure}
+\begin{boxA}
+    \textbf{\textit{Firmware Over The Air}} (\textbf{\textit{FOTA}}) \\
+    \textbf{\textit{Stationary Support Units}} (\textbf{\textit{SSU}}): it is the name give to a nodes that is more important than the other and can have multiple scope:
+    \begin{itemize}[nosep]
+        \item provide connectivity to other nodes.
+        \item manage the radio use for connectivity purpose.
+        \item unlimited power supply.
+        \item is not connected to internet: is part of the jungle, but more important.
+    \end{itemize}
+    \textbf{\textit{RoadSide Unit}} (\textbf{\textit{RSU}}): it is an \textbf{SSU} with the internet connection, you can act as a piece of the infrastructure and can enable the traffic to the \textbf{\textit{Traffic Information Center}} (\textbf{\textit{TIC}}).
+\end{boxA}
+It is possible identify two different \textbf{infrastructure} for \textbf{V2X}:
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \textbf{\textit{infrastructure}} \\ (problem alredy solve):
+        \begin{itemize}[nosep]
+            \item resource management.
+            \item add latency (multiple hops).
+            \item high load on the \textit{core network}.
+            \item high throughput.
+        \end{itemize}
+    \end{minipage}
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \textbf{\textit{infrastructureless}}:
+        \begin{itemize}[nosep]
+            \item self organized: channel access and authentication are the biggest problem.
+            \item low latency (no multiple hops).
+            \item low datarate: wireless environment in which multiple nodes can communicate simultaneously.
+        \end{itemize}
+    \end{minipage}
+\end{figure}
+In the \textbf{infrastructureless} scenario it is necessary to define by your own the rules that the nodes must be compliant to, to allow communication. Moreover there are an heterogeneous scenario to support where the communication can be \textit{point-to-point} or \textit{broadcast}.
+
+\newpage
+\begin{figure}[h]
+    \noindent
+    \begin{minipage}[t]{0.05\textwidth}
+        \vfill
+        \begin{center} \rotatebox{90}{\textbf{CHALLENGES}} \end{center}
+        \vfill
+    \end{minipage}
+    \begin{minipage}[t]{0.9\textwidth}
+        \centering
+        \begin{tabular}{
+            |p{\dimexpr.35\linewidth-2\tabcolsep-1.3333\arrayrulewidth}
+            |p{\dimexpr.55\linewidth-2\tabcolsep-1.3333\arrayrulewidth}|   
+        } \hline
+        
+            \textbf{Communication} & The channel condition dynamically varying based on network topology and the communication type (unicast or broadcast). If multiple nodes want to communicate in the same time it could be happen \textbf{congestion} or \textbf{starvation} on the medium channel \\ \hline
+
+            \textbf{Networking} & The flow information that was send from a node $A$ to a node $B$ can be unicat or multicast (following access algorithm of \textbf{CSMA/CA}). In the same network it can be present multiple different nodes: \textbf{heterogeneity}\\ \hline
+
+            \textbf{Mobility} & Not only for the high speed but for the dynamically change of the topology. It can be predict.\\ \hline
+
+        \end{tabular}
+    \end{minipage}
+\end{figure}
+
+\section{Wireless Communication}
+\begin{enumerate}[nosep]
+    \item \textbf{Broadcast Media} (one way): frequency are used for business purposes, you can only receiveing data, like police radio.
+    \begin{boxA}
+        \centering
+        \textbf{\textit{Traffic Message Channel}} (\textbf{\textit{TMC}}) \\
+        \textbf{\textit{Radio Distrinbution System}} (\textbf{\textit{RDS}})
+    \end{boxA}
+    \item \textbf{Cellular Lane}: it is possible to put bottom in \textbf{V2X}. Divide the world into cell (\textbf{\textit{User Equipment - UE}}), each served by base station (\textbf{3GPP} have \textit{license} spectrum frequency).
+    \begin{boxA}
+        \centering
+        \textbf{\textit{Frequency Divide Multiple Access}} (\textbf{\textit{FDMA}}) \\
+        \textbf{\textit{Radio Network Core}} (\textbf{\textit{RNC}})
+    \end{boxA}
+    \item \textbf{IEEE 802.11p}: new communication protocol based on the requirements of the \textbf{V2X}.
+\end{enumerate}
+
+\section{C-V2X}
+It is the acronym for \textbf{Cellular V2X} and try to embrace the characteristic of \textbf{V2X} on the public system, this type of implementation leads to some problem, like: 
+\begin{enumerate}[nosep]
+    \item using an infrastructure alredy used for other purpose it is possible to have \textit{delay}.
+    \item if the number of the nodes in the infrastructure double (the ones alredy present and all the vehicles plus the RSUs) there are a lot of nodes in the infrastructure. This can lead to \textit{capacity} problems
+    \item if we consider that one autonomous car use $4000Gb$ of data per day, it can involve some \textit{bit-rate} problem.
+    \item it is \textit{expensive}.
+\end{enumerate}
+Since the cellular line infrastructure it was create for other purpose, instead the \textbf{V2X}, the downlink and uplink are \textbf{unbalance}, so the communication channel could be:
+\begin{enumerate}[nosep]
+    \item \textbf{downlink}: from the server to the device the delay is on the order of $10ms$. \textbf{\textit{Forward Access Channel}} (\textbf{\textit{FACH}}).
+    \item \textbf{uplink}: from the device to the server, it can have a delay approximately of $50ms$ (if we use \textbf{LTE} it can be lowered until $25ms$). \textbf{\textit{Random Access Channel}} (\textbf{\textit{RACH}}).
+    \item there is also a dedicated channel with a delay approximately between $250ms$ and $2s$. \textbf{\textit{Dedicated Transport Channel}} (\textbf{\textit{DCH}}).
+\end{enumerate}
+It is possible to classified the \textbf{C-V2X} based on the \textbf{radio interfaces} used: \textbf{LTE-Uu} each node is attach to the infrastructure and for communicate each other a node $A$ upload the information on the server and the node $B$ read throught the server (\textit{license spectrum}) or the \textbf{LTE-PC5}, where there is not infrastructure. \\
+In the \textbf{LTE-PC5} if you are in the same area of coverage of an antenna you can use the support of the infrastructure (never implemented), instead if you are out of coverage it is possible to use point-to-point commnuication using \textbf{LTE} at $5.9Ghz$ frequency ($\simeq$ 802.11p). \\
+The \textbf{physical layer} of \textbf{C-V2X} is divide into \textbf{\textit{Resource Block}} (\textbf{\textit{RB}}) with a width of $180MHz$ each one. Every \textbf{RB} is split into \textbf{\textit{Time Unit}} (\textbf{\textit{TU}}) each one of $1ms$ long. In this way is performed a matrix where on the y-axis there are the \textbf{frequency} and on the x-axis the \textbf{time}. If a node wants to transmit something it needs to take possession of a \textbf{RB} for a certain amount of time ($m$ \textbf{TU}), for each transmission there are two different type of message classes:
+\begin{itemize}[nosep]
+    \item \textbf{\textit{Transport Block}} (\textbf{\textit{TB}}) where is allocated the data.
+    \item \textbf{\textit{Sidelink Control Information}} (\textbf{\textit{SCI}}) that permit to manage the communication: rent a \textbf{RB} for a certain amount of time. In this type of message is included the \textbf{\textit{Modulation and Coding Scheme}} (\textbf{\textit{MCS}}).
+\end{itemize}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{img/cv2x}
+\end{figure}
+\textbf{TB} and \textbf{SCI} are transmitted in adjacent \textbf{RBs}, the \textbf{SCI} requires two adjacent \textbf{RB}. The idea behind the medium access is similar to bluetooth, where we change the frequency each time we want to transmit a piece of information, in this case we take a frequency for a certain amount of time for the entire duration of the transmission $\cong$ \textbf{\textit{Time Division Multiple Access}} (\textbf{\textit{TDMA}}) it is mandatory to have synchronize all nodes $\rightarrow$ need \textbf{GPS} and \textbf{GNSS} for the synchronization.
+
+\section{802.11p}
+
+Is the technologies adopt for the implementation of \textbf{V2X} also known as \textbf{\textit{Wireless Access in Vehicular Environment}} (\textbf{\textit{WAVE}}).
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.45\textwidth]{img/11a}
+        \caption{802.11 data flow}
+        \label{fig:11a}
+        
+        \begin{flushleft}
+            \textbf{IEEE 802.11} \\
+            WiFi: high latency and used by everyone $\rightarrow$ lot of pollution in the world spectrum. It is created for the internet navigation have completly different requirements by \textbf{V2X}. There is no \textbf{QoS} by default. \\
+            \textbf{\textit{Basic Service Set}} (\textbf{\textit{BSS}}): there is a node that orchestrate the network (authentication, routing and iP assignement) contain the \textbf{BSSID}. The Fig. \ref{fig:11a} define how a client joining the communication. The server sent a \textbf{beacon} that contain the frequency for that access point and propagate the \textbf{SSID}.
+        \end{flushleft}
+    \end{minipage}
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.45\textwidth]{img/11p}
+        \caption{802.11p data flow}
+        \label{fig:11p}
+
+        \begin{flushleft}
+            \textbf{IEEE 802.11p} \\
+            \begin{boxA}
+                \centering
+                \textbf{bandwidth}: $10MHz$ \\
+                \textbf{throughput}: $3-27Mbit/s$ \\
+                \textbf{range}: up to $1km$ \\
+                \textbf{speed}: $200km/h$
+            \end{boxA}
+            It is created knowing the requirements for the \textbf{V2X} use the \textit{MAC Layer} of \textbf{802.11a} plus extension:
+            \begin{enumerate}[nosep]
+                \item random \textbf{MAC address}
+                \item use of \textbf{\textit{Enhanced Distributed Channel Access}} (\textbf{\textit{EDCA}}) for prioritizing the message on the medium access (\textbf{QoS})
+                \item multi-frequency and multi-radio capabilities
+            \end{enumerate}
+            The base idea is: there is no need of an iP you can listen and talk on a particular frequency. (Fig. \ref{fig:11p}), this idea is named: \textbf{\textit{Outside The Context of a BSS}} (\textbf{\textit{OCB}}).
+        \end{flushleft}
+    \end{minipage}
+\end{figure}

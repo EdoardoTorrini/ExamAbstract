@@ -5,7 +5,7 @@ Una \textbf{operazione binaria intera} su un insieme G è un'applicazione
     $\ast \; : \; G \times G \rightarrow G$
 \end{center}
 L'immagine della coppia $(x,y)$ si denoterà con $x \ast y$. 
-\begin{itemize}
+\begin{itemize}[nosep]
     \item $e \in G$ si dice \textbf{elemento neutro} rispetto a $\ast$ se:
     \begin{center}
         $g \ast e = e \ast g = g \; \forall g \in G$
@@ -15,7 +15,7 @@ L'immagine della coppia $(x,y)$ si denoterà con $x \ast y$.
 
 \subsection{Gruppi}
 La coppia $(G, \ast)$, con $\ast$ operazione su G, si dice \textbf{gruppo} se vengono rispettate le seguenti proprietà:
-\begin{itemize}
+\begin{itemize}[nosep]
     \item $\ast$ è \textbf{associativa}: $\forall g, g', g'' \in G$ si ha $(g \ast g') \ast g'' = g \ast (g' \ast g'')$
     \item esiste l'elemento \textbf{neutro}
     \item ogni elemento di G è invertibile
@@ -25,14 +25,14 @@ Il gruppo si dice \textbf{abeliano} o \textbf{commutativo} se:
     $\forall g, g' \in G, \; g \ast g' = g' \ast g$ (proprietà \textbf{commutativa})
 \end{center}
 Alcuni \textcolor{yellow}{\textbf{esempi}}:
-\begin{itemize}
+\begin{itemize}[nosep]
     \item $(\mathbb{N}, +)$, $(\mathbb{Z}, \cdot)$ non sono gruppi. in quanto non né in $\mathbb{N}$ e $\mathbb{Z}$ sono presenti per ogni elemento dell'insieme dell'elemento inverso, in $\mathbb{N}$ non sono presenti elementi negativi, quindi nessun elemento avrà un'altro che sommato a se stesso dia 0, viceversa l'insieme $\mathbb{Z}$ che sono presenti elementi positivi e negativi viene definita l'operazione $\cdot$ richiede i reciproci dei singoli elementi affiché possano essere definiti gli elementi inversi.
     \item $(\mathbb{Z}, +)$, $(\mathbb{Q}, \cdot)$ sono gruppi abelliani
 \end{itemize}
 
 \subsection{Anelli}
 La terna $(\mathbb{A}, +, \cdot)$ con $\mathbb{A}$ un insieme e $+, \cdot$ (somma e prodotto) due operazione binarie interne a $\mathbb{A}$, si dice \textbf{anello} se:
-\begin{itemize}
+\begin{itemize}[nosep]
     \item $(\mathbb{A}, +, \cdot)$ è un gruppo \textbf{abeliano} (con elemento neutro 0).
     \item il prodotto è \textbf{associativo}.
     \item per ogni $x,y,z \in \mathbb{K}$ si ha $x \cdot (y + z) = (x \cdot y) + (x \cdot z)$ e $(x + y) \cdot z = (x \cdot z) + (y \cdot z)$ (il prodotto è distribuito rispetto alla somma).
@@ -42,7 +42,7 @@ Un anello $(\mathbb{A}, +, \cdot)$ è detto \textbf{commutativa} se il prodotto 
 \newpage
 \subsection{Campi}
 La terna $(\mathbb{K}, +, \cdot)$ con $\mathbb{K}$ un insieme e $+, \cdot$ (somma e prodotto) due operazioni binarie interne a $\mathbb{K}$, si dice \textbf{campo} se:
-\begin{itemize}
+\begin{itemize}[nosep]
     \item $(\mathbb{K}, +)$ è un gruppo \textbf{abeliano} (con elemento neutro 0).
     \item $(\mathbb{K} - \{0\}, \cdot)$ è un gruppo \textbf{abeliano} (con elemento neutro 1).
     \item per ogni $x,y,z \in \mathbb{K}$ si ha $x \cdot (y + z) = (x \cdot y) + (x \cdot z)$ quindi il prodotto è distribuito rispetto alla somma.
@@ -87,7 +87,7 @@ Essendo che $\mathbb{Z}$ è un \textbf{dominio di integrità}, segue che o $n = 
 
 \section{Massimo Comune Divisore}
 Dati $a,b \in \mathbb{Z}$ non entrambi nulli, si dice che $d \in \mathbb{Z}$ è \textbf{UN massimo comune divisore} tra $a$ e $b$ se:
-\begin{itemize}
+\begin{itemize}[nosep]
     \item $d|a$ e $d|b$
     \item $\forall d' \in \mathbb{Z} \; | \; d'|a, \; d'|b \Rightarrow d'|d$
 \end{itemize}

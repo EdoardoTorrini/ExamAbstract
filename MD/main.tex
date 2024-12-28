@@ -10,6 +10,8 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{lmodern}
+\usepackage{varwidth}
+\usepackage{xcolor}
 % page margins settings
 \usepackage[inner=3cm,outer=2.5cm,top=3cm,bottom=2.5cm]{geometry}
 %\usepackage{indentfirst}
@@ -41,6 +43,13 @@
 \usepackage{tikz-qtree}
 
 \newcommand\myeq{\stackrel{\mathclap{\tiny\mbox{def}}}{=}}
+
+\usepackage[many]{tcolorbox}
+\newtcolorbox{boxA}{
+    % fontupper = \bf,
+    boxrule = 1.5pt,
+    colframe = black % frame color
+}
 
 \usetikzlibrary{shadows}
 \definecolor{light-gray}{gray}{0.96}

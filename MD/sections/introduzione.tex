@@ -1,23 +1,23 @@
 \chapter{Complementi su insiemi e relazioni}
 
 \section{Funzioni}
-Una \textbf{funzione} o \textbf{applicazione} tra due insiemi A e B è rappresentata:
+Una \textbf{funzione} o \textbf{applicazione} tra due insiemi A e B è una legge per cui per ogni elemento del primo insieme esiste uno e un solo elemento del secondo insieme e viene rappresentata:
 \begin{center}
     $f : A \rightarrow B \; t.c. \; \forall a \in A \; \exists ! b \in B \; | \; f(a) = b$
 \end{center}
-\begin{enumerate}
-    \item la funzione si dice \textbf{iniettiva} se:
-        \begin{center}
-            $\forall a, a' \in A, \; f(a) = f(a') \Rightarrow a = a'$
-        \end{center}
-    \item la funzione si dice \textbf{suriettiva} se:
-        \begin{center}
-            $\forall b \in B, \exists a \in A \; | \; f(a) = b$    
-        \end{center}
+$b$ è l'\textbf{immagine} di $a$. \\ \newline
+\textbf{Proprietà delle Funzioni}
+\begin{enumerate}[nosep]
+
+    \item la funzione si dice \textbf{iniettiva} se vale che:  $\forall a, a' \in A, \; f(a) = f(a') \Rightarrow a = a'$.
+
+    \item la funzione si dice \textbf{suriettiva} sevale che: $\forall b \in B, \exists a \in A \; | \; f(a) = b$.
+
     \item una funzione $f : A \rightarrow B$ si dice \textbf{biettiva} o \textbf{biunivoca} se è contemporaneamente \textit{iniettiva} e \textit{suriettiva} ovvero se:
         \begin{center}
-            $\forall b \in B \; \exists ! a \in A \; t.c. \; f(a) = b $
+            \fcolorbox{red}{white}{$\forall b \in B$} $\;$ \fcolorbox{green}{white}{$\exists ! a \in A$} $\; t.c. \; f(a) = b$
         \end{center}
+    il \textcolor{red}{box rosso} identifica l'\textbf{iniettività}, mentre il \textcolor{green}{box verde} identifica la \textbf{suriettività}.
 \end{enumerate}
 
 \newpage
@@ -26,19 +26,30 @@ Due insiemi A e B si dicono \textbf{equipotenti} (o con la stessa \textbf{cardin
 \begin{center}
     $f : A \rightarrow B, \; f \; biunivoca$
 \end{center}
-E utilizzeremo come notazione: $card(A) = card(B)$, $|A| = |B|$ oppure $\#A = \#B$.
-Un insieme A si dice finito se:
+Siccome $f$ è \textbf{biunivoca} avremo che ogni elemento di A avrà \textbf{uno e un solo} elemento di B distinto e B sarà formato da sole immagini di A portando i due insieme ad avere ``lo stesso numero'' di elementi, utilizzeremo come notazione: $\#A = \#B$.
+Un insieme A si dice \textbf{finito} se:
 \begin{center}
     $\exists n \in \mathbb{N}, \; f : A \rightarrow \mathbb{N}_n, \; f \; biunivoca$
 \end{center}
-In questo caso diremo che la \textbf{cardinalità} di A è \textbf{n}: $card(A) = card(\mathbb{N}_n) = n$ \\
+\begin{boxA}
+    \begin{minipage}[t]{0.3\textwidth}
+        \centering
+        $A = \{ \Box, \boxdot, \blacksquare \}$ \\
+        $\mathbb{N}_3 = \{1, 2, 3 \}$
+    \end{minipage}
+    \begin{minipage}[t]{0.6\textwidth}
+        \centering
+        contando i simboli dell'insieme A si va a creare un'associazione tra gli elementi di A e di $\mathbb{N}_3$
+    \end{minipage}
+\end{boxA}
+In questo caso diremo che la \textbf{cardinalità} di A è \textbf{n}: $\#A = \#\mathbb{N}_n = n$ \\
 Un insieme A si dice \textbf{numerabile} se:
 \begin{center}
     $\exists f : A \rightarrow \mathbb{N}, \; f \; biunivoca$
 \end{center}
-In questo caso si dice che A ha cardinalità numerabile e si può rappresentare attraverso la lettera \textbf{aleph} (è la prima lettera dell'alfabeto ebraico): $card(A) = card(\mathbb{N}) = \aleph_0$. \\
+In questo caso si dice che A ha cardinalità numerabile e si può rappresentare attraverso la lettera \textbf{aleph} (è la prima lettera dell'alfabeto ebraico): $\#A = \#\mathbb{N} = \aleph_0$ (si ricordi: \textbf{il Paradosso dell'albergo di Hilbert}). \\
 Alcuni esempi: 
-\begin{enumerate}
+\begin{enumerate}[nosep]
     \item l'insieme $\mathbb{Z}$ è \textbf{numerabile} ($\#\mathbb{N} = \#\mathbb{Z}$):
         \begin{center}
             $0 \rightarrow 1$ \\
@@ -52,17 +63,23 @@ Alcuni esempi:
         \end{center}
 \end{enumerate}
 
-Un insieme A si dice \textbf{discreto} se è \textbf{finito} o \textbf{numerabile}. \\
-Se A è finito di cardinalità \textbf{n}, i suoi elementi possono essere etichettati con gli elementi di $\mathbb{N}_n$:
-\begin{center}
-    $A = \{a_1, a_2, ..., a_n\}$    
-\end{center}
-Se A è numerabile, gli elementi possono essere ``etichettati'' con gli elementi di $\mathbb{N}$:
-\begin{center}
-    $A = \{a_1, a_2, ..., a_n, ...\} = \{a_i \; | \; i \in \mathbb{N} \}$
-\end{center}
+\begin{boxA}
+    Un insieme A si dice \textbf{discreto} se è \textbf{finito} o \textbf{numerabile} (tutti gli insiemi \textit{numerabili} sono infiniti, ma non tutti gli insimi infiniti sono numerabili)
+\end{boxA}
+\begin{figure}[h]
+    \begin{minipage}[t]{0.4\textwidth}
+        \centering
+        Se A è finito di cardinalità \textbf{n}, i suoi elementi possono essere etichettati con gli elementi di $\mathbb{N}_n$: $A = \{a_1, a_2, ..., a_n\}$
+    \end{minipage}
+    \begin{minipage}[t]{0.5\textwidth}
+        \centering
+        Se A è numerabile, gli elementi possono essere ``etichettati'' con gli elementi di $\mathbb{N}$: $A = \{a_1, a_2, ..., a_n, ...\} = \{a_i \; | \; i \in \mathbb{N} \}$
+    \end{minipage}
+\end{figure}
 
-Dato un insieme discreto A ed un suo sottoinsieme $Y \subseteq A$ si dice \textbf{funzione caratteristica} di Y la funzione:
+\bigskip
+
+\textbf{Funzione Caratteristica}: è un'applicazione ce determina se un elemento appartiene o meno ad un sottoinsieme Y di A ($Y \subseteq A$). Quindi diremo che dato un insieme discreto A ed un suo sottoinsieme $Y \subseteq A$ si dice \textbf{funzione caratteristica} di Y la funzione:
 \begin{figure}[h]
     \begin{minipage}{0.5\textwidth}
         \centering
@@ -86,12 +103,11 @@ Se A è un insieme discreto, ed $f : A \rightarrow \{0, 1\}$ una applicazione a 
 \end{center}
 Un esempio, definiamo $A = \mathbb{N}$ e sia $f : A \rightarrow \{0, 1\}$ definita da una \textbf{funzione caratteristica} del tipo: $n \rightarrow \frac{1 + (-1)^{n}}{2}$. In questo caso la funzione $f$ identifica, a partire dall'insieme $\mathbb{N}$, il sottoinsieme $\mathbb{P}$ dei numeri pari. \\
 Utilizzando la \textbf{funzione caratteristica} si può ricavare la seguente proprietà degli insiemi discreti:
-\begin{itemize}
+\begin{itemize}[nosep]
     \item se A è finito di cardinalità \textit{n}, l'insieme $\mathcal{P}(a)$ delle \textbf{parti di A} è in corrispondenza biunivoca con l'\textbf{insieme delle n-ple} a valori in $\{0, 1\}$.
     \item se A è numerabile, l'insieme $\mathcal{P}(a)$ delle parti di A è in corrispondenza biunivoca con l'\textbf{insieme delle successioni} a valori in $\{0, 1\}$.
 \end{itemize}
 
-\newpage
 \subsection{Proprietà 1}
 Se X e Y sono insiemi \textbf{finiti}, con $\#X = n, \; \#Y = m$ e con $X \cap Y = \emptyset$, allora $\#(X \cup Y) = n + m$. \\
 \textcolor{green}{\textbf{Dimostrazione}}: per Hp. esistono due funzioni biettive $f : X \rightarrow \mathbb{N}_n$ e $g : Y \rightarrow \mathbb{N}_m$. Per dimostrare la proprietà occorre costruire una funzione biettiva $h : X \cup Y \rightarrow \mathbb{N}_{n + m}$. Possiamo porre $\forall c \in X \cup Y$ come:
@@ -118,12 +134,6 @@ Se X è un insieme \textbf{finito} con $\#X = n$ ed Y è un insieme \textbf{nume
     \end{math}
 \end{center}
 
-\fbox{\begin{minipage}{\textwidth}
-    \textcolor{purple}{\textbf{Off-Topic}}: \\
-    \textbf{Paradosso del Grand Hotel di Hilbert}: il paradosso del \textit{Grand Hotel} inventato dal matematico \textit{David Hilbert} per mostrare alcune caratteristiche del concetto di infinito e le differenze fra opzioni con insieme finiti ed infiniti. Hilbert immagina un hotel con infinite stanze, tutte occupate, e afferma che qualsiasi sia il numero di altri ospiti che sopraggiungano, sarà sempre possibile ospitarli tutti, anche se il loro numero è infinito, purché numerabile. \\
-    Nel caso semplice, arriva un singolo nuovo ospite. Il furbo albergatore sposterà tutti i clienti nella camera successiva (l'ospite della 1 alla 2, quello della 2 alla 3, etc.); in questo modo, benché l'albergo fosse pieno è comunque, essendo infinito, possibile sistemare il nuovo ospite.
-\end{minipage}}
-
 \newpage
 \subsection{Proprietà 3}
 Se X e Y sono due insiemi \textbf{numerabili}, allora anche $X \cup Y$ è \textbf{numerabile}. \\
@@ -138,11 +148,14 @@ Se X e Y sono due insiemi \textbf{numerabili}, allora anche $X \cup Y$ è \textb
     \end{math}
 \end{center}
 
-\fbox{\begin{minipage}{\textwidth}
+\begin{boxA}
     \textcolor{purple}{\textbf{Off-Topic}}: \\
-    \textbf{Paradosso del Grand Hotel di Hilbert}: Un caso meno intuitivo si ha quando arrivano infiniti nuovi ospiti. Sarebbe possibile procedere nel modo visto in precedenza, ma solo scomodando infinite volte gli ospiti (già spazientiti dal precedente spostamento): sostiene allora Hilbert che la soluzione sta semplicemente nello spostare ogni ospite nella stanza con numero doppio rispetto a quello attuale (dalla 1 alla 2, dalla 2 alla 4,etc.), lasciando ai nuovi ospiti tutte le camere con i numeri dispari, che sono essi stessi infiniti, risolvendo dunque il problema. Gli ospiti sono tutti dunque sistemati, benché l'albergo fosse pieno.
-\end{minipage}}
-\\ \newline
+    \textbf{Paradosso del Grand Hotel di Hilbert}: il paradosso del \textit{Grand Hotel} inventato dal matematico \textit{David Hilbert} per mostrare alcune caratteristiche del concetto di infinito e le differenze fra opzioni con insieme finiti ed infiniti. Hilbert immagina un hotel con infinite stanze, tutte occupate, e afferma che qualsiasi sia il numero di altri ospiti che sopraggiungano, sarà sempre possibile ospitarli tutti, anche se il loro numero è infinito, purché numerabile. \\
+    Nel caso semplice, arriva un singolo nuovo ospite. Il furbo albergatore sposterà tutti i clienti nella camera successiva (l'ospite della 1 alla 2, quello della 2 alla 3, etc.); in questo modo, benché l'albergo fosse pieno è comunque, essendo infinito, possibile sistemare il nuovo ospite.
+    Un caso meno intuitivo si ha quando arrivano infiniti nuovi ospiti. Sarebbe possibile procedere nel modo visto in precedenza, ma solo scomodando infinite volte gli ospiti (già spazientiti dal precedente spostamento): sostiene allora Hilbert che la soluzione sta semplicemente nello spostare ogni ospite nella stanza con numero doppio rispetto a quello attuale (dalla 1 alla 2, dalla 2 alla 4,etc.), lasciando ai nuovi ospiti tutte le camere con i numeri dispari, che sono essi stessi infiniti, risolvendo dunque il problema. Gli ospiti sono tutti dunque sistemati, benché l'albergo fosse pieno.
+\end{boxA}
+
+
 \textbf{Proposizione}: se X è un insieme numerabile e $Y \subseteq X$ allora Y è un insieme \textbf{discreto}.
 
 \newpage
@@ -163,52 +176,57 @@ Se $\{A_i \; | \; i \in \mathbb{N}\} = \{A_1, A_2, ..., A_i, ...\}$ è un \textb
         ... & ... & .. & ... & ... & ... & ... \\
     \end{tabular}
 \end{center}
-Consideriamo le diagonali \textcolor{red}{$D_1$}, \textcolor{blue}{$D_2$}, ..., \textcolor{green}{$D_k$}, ..., dove: $D_k = \{a_{ij} \; | \; i + j = k + 1\}$. E notiamo che sono composte da finiti elementi. Per dimostrare che $\#(\bigcup_{i \in \mathbb{N}}A_i)$ è \textbf{numerabile}, occorre costruire una applicazione biunivoca, tale che:
+Consideriamo le diagonali \textcolor{red}{$D_1=\{a_{11}\}$}, \textcolor{blue}{$D_2=\{a_{21}, a_{12}\}$}, ..., \textcolor{green}{$D_k$}, ..., dove: $D_k = \{a_{ij} \; | \; i + j = k + 1\}$, dove il valore delle $j$ identifica la posizione all'interno della diagonale $D_k$. Notiamo che sono composte da finiti elementi. Per dimostrare che $\#(\bigcup_{i \in \mathbb{N}}A_i)$ è \textbf{numerabile}, occorre costruire una applicazione biunivoca, tale che:
 \begin{center}
     $h : \bigcup_{i \in \mathbb{N}_n} A_i \rightarrow \mathbb{N}$
 \end{center}
-Idealmente, vorremmo etichettare, ogni generico elemento $a_{ij}$ che apparterrà alla $k-esima$ diagonale:
-\begin{center}
-    $a_{ij} \in D_{k}$ \\
-    $k = i + j - 1$ \\
-    $a_{ij} \in D_{(i + j - 1)}$
-\end{center}
-Scorrendo ogni diagonale a partire dall'elemento che sta nell'insieme con indice maggiore, incontrerò l'elemento $a_{ij}$ come j-esimo elemento della diagonale a cui esso appartiene, ovvero come j-esimo elemento della diagonale $D_{i+j-1}$. \\
-Se noi vogliamo numerare la cardinalità delle \textit{n} diagonali già prese in considerazione prima del nuovo elemento $a_{ij}$ che stiamo esaminando, consideriamo $\#D_k = k$ e avremo:
-\begin{center}
-    $\sum_{k=1}^{i+j-2}\#D_k = \frac{(i + j - 2)(i + j - 1)}{2}$
-\end{center}
-Vista la costruzione delle diagonali questa somma non sarà altro che la somma dei primi $i + j - 2$ numeri naturali:
-\begin{center}
-    $\sum_{k=1}^{n} k = \frac{n(n + 1)}{2} \;$ \\
-    $\sum_{k=1}^{i + j - 2} k = \frac{(i + j - 2)(i + j - 2 + 1)}{2}$ 
-\end{center}
-In questo modo abbiamo trovato un metodo di etichettare tutte le diagonali (e quindi i loro elementi) fino alla diagonale che contiene l'lelemento $a_{ij}$, ma siccome sappiamo che l'elemento $a_{ij}$ è nella $j-esima$ posizione della diagonale $i+j-1$ allora possiamo definire una applicazione biunivoca che associa ogni elemento dell'unione degli insiemi a $\mathbb{N}$ $h : \bigcup_{i \in \mathbb{N}_n}A_i \rightarrow \mathbb{N}$ definita, $\forall a_{ij} \in \bigcup_{i \in \mathbb{N}_n} A_i$, da:
+Idealmente, vorremmo etichettare, ogni generico elemento $a_{ij}$ che apparterrà alla $k-esima$ diagonale, in questo modo si creerà l'applicazione \textit{biunivoca}.
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[t]{0.15\textwidth}
+        \centering
+        $\#D_k = k$
+    \end{minipage}
+    $\rightarrow$
+    \begin{minipage}[t]{0.4\textwidth}
+        \centering
+        ci serve la somma delle cardinalità delle diagonali precedenti alla diagonale tale che $a_{ij} \in D_k$
+    \end{minipage}
+    $\rightarrow$
+    \begin{minipage}[t]{0.35\textwidth}
+        \centering
+        $\sum^{i+j-2}_{k=1} \#D_k = \frac{(i + j - 2) \cdot (i + j - 1)}{2}$
+    \end{minipage}
+\end{figure}
+In questo modo abbiamo ``etichettato'' tutti gli elementi appartenenti alle diagonali precedenti alla diagonale di riferimento $D_k$, ora ci mancano da ``etichettare'' gli elementi che precendo $a_{ij}$ sulla diagonale, ma sapendo che $a_{ij}$ è il \textbf{j-esimo} elemento allora basterà:
 \begin{center}
     $h(a_{ij}) = j + \frac{(i + j - 2)(i + j - 1)}{2}$
 \end{center}
-In questo modo siamo riusciti a ``etichettare'' tutti gli elementi una e una sola volta.
+In questo modo abbiamo ``etichettato'' anche tutti gli elementi che precedono il nostro $a_{ij}$, ma in direttamente abbiamo descritto un'applicazione \textbf{biunivoca} tra $\bigcup_{i \in \mathbb{N}_n} A_i$ e $\mathbb{N}$, ovvero $h(a_{ij})$ che quindi ci permette di dimostrare che anche $\bigcup_{i \in \mathbb{N}_n} A_i$ è \textbf{numerabile}.
 
 \textbf{Conseguenze}:
-\begin{itemize}
+\begin{itemize}[nosep]
     \item $\mathbb{Z}$ è numerabile: $\mathbb{Z} = \mathbb{N} \cup \{0\} \cup \{ -n \; | \; n \in \mathbb{N}\}$.
     \item $\mathbb{N} \times \mathbb{N}$ è numerabile: $\mathbb{N} \times \mathbb{N} = \{(n, m) \; | \; n, m \in \mathbb{N}\} = \bigcup_{n \in \mathbb{N}} \{(n, m) \; | \; m \in \mathbb{N}\}$.
     \item $\mathbb{Q}$ è numerabile.
 \end{itemize}
 
-\newpage
 \section{Confronto tra Cardinalità}
 Si dice che un insieme A ha \textbf{cardinalità minore o uguale} ad un insieme B (e si indica con: $\#A \leq \#B$) se: $\exists f : A \rightarrow B, \; f \; è \; iniettiva$. \\
 \textbf{Proprietà}:
-\begin{itemize}
+\begin{itemize}[nosep]
     \item \textbf{riflessività}: $\forall A, \; \#A \leq \#A$.
     \item \textbf{transitività}: $\#A \leq \#B, \; \#B \leq \#C \Rightarrow \#A \leq \#C$.
     \item \textbf{antisimmetria}: $\#A \leq \#B, \; \#B \leq \#A \Rightarrow \#A = \#B$.
     \item \textbf{tricotomia}: $\forall A, B \Rightarrow \#A \leq \#B \; o \; \#B \leq \#A$.
 \end{itemize}
-La relazione ``$\leq$'' fra cardinalità è una relazione di ordine totale. \\
-$A \subseteq B \subseteq C$ con $\#A = \#B \Rightarrow \#A = \#B = \#C$. \\
-\newline
+La relazione ``$\leq$'' fra cardinalità è una relazione di ordine totale.
+
+\begin{boxA}
+    \textcolor{blue}{\textbf{Lemma}}: $A \subseteq B \subseteq C$ con $\#A = \#B \Rightarrow \#A = \#B = \#C$.
+\end{boxA}
+
 \textbf{Teorema di Cantor-Bernstein-Schroeder}: Se $\exists f : A \rightarrow B, \; f \; iniettiva$ ed $\exists g : B \rightarrow A, \; g \; iniettiva$ allora $\exists h : A \rightarrow B, \; h \; biunivoca$. \\
 \textcolor{green}{\textbf{Dimostrazione}}: poiché $f$ e $g$ sono iniettive se le restriangamo alla loro immagine biunivoca:
 \begin{center}
@@ -221,17 +239,15 @@ Avremo:
 \end{center}
 e per il \textcolor{blue}{lemma} possiamo dire che $\#g(B) = \#A$ e $\#g(B) = \#B$ e quindi avremo che $\#A = \#B$, questo implica che esiste una funzione $h : A \rightarrow B$ biunivoca.
 
-\newpage
 \textbf{Teorema di Cantor}: se $A$ è un insieme \textbf{numerabile} allora $\mathcal{P}(A)$ ha cardinalità \textbf{maggiore} di $A$:
 \begin{center}
     $\#A \leq \#\mathcal{P}(A) \; con \; \#A \neq \#\mathcal{P}(A)$
 \end{center}
 \textcolor{green}{\textbf{Dimostrazione}}: 
-\begin{itemize}
+\begin{itemize}[nosep]
     \item dimostriamo per prima cosa che $\#A \leq \#\mathcal{P}(A)$ basta trovare una funzione definita $f : A \rightarrow \mathcal{P}(A)$ che sia \textbf{iniettiva} e non biunivoca.
     \begin{center}
         $f(a) = \{a\}$
-
     \end{center}
     Utilizziamo una \textbf{dimostrazione per} \textcolor{blue}{\textbf{assurdo}}: sappiamo che $\mathcal{P}(A)$ è in corrispondenza biunivoca con le successioni a valori in $\{0,1\}$; allora se $\mathcal{P}(A)$ fosse numerabile sarebbe possibile elencare tutte le successioni a valori in $\{0,1\}$:
 \end{itemize}
@@ -260,24 +276,36 @@ che stabilisce biunivocità tra $\mathbb{R}$ e $] -1, 1[$ possiamo affermare che
     $0,\bar{9} = 1 \in \mathbb{R}$ || viene a perdersi la biunivocità \\
     $\Rightarrow \#\mathbb{R} = \# \mathcal{P}(\mathbb{N})$
 \end{center}
-Questa tipologia di cardinalità viene definita \textbf{cardinalità del continuo} e si denota con \textbf{c} o con $2^{\aleph_0}$. \\
-\textbf{Congettura} (ipotesi del continuo): non esistono cardinalità comprese fra $\#\mathbb{N}$ e $\#\mathbb{R} $. \\
-\textbf{Congettura} (ipotesi generalizzata del continuo): non esistono cardinalità comprese tra $\#X$ e $\mathcal{P}(X) = 2^{\#X} \; \forall X$ di cardinalità non finita.
+Questa tipologia di cardinalità viene definita \textbf{cardinalità del continuo} e si denota con \textbf{c} o con $2^{\aleph_0}$.
+\begin{boxA}
+    \centering
+    \textbf{Congettura} (\textit{ipotesi del continuo}) \\ 
+    non esistono cardinalità comprese fra $\#\mathbb{N}$ e $\#\mathbb{R} $.
+\end{boxA}
+\begin{boxA}
+    \centering
+    \textbf{Congettura} (\textit{ipotesi generalizzata del continuo}) \\
+    non esistono cardinalità comprese tra $\#X$ e $\mathcal{P}(X) = 2^{\#X} \; \forall X$ di cardinalità non finita.
+\end{boxA}
 
 \newpage
 \section{Relazioni di Equivalenza}
-Una \textbf{relazione} $\mathcal{R}$ tra due insiemi A e B è un \textbf{sottoinsieme} del \textbf{prodotto cartesiano} fra A e B, ovvero $\mathcal{R} \in A \times B$. \\
-\textcolor{yellow}{\textbf{Esempio}}: $\mathcal{R} = '\leq'$ è relazione tra i due insiemi $A = \mathbb{N}$ e $B = \mathbb{N}$, poiché definisce un sottoinsieme del prodotto cartesiamo $\mathbb{N} \times \mathbb{N}$. \\
-Ad esempio: $(1, 2) \in \mathcal{R} \; \text{e} \; (2, 1) \notin \mathcal{R}$. \\ \newline
+Una \textbf{relazione} $\mathcal{R}$ tra due insiemi A e B è un \textbf{sottoinsieme} del \textbf{prodotto cartesiano} fra A e B, ovvero $\mathcal{R} \in A \times B$.
+\begin{boxA}
+    \textcolor{yellow}{\textbf{Esempio}} \\
+    $\mathcal{R} = '\leq'$ è relazione tra i due insiemi $A = \mathbb{N}$ e $B = \mathbb{N}$, poiché definisce un sottoinsieme del prodotto cartesiamo $\mathbb{N} \times \mathbb{N}$. \\
+    Ad esempio: $(1, 2) \in \mathcal{R} \; \text{e} \; (2, 1) \notin \mathcal{R}$.
+\end{boxA}
+
 Una relazione $\mathcal{R}$ su A si dice \textbf{relazione di equivalenza} se sono vere le seguenti proprietà:
-\begin{itemize}
+\begin{itemize}[nosep]
     \item \textit{riflessività}: $\forall a \in A \Rightarrow a\mathcal{R}a$
     \item \textit{simmetria}: $\forall a,b \in A \; : \; a\mathcal{R}b \Rightarrow b\mathcal{R}a$
     \item \textit{transitività}: $\forall a,b,c \in A \; : \; a\mathcal{R}b \; e \; b\mathcal{R}c \Rightarrow a\mathcal{R}c$
 \end{itemize}
 \textbf{Definizione}: sia $\mathcal{R}$ una \textbf{relazione di equivalenza} su A. Per ogni $a \in A$ si dice \textcolor{red}{\textbf{classe di equivalenza}} $[a] = \{x \in A \; | \; x\mathcal{R}a\}$. \\ \newline
 \textbf{Proprietà}:
-\begin{itemize}
+\begin{itemize}[nosep]
     \item $\forall a \in A, \; a \in [a]$ \\
           \textcolor{green}{\textbf{Dimostrazione}}: è conseguenza diretta della proprietà riflessiva.
     \item $\forall a,b \in A, \; a \in [b] \Rightarrow [b] = [a]$ \\
@@ -285,7 +313,7 @@ Una relazione $\mathcal{R}$ su A si dice \textbf{relazione di equivalenza} se so
     \item $\forall a,b \in A, \; [a] = [b] \; oppure \; [a] \cap [b] \neq \emptyset$ \\
           \textcolor{green}{\textbf{Dimostrazione}}: se $\exists c \in [a] \cap [b]$, si ha $c \in [a] e c \in [b]$, ovvero $c\mathcal{R}a$ e $c\mathcal{R}b$. Applicando la \textbf{proprietà di simmetria} a $c\mathcal{R}a$ si ottiene $a\mathcal{R}c$, per cui la proprietà transitiva assicura $a\mathcal{R}b$, ovvero $a \in [b]$. La seconda proprietà implica $[a] = [b]$. Quindi, se due classi hanno un elemento in comune, le due classi coincidono.
 \end{itemize}
-\textbf{Insieme Quoziente}: sia A un insieme ed $\mathcal{R}$ una relazione di equivalenza su A. Si definisce \textbf{insieme quoziente} di A rispetto ad $mathcal{R}$,
+\textbf{Insieme Quoziente}: sia A un insieme ed $\mathcal{R}$ una relazione di equivalenza su A. Si definisce \textbf{insieme quoziente} di A rispetto ad $\mathcal{R}$,
 \begin{center}
     $\frac{A}{\mathcal{R}} = \{[a] \; | \; a \in A\}$
 \end{center}
@@ -300,7 +328,7 @@ L'insieme quoziente $\frac{\mathbb{R}}{\mathcal{R}}$ è in corrispondenza biuniv
     $(a,b)\mathcal{R}(a',b')$ se e solo se $a+b' = a'+b$
 \end{center}
 In generale:
-\begin{itemize}
+\begin{itemize}[nosep]
     \item se $a=b$, $[(a,b)] = \{(n,n) \; | \; n \in \mathbb{N}\}$
     \item se $a<b$, $[(a,b)] = \{(n,n+b-a) \; | \; n \in \mathbb{N}\}$
     \item se $a>b$, $[(a,b)] = \{n+a-b,n\ \; | \; n \in \mathbb{N}\}$
@@ -313,7 +341,7 @@ Allora l'insieme quoziente $\frac{\mathbb{N}_0 \times \mathbb{N}_0}{\mathcal{R}}
     $x \equiv_n y$ se e solo se $\exists h \in \mathbb{Z} \; | \; y - x = h \cdot n$
 \end{center}
 Verifichiamo che $\equiv_n$ è una \textbf{relazione di equivalenze}:
-\begin{itemize}
+\begin{itemize}[nosep]
     \item \textbf{riflessività}: $\forall x \in \mathbb{Z}, \; x \equiv_n x$ è verificato, poiché $x - x = h \cdot n$ considerando $h = 0 \in \mathbb{Z}$.
     \item \textbf{simmetria}: se $x \equiv_n y$, per definizione $\exists h \in \mathbb{Z}$ tale che $y - x = h \cdot n$. Per dimostrare che $y \equiv_n x$ devo trovare un $h' \in \mathbb{Z} \; | \; x-y = h' \cdot n$. Basta prendere $h'=-h$.
     \item \textbf{transitività}: se $x \equiv_n y$ e $y \equiv_n <$, allora $\exists h \in \mathbb{Z} \; | \; y - x = h \cdot n$ ed $\exists k \in \mathbb{Z} \; | \; z - y = k \cdot n$. Sommando membreo a membro, si ottiene $z - x = (h + k) \cdot n$; siccome $h + k \in \mathbb{Z}$ segue che $x \equiv_n z$.
@@ -333,3 +361,23 @@ Viceversa se $\mathcal{B}$ è una partizione di A, $\exists ! \mathcal{R}$ relaz
 \begin{center}
     $x\mathcal{R}y \Leftrightarrow \exists B \in \mathcal{B} \; | \; x, y \in B$
 \end{center}
+
+\begin{boxA}
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        $\mathbb{Z}_4 = \{[0], [1], [2], [3]\}$
+    \begin{tikzpicture}[scale=0.4]
+        \draw[thick] (0,0) circle(2);
+        \foreach \angle/\label in {90/{[0]}, 0/{[1]}, 270/{[2]}, 180/{[3]}} {
+            \coordinate (P) at ({2*cos(\angle)},{2*sin(\angle)});
+            \fill (P) circle(2pt);
+            \node at ({2.5*cos(\angle)},{2.5*sin(\angle)}) {\label};
+        }
+    \end{tikzpicture}
+    \hfill
+    \end{minipage}
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+    $\mathbb{Z}$ è più facilemente rappresentabile tramite una circonferenza
+    \end{minipage}
+\end{boxA}

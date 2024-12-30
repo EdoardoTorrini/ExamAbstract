@@ -133,9 +133,128 @@ Definito questo possiamo dire che $(\mathbb{Z}, \boxplus, \boxdot)$ è \textbf{d
 \end{itemize}
 
 \section{Massimo Comune Divisore}
-Dati $a,b \in \mathbb{Z}$ non entrambi nulli, si dice che $d \in \mathbb{Z}$ è \textbf{UN massimo comune divisore} tra $a$ e $b$ se:
-\begin{itemize}[nosep]
-    \item $d|a$ e $d|b$
-    \item $\forall d' \in \mathbb{Z} \; | \; d'|a, \; d'|b \Rightarrow d'|d$
-\end{itemize}
-Se $d$ e $d'$ sono due massimi comuni divisori tra $a$ e $b$ allora $d' = \pm d$.
+Dati $a,b \in \mathbb{Z}$ non entrambi nulli, si dice che $d \in \mathbb{Z}$ è \textcolor{red}{\textbf{UN}} \textbf{massimo comune divisore} tra $a$ e $b$ se valgono contemporaneamente le due proprietà:
+\begin{center}
+    $d|a \; \text{e} \; d|b \qquad \forall d' \in \mathbb{Z} \; | \; d'|a, \; d'|b \Rightarrow d'|d$
+\end{center}
+
+\begin{boxA}
+    Se $d$ e $d'$ sono due massimi comuni divisori tra $a$ e $b$ allora $d' = \pm d$. \\ \newline
+    \textcolor{olive}{\textbf{Dimostrazione}} \\
+    $\forall d' \in \mathbb{Z} \; \Rightarrow \; d'|a, \; d|b \; \Rightarrow \; d'|d \; \Rightarrow \; d=\pm d'$ \\
+    $\forall d \in \mathbb{Z} \; d|a, \; d|b \; \Rightarrow \; d|d'$
+\end{boxA}
+Dati $a, b \in \mathbb{Z}$ non entrambi nulli, si dice che $d \in \mathbb{Z}^+$ è \textcolor{red}{\textbf{IL}} \textbf{massimo comune divisore} (\textbf{\textit{Greatest Common Divisor}}) tra $a,b$ se $d$ è un \textit{massimo comune divisore} fra $a$ e $b$ (fra i due possibili \textbf{MCD} prendo il massimo, quindi quello positivo).
+
+{\centering
+    $d = \gcd(a, b)$
+\par}
+
+\begin{boxA}
+    \textcolor{orange}{\textbf{Esempio}} \\
+    Se $a|b$, allora $\gcd(a, b) = |a|$ e in particolare $\gcd(a, 0) = |a| \; \forall a \in \mathbb{Z} - \{0\}$
+\end{boxA}
+
+Dati $a, b \in \mathbb{Z}$ non entrambi nulla, allora \fcolorbox{red}{white}{$\exists ! \gcd(a, b)$} e viene inoltre definita l'\textbf{Identità di \textit{Bezout}} che rappresenta il massimo comun divisore come combinazione lineare di $a$ e $b$:
+
+{\centering
+    $\gcd(a, b) = a \cdot \alpha + b \cdot \beta$
+\par}
+
+Questi valori ($\alpha$ e $\beta$) però non sono strettamente univocamente determinata, infatti in generale una coppia di numeri interi hanno più di un $\alpha$ e un $\beta$ definiti.
+
+\begin{boxA}
+    \textcolor{olive}{\textbf{Dimostrazione}} \\
+    Consideraiamo un insieme S costituito da tutte le combinazioni lineari intere di $a, b$ che abbia però risultati strettamente positivi.
+    
+    {\centering
+        $S = \{\lambda \cdot a + \mu \cdot b \; \vert \; \lambda, \mu \in \mathbb{Z}, \; \lambda \cdot a + \mu \cdot b > 0\}$
+    \par}
+
+    Osserviamo che l'insieme S non è vuoto ($S \neq \emptyset$), infatti almeno uno tra $a$ e $b$ non è nullo, infatti ponendo $a \neq 0$ è possibile affermare che:
+
+    {\centering
+        $| a | = \text{(segno)} \cdot a + 0 \cdot b \; \rightarrow \; | a | \in S$
+    \par}
+
+    Osserviamo che S contiene unicamente numeri naturali possiamo dire che $S \subseteq \mathbb{N}$ non vuoto e che quindi $\exists \min(s) = d$ ovvero l'insieme è limitato inferiormente. Siccome $d \in S$ questo vuol dire che è rappresentabile come \textbf{combinazione lineare}, ovvero \fcolorbox{red}{white}{$\exists \overline{\lambda}, \overline{\mu} \in \mathbb{Z} \; t.c. \; d = \overline{\lambda} \cdot a + \overline{\mu} \cdot b$}. \\
+    Adesso cerchiamo di dimostrare che questo $d$ è proprio il massimo comune divisore che stavo cercando: \fcolorbox{red}{white}{\textbf{Th.} $d = \gcd(a, b)$} ovvero che $d|a$ e che $d|b$.
+    \begin{itemize}[nosep]
+        \item partiamo \textcolor{olive}{dimostrando} che $a|b$, andiamo a considerare la \textbf{divisione euclidea} tra $a$ e $d$.
+
+        {\centering
+            $\exists q \in \mathbb{Z}, \; \exists r \in \mathbb{Z}, \; 0 \leq r < d \; \vert \; a = q \cdot d + r$
+            \begin{align*}
+            r &= a - q \cdot d \\
+            &= a - q \cdot (\overline{\lambda} \cdot a + \overline{\mu} \cdot b) \\
+            &= a - q \cdot \overline{\lambda} \cdot a + q \cdot \overline{\mu} \cdot b \\
+            &= a \cdot \underset{\in \mathbb{Z}}{\fcolorbox{red}{white}{$(1 - q \cdot \overline{\lambda})$}} + b \cdot \underset{\in \mathbb{Z}}{\fcolorbox{red}{white}{$q \cdot \overline{\mu}$}}
+            \end{align*}
+        \par}
+
+        In questo modo abbiamo scritto $r$ come combinazione lineare di due interi, ma \textbf{se} $r \neq 0$ allora $r \in S$ siccome, però, $r < d$ e $d = \min(S)$ arriviamo ad un \textcolor{red}{\textbf{assurdo}}, quindi affinché vengano rispettati i vincoli bisogna che $r = 0 \quad \Rightarrow \quad a = q \cdot d + 0 = q \cdot d$ e quindi \fcolorbox{red}{white}{$d|a$}
+
+        \item in perfetta analogia si può dimostrare che \fcolorbox{red}{white}{$d|b$}, partendo dalla \textbf{divisione euclidea} tra $b$ e $d$.
+    \end{itemize}
+\end{boxA}
+
+\begin{boxA}
+    \begin{itemize}[nosep]
+        \item bisogna ora \textcolor{olive}{dimostrare} che $\forall d' \in \mathbb{Z} \; | \; d'|a, \; d'|b \Rightarrow d'|d$. Poiché $d = \overline{\lambda} \cdot a + \overline{\mu} \cdot b$ allora bisognerà che \fcolorbox{red}{white}{$\exists h \in \mathbb{Z} \; | \; a = d' \cdot h$} e \fcolorbox{red}{white}{$\exists k \in \mathbb{Z} \; | \; b = d' \cdot k$}. Usando queste due relazioni, segue che:
+        \begin{align*}
+            d &= \overline{\lambda} \cdot d' \cdot h + \overline{\mu} \cdot d' \cdot k \\
+            &= d' \cdot \underset{\in \mathbb{Z}}{\fcolorbox{red}{white}{$[(\overline{\lambda} \cdot h) + (\overline{\mu} \cdot k)]$}}
+        \end{align*}
+
+        In questo modo siamo riusciti a dimostrare che $d'|d$.
+    \end{itemize}
+    Siamo riusciti a dimostrare il teorema di esistenza del \textbf{massimo comune divisore} in S, come il suo minimo: $d = \min(S) = \gcd(a, b)$
+\end{boxA}
+
+Siano $a,b \in \mathbb{Z}$, con $|a| \geq |b| > 0$. Se $a = b \cdot q + r$ è la \textbf{divisione euclidea} fra $a$ e $b$ allora avremo:
+\begin{center}
+    $\{c \in \mathbb{Z} \; \vert \; c | a, \; c | b \} = \{c \in \mathbb{Z} \; | \; c | b, \; c | r \}$
+\end{center}
+Ovvero l'insieme degli interi che dividono $a$ e $b$ sono gli stessi che dividono sia $b$ che $r$, conseguenza di questo fatto è che:
+\begin{center}
+     $\gcd(a, b) = \gcd(b, r)$
+\end{center}
+
+\begin{boxA}
+    \textcolor{olive}{\textbf{Dimostrazione}}
+    \begin{itemize}[nosep]
+        \item partiamo dal primo insieme: $\{c \in \mathbb{Z} \; \vert \; c | a, \; c | b \}$ andiamo a dimostrare che \fcolorbox{red}{white}{\textbf{Th.} $c|r$} (perché che $c|b$ è implicito per la costruzione del problema). Poiché $c|a$ e $c|b$ allora:
+        
+        {\centering
+            $\exists h \in \mathbb{Z} \; \text{t.c.} \; a = c \cdot h \qquad \exists k \in \mathbb{Z} \; \text{t.c.} \; b = c \cdot k$
+        \par}
+
+        Consideriamo ora la \textbf{divisione euclidea} tra $a$ e $b$ avremo che:
+        \begin{align*}
+            r &= a - b \cdot q \\
+            &= c \cdot h - c \cdot k \cdot q \\
+            & = \underset{\in \mathbb{Z}}{\underline{c \cdot (h - k \cdot q)}}
+        \end{align*}
+        Quindi in questo modo abbiamo dimostrato che $c|r$.
+    \end{itemize}
+\end{boxA}
+
+\begin{boxA}
+    \begin{itemize}[nosep]
+        \item affrontiamo ora il secondo insieme $\{c \in \mathbb{Z} \; | \; c | b, \; c | r \}$ e andiamo a dimostrare che \fcolorbox{red}{white}{\textbf{Th.} $c|a$} (perché che $c|b$ è implicito per la costruzione del problema). Poichè $c|b$ e $c|r$ allora:
+
+        {\centering
+            $\exists h \in \mathbb{Z} \; \text{t.c.} \; b = c \cdot h \qquad \exists k \in \mathbb{Z} \; \text{t.c.} \; r = c \cdot k$
+        \par}
+
+        Consideriamo la \textbf{divisione euclidea} tra $a$ e $b$ avremo che:
+        \begin{align*}
+            a &= b \cdot q + r \\
+            &= c \cdot h \cdot q + c \cdot k \\
+            &= c \cdot \underset{\in \mathbb{Z}}{\underline{(h \cdot q + k)}}
+        \end{align*} 
+        Quindi in questo modo abbiamo dimostrato che $c|a$.
+    \end{itemize}
+\end{boxA}
+
+\textbf{Algoritmo delle Divisioni Successive (di Euclide)}

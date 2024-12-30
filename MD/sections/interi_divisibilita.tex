@@ -24,9 +24,9 @@ Il gruppo si dice \textbf{abeliano} o \textbf{commutativo} se:
 \begin{center}
     $\forall g, g' \in G, \; g \ast g' = g' \ast g$ (proprietà \textbf{commutativa})
 \end{center}
-Alcuni \textcolor{yellow}{\textbf{esempi}}:
+Alcuni \textcolor{orange}{\textbf{esempi}}:
 \begin{itemize}[nosep]
-    \item $(\mathbb{N}, +)$, $(\mathbb{Z}, \cdot)$ non sono gruppi. in quanto non né in $\mathbb{N}$ e $\mathbb{Z}$ sono presenti per ogni elemento dell'insieme dell'elemento inverso, in $\mathbb{N}$ non sono presenti elementi negativi, quindi nessun elemento avrà un'altro che sommato a se stesso dia 0, viceversa l'insieme $\mathbb{Z}$ che sono presenti elementi positivi e negativi viene definita l'operazione $\cdot$ richiede i reciproci dei singoli elementi affiché possano essere definiti gli elementi inversi.
+    \item $(\mathbb{N}, +)$, $(\mathbb{Z}, \cdot)$ non sono gruppi. In quanto non né in $\mathbb{N}$ né in $\mathbb{Z}$ è presente per ogni elemento dell'insieme l'elemento inverso, in $\mathbb{N}$ non sono presenti elementi negativi, quindi nessun elemento avrà un'altro elemento che sommato a se stesso dia 0, viceversa l'insieme $\mathbb{Z}$ dove sono presenti elementi positivi e negativi viene, invece, definita l'operazione $\cdot$ che richiede i reciproci dei singoli elementi affiché possano essere definiti gli elementi inversi.
     \item $(\mathbb{Z}, +)$, $(\mathbb{Q}, \cdot)$ sono gruppi abelliani
 \end{itemize}
 
@@ -39,7 +39,6 @@ La terna $(\mathbb{A}, +, \cdot)$ con $\mathbb{A}$ un insieme e $+, \cdot$ (somm
 \end{itemize}
 Un anello $(\mathbb{A}, +, \cdot)$ è detto \textbf{commutativa} se il prodotto è commutativo, mentre è detto \textbf{unitario} o con \textbf{unità} se $(\mathbb{A}, \cdot)$ ammette l'elemento neutro. $(\mathbb{Z}, +, \cdot)$, $(\mathbb{Q}, +, \cdot)$, $(\mathbb{R}, +, \cdot)$, $(\mathbb{C}, +, \cdot)$ sono anelli.
 
-\newpage
 \subsection{Campi}
 La terna $(\mathbb{K}, +, \cdot)$ con $\mathbb{K}$ un insieme e $+, \cdot$ (somma e prodotto) due operazioni binarie interne a $\mathbb{K}$, si dice \textbf{campo} se:
 \begin{itemize}[nosep]
@@ -53,8 +52,41 @@ In qualunque campo vale la \textbf{legge di annullamento del prodotto}:
 \end{center}
 
 \subsection{Domini d'integrità}
-\textbf{Divisori dello zero}: sia $(A, +, \cdot)$ un anello. Due elementi $a,b \in A$ si dicono \textbf{divisori dello zero} se $a \neq 0$, $b \neq 0$, ma $a \cdot b = 0$. Ad \textcolor{yellow}{\textbf{esempio}} l'anello delle matrici quadrate presenta dei divisori dello zero. \\
-Un anello commutativo privo di divisori dello zero si dice \textbf{dominio di integrità}, ad \textcolor{yellow}{\textbf{esempio}} $(\mathbb{Z}, +, \cdot)$ è un anello commutativo unitario privo di divisori dello zero. Quindi è dominio di integrità.
+\textbf{Divisori dello zero}: sia $(A, +, \cdot)$ un anello. Due elementi $a,b \in A$ si dicono \textbf{divisori dello zero} se $a \neq 0$, $b \neq 0$, ma $a \cdot b = 0$. Ovvero, può succedere che in un anello due elementi non nulli il cui prodotto fa 0.
+\begin{boxA}
+    Ad \textcolor{orange}{\textbf{esempio}} l'anello delle matrici quadrate presenta dei divisori dello zero, infatti due matrici non nulle è possibile che il loro prodotto presenti la matrice nulla.
+    \begin{center}
+        \begin{math}
+            A = \begin{pmatrix}
+                1 & 1 \\
+                1 & 1
+                \end{pmatrix}, \quad B = \begin{pmatrix}
+                1 & -1 \\
+                -1 & 1
+                \end{pmatrix}
+        \end{math}
+        \begin{math}
+            A \cdot B = \begin{pmatrix}
+                1 & 1 \\
+                1 & 1
+                \end{pmatrix} \cdot \begin{pmatrix}
+                1 & -1 \\
+                -1 & 1
+                \end{pmatrix} = \begin{pmatrix}
+                (1 \cdot 1 + 1 \cdot -1) & (1 \cdot -1 + 1 \cdot 1) \\
+                (1 \cdot 1 + 1 \cdot -1) & (1 \cdot -1 + 1 \cdot 1)
+                \end{pmatrix} = \begin{pmatrix}
+                0 & 0 \\
+                0 & 0
+                \end{pmatrix}
+        \end{math}
+    \end{center}    
+\end{boxA}
+\textbf{Dominio di Integrità}: Un anello commutativo privo di divisori dello zero si dice \textbf{dominio di integrità}.
+
+\begin{boxA}
+    Ad \textcolor{orange}{\textbf{esempio}} $(\mathbb{Z}, +, \cdot)$ è un \textbf{anello commutativo unitario} privo di divisori dello zero. Quindi è dominio di integrità.
+\end{boxA}
 
 \section{L'anello dei numeri interi}
 È noto che $\exists h \; | \; h : \mathbb{Z} \rightarrow \frac{\mathbb{N}_0 \times \mathbb{N}_0}{\mathcal{R}}$ dove la relazione di equivalenza che si vuole definire è $\equiv_n$. Su questo insieme vengono \textbf{ben poste} le seguenti operazioni:
@@ -68,22 +100,37 @@ Un anello commutativo privo di divisori dello zero si dice \textbf{dominio di in
 Definito questo possiamo dire che $(\mathbb{Z}, \boxplus, \boxdot)$ è \textbf{dominio di integrità}.
 
 \section{Teoria della Divisibilità}
-\textbf{Divisibilità}: dati due numeri $a,b \in \mathbb{Z}$, si dice che $a$ \textbf{divide} $b$ (e si scrive $a|b$) se:
-\begin{center}
-    $\exists c \in \mathbb{Z} \; | \; b = a \cdot c$
-\end{center}
-\textbf{Transitività}: se $n|m$ e $m|q$ allora $n|q$. \\
-\textcolor{green}{\textbf{Dimostrazione}}: per ipotesi $\exists h \in \mathbb{Z} \; | \; m = h \cdot n$ e $\exists h' \in \mathbb{Z} \; | \; q = h' \cdot m$. Sostituendo la prima relazione nella seconda si ottiene $q = h' \cdot h \cdot n$. Poichè $h' \cdot h \in \mathbb{Z}$ abbiamo definito che $n|q$. \\ \newline
-Se $n|m$ e $m|n$, allora $m \pm n$. \\
-\textcolor{green}{\textbf{Dimostrazione}}: per ipotesi $\exists h \in \mathbb{Z} \; | \; m = h \cdot n$ e $\exists h' \in \mathbb{Z} \; | \; n = h' \cdot m$ andiamo a sostituire la seconda alla prima equazione:
-\begin{center}
-    \begin{align*}
-        n &= h' \cdot h \cdot m \\
-        n - h' \cdot h \cdot m &= 0 \\
-        n \cdot (1 - h' \cdot h) &= 0
-    \end{align*}
-\end{center}
-Essendo che $\mathbb{Z}$ è un \textbf{dominio di integrità}, segue che o $n = 0$ oppure $(1 - h' \cdot h) = 0 \rightarrow (h' \cdot h) = 1$, consideriamo che $n \leq 0$ e che quindi $h' \cdot h = 1$ sappiamo che $h$ ammette un inverso $h'$, da cui $h = h' = 1$ o $h = h' = -1$ (in $\mathbb{Z}$, gli unici elementi che ammettono inverso sono $1$ e $-1$). In questo modo sappiamo che $m=n$ oppure $m=-n$.
+\textbf{Divisibilità}: dati due numeri $a,b \in \mathbb{Z}$, si dice che $a$ \textbf{divide} $b$ (e si scrive $a|b$) se: $\exists c \in \mathbb{Z} \; | \; b = a \cdot c$
+\begin{boxA}
+    \textcolor{orange}{\textbf{Esempi}}
+    \begin{itemize}[nosep]
+        \item $2|12, \; \exists c \; t.c. \; 2 \cdot c = 2 \cdot 6 = 12$
+        \item $3|7m \; \nexists c \; t.c. \; 3 \cdot c = 7 \; \forall c \in \mathbb{Z}$
+    \end{itemize}
+\end{boxA}
+
+\textbf{Proprietà}:
+\begin{itemize}[nosep]
+    \item \textbf{transitività}: se $n|m$ e $m|q$ allora $n|q$.
+    \begin{boxA}
+        \textcolor{olive}{\textbf{Dimostrazione}} \\
+        Hp. $\exists h \in \mathbb{Z} \; | \; m = h \cdot n \qquad \exists h' \in \mathbb{Z} \; | \; q = h' \cdot m$ \\
+        Sostituendo la prima relazione nella seconda si ottiene $q = h' \cdot h \cdot n$. Poichè $h' \cdot h \in \mathbb{Z}$ abbiamo definito che $n|q$.
+    \end{boxA}
+
+    \item se $n|m$ e $m|n$, allora $m \pm n$.
+    \begin{boxA}
+        \textcolor{olive}{\textbf{Dimostrazione}} \\
+        Hp. $\exists h \in \mathbb{Z} \; | \; m = h \cdot n \qquad \exists h' \in \mathbb{Z} \; | \; n = h' \cdot m$ \\
+        Andiamo a sostituire la seconda alla prima equazione:
+        \begin{align*}
+            n &= h' \cdot h \cdot m \\
+            n - h' \cdot h \cdot m &= 0 \\
+            n \cdot (1 - h' \cdot h) &= 0
+        \end{align*}
+        Essendo che $\mathbb{Z}$ è un \textbf{dominio di integrità}, segue che o $n = 0$ oppure $(1 - h' \cdot h) = 0 \rightarrow (h' \cdot h) = 1$, consideriamo che $n \leq 0$ e che quindi $h' \cdot h = 1$ sappiamo che $h$ ammette un inverso $h'$, da cui $h = h' = 1$ o $h = h' = -1$ (in $\mathbb{Z}$, gli unici elementi che ammettono inverso sono $1$ e $-1$). In questo modo sappiamo che $m=n$ oppure $m=-n$.
+    \end{boxA}
+\end{itemize}
 
 \section{Massimo Comune Divisore}
 Dati $a,b \in \mathbb{Z}$ non entrambi nulli, si dice che $d \in \mathbb{Z}$ è \textbf{UN massimo comune divisore} tra $a$ e $b$ se:

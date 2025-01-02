@@ -429,3 +429,40 @@ Una \textbf{equazione diofantea} è un'equazione lineare di primo rado in due in
 \end{boxA}
 
 \section{Numeri Primi e Coprimi}
+\textbf{Numeri Coprimi}: due interi $a, b \in \mathbb{Z}$ si dicono \textbf{coprimi} se $\gcd (a, b) = 1$. \\
+\textbf{Proprietà}:
+\begin{itemize}[nosep]
+    \item due interi consecutivi sono sempre coprimi.
+    \begin{boxA}
+        \textcolor{olive}{\textbf{Dimostrazione}}: è possibile dimostrarlo tramite due metodi:
+        \begin{enumerate}[nosep]
+            \item \textbf{divisione euclidea}: $(n + 1) = n \cdot (n) + 1$ quindi utilizzando l'\textbf{algoritmo delle divisioni successive} ottengo che $n = 1 \cdot (n) + 0$. Quindi avremo che \fcolorbox{red}{white}{$\gcd (n, n + 1) = 1$}
+            \item \textbf{identità di bezout}: $1 = (n + 1) \cdot (1) + n \cdot (-1) \; \Rightarrow \; 1 \in \mathcal{S}$ dove $\mathcal{S}$ è l'insieme delle combinazioni lineari. Siccome $\min (\mathcal{S}) = \gcd (n + 1, n) \; \Rightarrow \; \fcolorbox{red}{white}{$\gcd (n + 1, n) = 1$}$
+        \end{enumerate}
+    \end{boxA}
+    \item due dispari consecutivi sono sempre coprimi.
+    \begin{boxA}
+        \textcolor{olive}{\textbf{Dimostrazione}}: anche in questo caso è possibile dimostrarlo tramite gli stessi due approcci della proprioetà precedente, visualizziamo solo quello con l'\textbf{identità di bezout}:
+        
+        {\centering
+            $2 = (2 \cdot n - 1) (1) + (2 \cdot n + 1) (-1) \; \Rightarrow \; 2 \in \mathcal{S}$ \\
+            Ma siccome 2 non corrisponde all'$\gcd (2 \cdot n - 1, 2 \cdot n + 1)$ \\
+            Allora \fcolorbox{red}{white}{$\gcd (2 \cdot n - 1, 2 \cdot n + 1) = 1$}
+        \par}
+    \end{boxA}
+    \item $\forall a, b \in \mathbb{Z} - \{0\}, \; \frac{a}{\gcd (a, b)} \; \text{e} \; \frac{b}{\gcd (a, b)}$ sono coprimi.
+    \begin{boxA}
+        \textcolor{olive}{\textbf{Dimostrazione}}: per l'\textbf{identità di bezout} sappiamo che:
+    
+        {\centering
+            $\exists \alpha, \beta \in \mathbb{Z} \; \text{t.c.} \; \gcd(a, b) = \alpha \cdot a + \beta \cdot b$
+        \par}
+        Se si va dividere ambo i membri per l'$\gcd (a, b)$ avremo che:
+        \begin{align*}
+            \gcd(a, b) &=& \alpha \cdot a + \beta \cdot b \\
+            \frac{1}{\gcd (a, b)} \cdot \gcd (a, b) &=& \frac{1}{\gcd (a, b)} \cdot (\alpha \cdot a + \beta \cdot b) \\
+            1 &=& \alpha \cdot \underset{\in \mathbb{Z}}{\fcolorbox{red}{white}{$\frac{a}{\gcd (a, b)}$}} + \beta \cdot \underset{\in \mathbb{Z}}{\fcolorbox{red}{white}{$\frac{1}{\gcd (a, b)}$}} \\
+            1 &=& \gcd (\frac{a}{\gcd (a, b)}, \frac{b}{\gcd (a, b)})
+        \end{align*}
+    \end{boxA}
+\end{itemize}

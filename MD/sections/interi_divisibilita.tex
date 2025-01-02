@@ -1,4 +1,4 @@
-\chapter{Parte 3}
+\chapter{Gli Interi e la Divisibilità}
 \section{Strutture algebriche elementari}
 Una \textbf{operazione binaria intera} su un insieme G è un'applicazione 
 \begin{center}
@@ -233,7 +233,7 @@ Ovvero l'insieme degli interi che dividono $a$ e $b$ sono gli stessi che dividon
         \begin{align*}
             r &= a - b \cdot q \\
             &= c \cdot h - c \cdot k \cdot q \\
-            & = \underset{\in \mathbb{Z}}{\underline{c \cdot (h - k \cdot q)}}
+            & = c \cdot \underset{\in \mathbb{Z}}{\underline{(h - k \cdot q)}}
         \end{align*}
         Quindi in questo modo abbiamo dimostrato che $c|r$.
     \end{itemize}
@@ -257,4 +257,175 @@ Ovvero l'insieme degli interi che dividono $a$ e $b$ sono gli stessi che dividon
     \end{itemize}
 \end{boxA}
 
-\textbf{Algoritmo delle Divisioni Successive (di Euclide)}
+\textbf{Algoritmo delle Divisioni Successive (di Euclide)} \\
+Siano $a, b \in \mathbb{Z} - \{0\}$. Applicando ricorsivamente la divisione euclidea tra $a$ e $|b|$, e poi tra \textbf{divisore} e \textbf{resto} della divisione:
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \begin{align*}
+            a &= |b| \cdot q_1 + r_1 \\
+            b &= r_1 \cdot q_2 + r_2 \\
+            r_1 &= r_2 \cdot q_3 + r_3 \\
+            & ... \\
+            r_{n - 1} &= r_n \cdot q_{n + 1} + 0
+        \end{align*}
+    \end{minipage}
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \begin{align*}
+            & \gcd (a, b) \\
+            & \gcd (b, r_1) \\
+            & \gcd (r_1, r_2) \\
+            & .. \\
+            & \gcd (r_{n - 1}, r_n) = r_n
+        \end{align*}
+    \end{minipage}
+\end{figure}
+Poiché $r_1 > r_2 > r_3 > ... > r_i > ... \geq 0$, $\exists n \in \mathbb{N} \; \text{t.c.} \; r_{n + 1} = 0$ allora: $\gcd (a, b) = r_n$
+
+\begin{boxA}
+    \textcolor{orange}{\textbf{Esempio}}: $\gcd (3522, 321) = \; ?$
+
+    {\centering
+        \[
+            \renewcommand{\arraystretch}{0.7}
+            \begin{array}{rcl}
+                3522 & = & (10) \cdot 321 + \fcolorbox{brown}{white}{312} \\
+                321  & = & (1) \cdot 312 + \fcolorbox{blue}{white}{9} \\
+                312  & = & (34) \cdot 9 + \fcolorbox{olive}{white}{6} \\
+                9    & = & (1) \cdot 6 + \fcolorbox{red}{white}{3} \\
+                6    & = & (2) \cdot 3 + 0
+            \end{array}
+        \]
+    \par}
+    Quindi: $\gcd (3522, 321) = 3$
+\end{boxA}
+È possibile utilizzando l'\textbf{Algoritmo delle Divisioni Successive} è possibile ricavare anche i parametri $\alpha$ e $\beta$ dell'\textbf{Identità di Bezout} di $a$ e $b$ andando a ritroso e rappresentando il resto in funzione del valore di partenza e del dividendo.
+\begin{boxA}
+    \textcolor{orange}{\textbf{Esempio}}:    
+    \begin{align*}
+        \gcd (3522, 321) &= 3 \\
+        &= \fcolorbox{red}{white}{$9 - (1) \cdot 6$} \\
+        &= 9 - (1) \cdot \fcolorbox{olive}{white}{$[312 - (34) \cdot 9]$} \\
+        &= 9 - 312 + (34) \cdot 9 \\
+        &= -312 + (35) \cdot 9 \\
+        &= -312 + (35) \cdot \fcolorbox{blue}{white}{$[321 - (1) \cdot 312]$} \\
+        &= -312 + (35) \cdot 321 - (35) \cdot 312 \\
+        &= (35) \cdot 321 - (36) \cdot 312 \\
+        &= (35) \cdot 321 - (36) \cdot \fcolorbox{brown}{white}{$[3522 - (10) \cdot 321]$} \\ 
+        &= (35) \cdot 321 - (36) \cdot 3522 + (360) \cdot 321 \\
+        &= \underset{= \alpha}{\fcolorbox{red}{white}{$(-36)$}} \cdot 3522 + \underset{= \beta}{\fcolorbox{red}{white}{$(395)$}} \cdot 321
+    \end{align*}
+    Avremo quindi: $\gcd (3522, 321) = 3 = \alpha \cdot 3522 + \beta \cdot 321 = (-36) \cdot 3522 + (395) \cdot 321$
+\end{boxA}
+\textbf{Complessità computazionale}: l'Algoritmo delle Divisioni Successive di Euclide per il calcolo del $\gcd (a, b)$ termina al più in \fcolorbox{red}{white}{$2\log_2 |b|$} passi.
+\begin{boxA}
+    \textcolor{olive}{\textbf{Dimostrazione}} \\
+    Si verifica che, ogni due divisioni successive, il resto (almeno) si dimezza: 
+    
+    {\centering
+        $r_{2k} < \frac{r_{2k - 2}}{2}$
+    \par}
+    Allora, se $k$ è tale che $\frac{|b|}{2^k} < 1$, si ha $r_{2k} = 0 \quad \forall k \in \mathbb{N}$. D'altra parte, $|b| < 2^k$ il che significa che $k > \log_2 |b|$. Siccome ad ogni variazione di $k$ corrispondono due passi dell'algoritmo, allora questo terminerà in un numero intero di passi minore o uguale a $2\log_2 |b|$
+\end{boxA}
+
+\newpage
+\section{Equazioni Diofantee}
+Una \textbf{equazione diofantea} è un'equazione lineare di primo rado in due incognite a coefficienti interi, di cui si ricercano le soluzioni intere:
+
+{\centering
+    $a \cdot x + b \cdot y = c, \qquad \text{con } a, b, c \in \mathbb{Z}$
+\par}
+
+\begin{flushleft}
+    Le soluzioni (\textbf{se esistono}) sono coppie del tipo:
+
+    {\centering
+        $(\overline{x}, \overline{y}) \in \mathbb{Z} \times \mathbb{Z} \; \text{t.c.} \; a \cdot \overline{x} + b \cdot \overline{y} = c$
+    \par}
+\end{flushleft}
+\begin{flushleft}
+    L'equazione diofantea $ax + by = c, \; \text{con } a, b, c \in \mathbb{Z}$ \textbf{ammette soluzioni} (intere) se e solo se $\gcd (a, b)| c$. Inoltre se $(\overline{x}, \overline{y})$ è una soluzione, allora esistono infinite soluzioni:
+
+    {\centering
+        Sol = $\{(\overline{x}, \overline{y}) + k \cdot \frac{(-b, a)}{\gcd (a, b)} \; \text{t.c.} \; k \in \mathbb{Z}\}$
+    \par}
+\end{flushleft}
+
+\begin{boxA}
+    \textcolor{olive}{\textbf{Dimostrazione}}: quando bisogna dimostrare un \textbf{se e solo se} ($\longleftrightarrow$), la dimostrazine sarà divisia in due parti: la prima parte dimostrerà il ``$\rightarrow$'', mentre la seconda il ``$\leftarrow$'' \\ \newline
+    \textcolor{red}{\textbf{Prima Parte}} \\
+    \textbf{Hp}: $\exists (\overline{x}, \overline{y}) \in \mathbb{Z} \times \mathbb{Z} \; \text{t.c.} \; a\overline{x} + b\overline{y} = c$ \\
+    \textbf{Th}: $\underset{d \in \mathbb{Z}}{\underbrace{\gcd (a, b)}|c}$
+    
+    \begin{center}
+        \centering
+        \begin{minipage}[t]{0.4\textwidth}
+            Per definizione avremo che $d|a$ e che $d|b$
+        \end{minipage}
+        $\Rightarrow$
+        \begin{minipage}[t]{0.4\textwidth}
+            \centering
+            $\exists h \in \mathbb{Z} \; \text{t.c.} \; a = d \cdot h$ \\
+            $\exists k \in \mathbb{Z} \; \text{t.c.} \; b = d \cdot k$
+        \end{minipage}
+    \end{center}
+    Allora:
+    \begin{center}
+        \centering
+        \begin{minipage}[t]{0.4\textwidth}
+            \centering
+            $d \cdot h \cdot \overline{x} + d \cdot k \cdot \overline{y} = c$ \\
+            $d \cdot \underset{\in \mathbb{Z}}{\fcolorbox{red}{white}{$(h \cdot \overline{x} + k \cdot \overline{y})$}} = c$
+        \end{minipage}
+        \begin{minipage}[t]{0.5\textwidth}
+            \centering
+            $d|c$ in questo modo abbiamo dimostrato che $\gcd (a, b)$ divide il termine noto $c$
+        \end{minipage}
+    \end{center}
+\end{boxA}
+
+\begin{boxA}
+    \textcolor{red}{\textbf{Seconda Parte}} \\
+    \textbf{Hp}: $\gcd (a, b)|c$ \\
+    \textbf{Th}: $\exists (\overline{x}, \overline{y}) \in \mathbb{Z} \times \mathbb{Z} \; \text{t.c.} \; a\overline{x} + b\overline{y} = c$ \\
+    Poniamo $d \in \mathbb{Z}, \; d = \gcd (a, b)$ è possibile scriverlo attraverso l'\textbf{identità di bezout} come:
+    
+    {\centering
+        $\exists \alpha, \beta \in \mathbb{Z} \; \text{t.c.} \; d = \alpha \cdot a + \beta \cdot b$
+    \par}
+    Poiché $d|c$ allora $\exists h \in \mathbb{Z} \; \text{t.c.} \; c = d \cdot h$ andando a sostituire avremo che:
+    \begin{align*}
+        c = d \cdot h &= (\alpha \cdot a + \beta \cdot b) \cdot h \\
+        &= a \cdot \underset{\in \mathbb{Z}}{\underbrace{(\alpha \cdot h)}} + b \cdot \underset{\in \mathbb{Z}}{\underbrace{(\beta \cdot h)}}
+    \end{align*}
+    In questo modo abbiamo dimostrato che $(\overline{x}, \overline{y}) = (a \cdot h, b \cdot h)$ e che quindi \textbf{se esiste} è soluzione. \\ \newline
+    \textcolor{red}{\textbf{Terza Parte}} \\
+    L'ultima parte della dimostrazione ci permette di verificare che \textbf{se esiste} una soluzione, ne \textbf{esistono infinite}, ovvero se:
+
+    {\centering
+        $\exists (\overline{x}, \overline{y}) \in \mathbb{Z} \times \mathbb{Z} \rightarrow \exists \infty \; \text{soluzioni}$
+    \par}
+    Facciamo riferimento a un sistema lineare completo come insieme delle soluzioni, quello che si ottiene è una soluzione ``particolare'' alla verrà aggiunto l'insieme di tutte le soluzioni del \textbf{sistema omogeneo associato}: $\mathcal{S}$ è un sistema e $\mathcal{S}_0$ è il sistema omogeneo associato (ovvero sostituiso il vettore colonna dei termini noti con degli $0$) allora la mia soluzione sarà:
+    
+    {\centering
+        $Sol(\mathcal{S}) = \{\overline{x} + Sol(\mathcal{S}_0)\}$
+    \par}
+    \begin{center}
+        \begin{minipage}[t]{0.45\textwidth}
+            \centering
+            Nel nostro caso avremo come $\mathcal{S}: \; a \cdot x + b \cdot y = c$ e quindi avremo che \fcolorbox{red}{white}{$(\overline{x}, \overline{y}) \in Sol(\mathcal{S})$}
+        \end{minipage}
+        \begin{minipage}[t]{0.45\textwidth}
+            \centering
+            Mentre $\mathcal{S}_0: \; a \cdot x + b \cdot y = 0$ è quindi immediato che $(-b, a) \in Sol(\mathcal{S}_0)$, ma quindi faranno parte di $Sol(\mathcal{S}_0)$ tutti i loro multipli e sottomultipli.
+        \end{minipage} \\
+        \fcolorbox{red}{white}{$Sol(\mathcal{S}_0) = k \cdot \frac{(-b, a)}{\gcd (a, b)}$}
+    \end{center}
+
+    Quindi avremo che $Sol(\mathcal{S}) = \{(\overline{x}, \overline{y}) + k \cdot \frac{(-b, a)}{\gcd (a, b)} \; \text{t.c.} \; k \in \mathbb{Z}\}$
+\end{boxA}
+
+\section{Numeri Primi e Coprimi}

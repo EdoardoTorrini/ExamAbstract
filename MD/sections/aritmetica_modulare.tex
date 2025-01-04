@@ -273,3 +273,72 @@ Su $\mathbb{Z}_n = \frac{\mathbb{Z}}{\equiv_n}$ sono ben poste la \textbf{somma}
         $\mathbb{Z}_7: \; \text{Sol} = \{9 + k \cdot 7 \; \text{t.c.} \; k \in \mathbb{Z}_1\} = \{[9]_7\} = \{[2]_7\}$
     \par}
 \end{boxA}
+
+\section{Sistemi di Congruenze Lineari}
+
+\begin{flushleft}
+    \textcolor{blue}{\textbf{Lemma}}: ogni sistema di congruenze lineari del tipo:
+
+    {\centering
+        $\begin{cases}
+            a_1 \cdot x \equiv b_1 \quad \text{mod} \; n_1 \\
+            a_2 \cdot x \equiv b_2 \quad \text{mod} \; n_2 \\
+            \vdots \\
+            a_r \cdot x \equiv b_r \quad \text{mod} \; n_r
+        \end{cases}$
+    \par}
+    con $\gcd (n_i, n_j) = 1 \; \forall i \neq j$ e $\gcd (a_i, n_i) = d_i|b_i \; \forall i \in \mathbb{N}$, è equivalente ad un sistema del tipo:
+
+    {\centering
+        $\begin{cases}
+            x \equiv c_1 \quad \text{mod} \; n'_1 \\
+            x \equiv c_2 \quad \text{mod} \; n'_2 \\
+            \vdots \\
+            x \equiv c_r \quad \text{mod} \; n'_r
+        \end{cases}$
+    \par}
+    in cui $\gcd (n'_i, n'_j) = 1 \; \forall i \neq j$
+
+    \begin{boxA}
+        \textcolor{olive}{\textbf{Dimostrazione}}: consideriamo la $i$-esima congruenza lineare del sistema $a_i \cdot x \equiv b_i \; \text{mod} \; n$ dividiamo entrambi i membri per il $\gcd (a_i, n_i) = d_i$. Per poterlo fare bisogna primi modificare in maniera opportuna anche il modulo $n'_i = \frac{n_i}{\gcd (d_i, n_i)}$ ottenendo:
+
+        {\centering
+            $\underset{\in \mathbb{Z}}{\underbrace{\frac{a_i}{d_i}}} \equiv \underset{\in \mathbb{Z}}{\underbrace{\frac{b_i}{d_i}}} \; \text{mod} \; \frac{n_i}{\gcd (d_i, n_i)} \Longrightarrow a'_i \cdot x \equiv b'_i \; \text{mod} n'_i$
+        \par}
+        Osservo che $\gcd (a'_i, n'_i) = \gcd (\frac{a_i}{d_i}, \frac{n_i}{d_i}) = 1$ che comporta che $a'_i$ e $n'_i$ sono \textbf{coprimi} tra loro. Quindi la $i$-esima congruenza lineare avrà \textit{una e una sola} soluzione in $\mathbb{Z}_{n'}$. Se chiamiamo $c_i$ l'unica soluzione della congruenza lineare  $a_i \cdot x \equiv_{n_i} b'_i$ allora posso riscriverla come \fcolorbox{red}{white}{$x \equiv c_i \; \text{mod} \; n'_i$} ottenendo così il sistema equivalente.
+    \end{boxA}
+\end{flushleft}
+
+\begin{flushleft}
+    \textbf{Teorema cinese del resto}
+
+    {\centering
+        \begin{minipage}[t]{0.45\textwidth}
+            dato un sistema di congruenze lineari del tipo:
+            \begin{math}
+                \begin{cases}
+                    x \equiv c_1 \quad \text{mod} \; n_1 \\
+                    x \equiv c_2 \quad \text{mod} \; n_2 \\
+                    \vdots \\
+                    x \equiv c_r \quad \text{mod} \; n_r
+                \end{cases}
+            \end{math}
+        \end{minipage}
+        \hfill
+        \begin{minipage}[t]{0.45\textwidth}
+            con $\gcd (n_i, n_j) = 1 \; \forall i \neq j \; (i, j \in \{1, ..., r\})$ allora esiste sempre una ed una sola soluzione modulo $N = n_1 \cdot n_2 \cdot ... \cdot n_r$
+        \end{minipage}
+    \par}
+    \begin{boxA}
+        \textcolor{olive}{\textbf{Dimostrazione}}: \textbf{Th.} $\exists ! Sol \; \text{mod} \; N = n_1 \cdot n_2 \cdot ... \cdot n_r$ per farlo dobbiamo dimostrare che la soluzione \fcolorbox{red}{white}{\textbf{esiste}} ed è \fcolorbox{violet}{white}{\textbf{unica}}
+
+        \textcolor{red}{\textbf{esistenza}}: indico $N_k = \frac{N}{n_k} \; \forall k \in \mathbb{N}$ e considero una congruenza ``fittizia''  $N_k \cdot x \equiv c_k \; \text{mod} \; n_k$ e osservo che il coefficienti della $x$ e il modulo sono \textbf{coprimi} quindi $\gcd (N_k, n_k) = 1$ infatti $N_k$ è il prodotto tra tutti i moduli escluso $n_k$. Quindi la $k$-esima congruenza ``fittizia'' ha una e una sola soluzione in $\mathbb{Z}_{nk}$ e lo indico con $\overline{x_k}$. Affermo che $\overline{x} = N_1 \cdot \overline{x_1} + N_2 \cdot \overline{x_2} + ... + N_r \cdot \overline{x_r}$ è la \textbf{soluzione} del sistema iniziale dato, per dimostrarlo sostituiamo $\overline{x}$ nella $k$-esima congruenza del sistema dato e dimostriamo che lo verifica. $\overline{x} \overset{?}{\equiv} c_k \; \text{mod} \; n_k$.
+
+        {\centering
+            $N_1 \cdot \overline{x_1} + N_2 \cdot \overline{x_2} + ... + N_r \cdot \overline{x_r} \equiv N_k \cdot \overline{x_k} \; \text{mod} n_k$
+        \par}
+        Questo semplificazione è possibile perché le varie coppie sono tutte multiple di $N_k$, quindi modulo $n_k$ si annullano. Ma $\overline{x_k}$ è soluzione della $k$-esima congruenza ``fittizia'' $N_K \cdot x \equiv_{n_k} c_K \Rightarrow N_k \cdot \overline{x_k} \equiv_{n_k}$. Quindi \fcolorbox{red}{white}{$\overline{x} \equiv_{n_k} c_k \; \forall k \in \mathbb{N}_r$} con $\overline{x}$ soluzione del sistema.
+
+        \textcolor{violet}{\textbf{unicità}}: bisongna ora dimostrare che la soluzione $\overline{x}$ è unica modulo $N$: suppongo che sia $\overline{x}$ che $\overline{y}$ siano soluzioni del sistema dato. Cioè \fcolorbox{olive}{white}{$\overline{x} \equiv_{n_k} c_k \; \forall k = 1, ..., r$} e \fcolorbox{orange}{white}{$\overline{y} \equiv_{n_k} \; \forall k = 1, ..., r$}. Questo significa che $\overline{x} - \overline{y} \equiv_{n_k} 0 \; \forall k = 1, ..., r$ cioè $(\overline{x} - \overline{y})$ è un multiplo intero di $n_k \; \forall k = 1, ..., r$, ma poiché i moduli $n_1, n_2, ..., n_r$ sono tutti mutualmente coprimi, segue che $(\overline{x} - \overline{y})$ è multiplo intero di $n_1 \cdot n_2 \cdot ... \cdot n_r = N$, ovvero \fcolorbox{violet}{white}{$\overline{x} \equiv \overline{y} \; \text{mod} \; N$}
+    \end{boxA}
+\end{flushleft}

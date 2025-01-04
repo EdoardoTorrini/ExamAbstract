@@ -1,0 +1,275 @@
+\chapter{Aritmetica Modulare}
+È nota la definizione di \textbf{insieme delle classi resto modulo $n$} $\mathbb{Z}_n \; (\forall n \in \mathbb{N}, n \geq 2)$, come insime quoziente di $\mathbb{Z}$ rispetto alla \textbf{relazione di congruenza} modulo $n$:
+
+{\centering
+    $a \equiv_n b \Longleftrightarrow \exists h \in \mathbb{Z} \; \text{t.c.} \; b - a = h \cdot n$
+\par}
+Inoltre:
+
+{\centering
+    $\mathbb{Z}_n = \frac{\mathbb{Z}}{\equiv_n} = \{[0], [1], ..., [n-1]\}$
+\par}
+
+\section{Operazioni in $\mathbb{Z}_n$}
+Su $\mathbb{Z}_n = \frac{\mathbb{Z}}{\equiv_n}$ sono ben poste la \textbf{somma} e il \textbf{prodotto}
+
+\subsection{Somma in $\mathbb{Z}_n$}
+
+{\centering
+    $\boxplus : \mathbb{Z}_n \times \mathbb{Z}_n \mapsto \mathbb{Z}_n$ \\
+    $([a], [b]) \mapsto [a] \boxplus [b] \overset{\text{def}}{=} [a + b]$
+\par}
+
+\begin{boxA}
+    \textcolor{olive}{\textbf{Dimostrazione}}: per provare che la somma è ben posta, occorre provare che, $\forall a' \in [a]$ e $\forall b' \in [b]$, si ha $[a' + b'] = [a + b]$. \\ 
+    Per \textbf{Hp.} avremo che $\exists h \in \mathbb{Z} \; \text{t.c.} \; a' - a = h \cdot n$ ed $\exists h' \in \mathbb{Z} \; \text{t.c.} \; b' - b = h' \cdot n$. Facendo la somma otteniamo:
+
+    {\centering
+        $(a' - a) + (b' - b) = (h' \cdot n) + (h \cdot n)$ \\
+        $(a' + b') - (a + b) = n \cdot \underset{\in \mathbb{Z}}{\fcolorbox{red}{white}{$(h' - h)$}}$
+    \par}
+    In questo modo siamo riusciti a provare la nostra \textbf{Th.}
+\end{boxA}
+
+\subsection{Prodotto in $\mathbb{Z}_n$}
+
+{\centering
+    $\boxdot : \mathbb{Z}_n \times \mathbb{Z}_n \mapsto \mathbb{Z}_n$ \\
+    $([a], [b]) \mapsto [a] \boxdot [b] \overset{\text{def}}{=} [a \cdot b]$
+\par}
+
+\begin{boxA}
+    \textcolor{olive}{\textbf{Dimostrazione}}: per provare che il prodotto è ben posto, occorre provare che $\forall a' \in [a]$ e $\forall b' \in [b]$, si ha $[a' \cdot b'] = [a \cdot b]$. \\
+    Per \textbf{Hp.} avremo che $\exists h \in \mathbb{Z} \; \text{t.c.} \; a' - a = h \cdot n$ ed $\exists h' \in \mathbb{Z} \; \text{t.c.} \; b' - b = h' \cdot n$. Moltiplicando membro a membro $a' = a + hn$ e $b' = b + h'n$ otteniamo:
+
+    {\centering
+        $a' \cdot b' = (a + hn) \cdot (b + h'n) = ab + ah'n + bhn + hh'n^2$ \\
+        $a'b' - ab = ah'n + bhn + hh'n^2 = n \cdot (\underset{\in \mathbb{Z}}{\fcolorbox{red}{white}{$ah' + bh + hh'n$}})$
+    \par}
+    In questo modo siamo riusciti a provare la nostra \textbf{Th.}
+\end{boxA}
+
+\begin{flushleft}
+    \textbf{Proposizione}: $(\mathbb{Z}_n, \boxplus, \boxdot)$ è un anello commutativo con unità, $\forall n \in \mathbb{N}, n \geq 2$ 
+
+    \textbf{Teorema}: $(\mathbb{Z}_n, \boxplus, \boxdot)$ è un campo \textit{se e solo se} $n$ è \textbf{primo}.
+
+    \begin{boxA}
+        \textcolor{olive}{\textbf{Dimostrazione}}
+        
+        \textcolor{red}{\textbf{Prima Parte}} ``$\Rightarrow$'': se $n$ non è primo avremo che $n = a \cdot b, \; \text{con} \; \{a, b\} \neq \{n, 1\}$ ma allora in $\mathbb{Z}_n$ avremo che $[a] \cdot [b] = [a \cdot b] = n = [0]$ il che significa che $\mathbb{Z}_n$ ammette divisori dello zero e quindi non può essere un campo.
+
+        \textcolor{red}{\textbf{Seconda Parte}} ``$\Leftarrow$'': se $n$ è primo, bisogna dimostrare che ogni elemento non nullo ammette l'inverso. Si può dire che $[a] \neq [0] \Rightarrow a \not \equiv_n 0$ quindi che $a$ non è multiplo di $n$.
+
+        Quindi il $\gcd (a, n) = 1$, quindi per l'\textbf{identità di bezout} $\exists \alpha, \beta \in \mathbb{Z} \; \text{t.c.} \; 1 = \alpha \cdot a + \beta \cdot n$ che si può riscrivere come:
+
+        {\centering
+            $1 - \underset{\in [1]}{\fcolorbox{red}{white}{$a \cdot \alpha$}} = n \cdot \beta$
+        \par}
+        Ma se $a \cdot \alpha \in [1]$ questo implica che $[a \cdot \alpha] = [1]$ ovvero $[a] \cdot [\alpha] = [1]$ e quindi siccome 1 è l'elemento neutro per la moltiplicazione, avremo che $[\alpha]$ è l'inverso.
+    \end{boxA}
+
+    Se $n$ non è primo, occorre prestare attenzione ai calcoli in $\mathbb{Z}_n$. Ad esempio:
+
+    {\centering
+        $3 \cdot 5 \equiv_9 3 \cdot 8$, ma non è vero che $5 \equiv_9 8$
+    \par}
+    \textbf{Teorema}: $a \cdot c \equiv b \cdot b$ (mod $n$) $\Rightarrow \; a \equiv b$ (mod $\frac{n}{d}$) con $d = \gcd (c, n)$ \\
+    \textbf{Corollario}: se $\gcd (c, n) = 1 \; \Rightarrow \; a \equiv b$ (mod $n$). Nel caso di $n$ \textbf{primo} avremo che 
+    
+    {\centering
+        $\forall c \in \mathbb{Z}_n, \; c \neq 0 \rightarrow \gcd (c, n) = 1$
+    \par}
+\end{flushleft}
+
+\newpage
+\begin{flushleft}
+    \textbf{Teorema}: ogni numero intero $n$ è congruo modulo 9 alla somma delle sue cifre.
+    
+    \begin{boxA}
+        \textcolor{olive}{\textbf{Dimostrazione}}: esplicitando la natura posizionale del sistema decimale avremo:
+        \begin{align*}
+            n &= a_0 + a_1 \cdot 10 + a_2 \cdot 10^2 + a_3 \cdot 10^3 + ... + a_k \cdot 10^k = \\
+            &= a_0 + a_1 \cdot (1 + 9) + a_2 \cdot (1 + 99) + a_3 \cdot (1 + 999) + ...+ a_k \cdot (1 + \underset{k}{\underbrace{99...999}}) = \\
+            &= (a_0 + a_1 + a_2 + a_3 + ... + a_k) + 9 \cdot a_1 + 99 \cdot a_2 + 999 \cdot a_3 + ... + \underset{k}{\underbrace{99...999}} = \\
+            &= (a_0 + a_1 + a_2 + a_3 + ... + a_k) + 9 \cdot (a_1 + 11 a_2 + 111 a_3 + ... + \underset{k}{\underbrace{11...111} a_k})
+        \end{align*}
+        Quindi $n$ si ottiene dalla somma delle sue cifre, agiungendone un multiplo di 9 il che prova la tesi. \textbf{Conseguenza}: prova del nove.
+    \end{boxA}
+
+        \textbf{Proprietà}:
+        \begin{itemize}[nosep]
+            \item \textbf{Criterio di Divisibilità per 3} (\textit{per 9}): un numero intero è divisibile per 3 (\textit{per 9}) se e solo se la somma delle sue cifre è divisibile per 3 (\textit{per 9}).
+            \begin{boxA}
+                \textcolor{olive}{\textbf{Dimostrazione}} \\
+                $n \equiv a_k + a_{k-1} + ... + a_0$ sia modulo 3 che modulo 9
+            \end{boxA}
+            
+            \item \textbf{Criterio di Divisibilità per 2 e per 5}: un numero intero è divisibile per 2 (\textit{o per 5}) se e solo se la cifra delle unità $a_0$ è divisibile per 2 (\textit{o per 5}).
+            \begin{boxA}
+                \textcolor{olive}{\textbf{Dimostrazione}} \\
+                Per ogni $k > 1, \; 10^k \equiv 10$ sia modulo 2 che modulo 5. Quindi di avrebbe $n \equiv a_0$ sia modulo 2 che modulo 5
+            \end{boxA}
+            
+            \item \textbf{Criterio di Divisibilità per 4 e per 25}: un numero intero è divisibile per 4 (o per 25) se e solo se il numero $a_1a_0$ formato dalle sue ultime due cifre è divisibile per 4 (o per 25).
+            \begin{boxA}
+                \textcolor{olive}{\textbf{Dimostrazione}} \\
+                $100 = 2^25^2 \equiv 0$ sia modulo 4 che modulo 25. Allora ogni intero $n$ è congruo modulo 4 o 25 se le ultime due cifre sono divisibili per 4 o per 25
+            \end{boxA}
+
+            \item \textbf{Criterio di Divisibilità per $2^r$}: un numero intero è divisibile per $2^r$ se e solo se $2^r$ divide il numero costituito dalle ultime $r$ cifre di $n$
+            \begin{boxA}
+                \textcolor{olive}{\textbf{Dimostrazione}} \\
+                È sufficente osservare che $10^k = 2^k5^k \equiv 0$ (mod $2^r$) $\forall k \geq r$
+            \end{boxA}
+
+            \item \textbf{Criterio di Divisibilità per 11}: un numero intero è divisibile per 11 se e solo se è divisibile per 11 la somma a segni alterni delle sue cifre:
+            
+            {\centering
+                $a_0 - a_1 + a_2 - ... + (-1)^k a_k \equiv 0$ mod 11
+            \par}
+            \begin{boxA}
+                \textcolor{olive}{\textbf{Dimostrazione}}: basta osservare che:
+
+                {\centering
+                    $10 \equiv -1 \; \text{mod} \; 11$  $\Rightarrow$   
+                    $\begin{cases}
+                        10^{2p} \equiv 1 \; \text{mod} \; 11 \\
+                        10^{2p + 1} \equiv -1 \; \text{mod} \; 11
+                    \end{cases}$
+                \par}
+            \end{boxA}
+            
+        \end{itemize}
+\end{flushleft}
+
+\section{Congruenze Lineari}
+
+\begin{flushleft}
+    Si chiama \textbf{congruenza lineare} un'equazione di primo grado in $\mathbb{Z}_n$ a coefficienti interi:
+
+    {\centering
+        $a \cdot x \equiv b \; \text{mod} \; n \qquad \text{con} \; a, b, n \in \mathbb{Z}, n \geq 2$
+    \par}
+    Che equivale a $[a] \cdot [x] = [b]$ \\
+    \textbf{Teorema dell'Esistenza di Soluzioni}: una congruenza lineare ammette soluzioni se e solo se $\gcd (a, n)|b$
+    \begin{boxA}
+        \textcolor{olive}{\textbf{Dimostrazione}}: ad ogni \textbf{congruenza lineare} è possibile associare un'\textbf{equazione diofantea}. Infatti:
+
+        {\centering
+            $ax \equiv b \; \text{mod} \; n \; \Longleftrightarrow \; \exists h \in \mathbb{Z} \; \text{t.c.} \; b - ax = hn$ ovvero \fcolorbox{red}{white}{$ax + hn = b$}
+        \par}
+        Quindi come condizione necessaria e sufficiente per la risolubilità della congruenza lineare è verificare la risolubilità dell'equazione diofantea associata è $\gcd (a, n)|b$ 
+    \end{boxA}
+
+    \textbf{Teorema per la Risoluzione di Congruenze Lineari}: sia $ax \equiv b \; \text{mod} \; n$ una congruenza lineare tale che $d|b$ con $d = \gcd (a, n)$ e sia \fcolorbox{red}{white}{$x_0$} una sua particolare risoluzione. Allora:
+    \begin{itemize}[nosep]
+        \item in $\mathbb{Z}$ le soluzioni sono tutti e soli gli interi del tipo:
+
+        {\centering
+            $x_0 + h \cdot \frac{n}{d}, \; h \in \mathbb{Z}$
+        \par}
+        \item in $\mathbb{Z}_n$ le soluzioni sono tutti e soli li interi del tipo
+
+        {\centering
+            $x_0 + h \cdot \frac{n}{d}, \; h \in \mathbb{Z}_n$
+        \par}
+    \end{itemize}
+    Inoltre, ogni soluzione in $\mathbb{Z}$ è congrua modulo $n$ ad una delle $d$ soluzioni in $\mathbb{Z}_n$
+
+    \begin{boxA}
+        \textcolor{orange}{\textbf{Esempio}} \\
+        $12x = 15 \; \text{mod} \; 39 \; \rightarrow \; \gcd (12, 39) = 3|15 \Rightarrow \exists \text{Sol}$ \\
+        \textbf{id. di bezout}: $3 = 12 (-3) + 39 (1) \rightarrow 5 \cdot 3 = 12 \cdot (-3 \cdot 5) + 39 \cdot (1 \cdot 5) \Rightarrow (\fcolorbox{red}{white}{$-15$}, 5)$ è soluzione \\
+        In $\mathbb{Z}$: $\text{Sol} = \{(-15 + 13 \cdot h) \; \text{t.c.} \; h \in \mathbb{Z}\}$ \\
+        In $\mathbb{Z}_n$: $\text{Sol} = \{(-15 + 13 \cdot h) \; \text{t.c.} \; h \in \mathbb{Z}_3\} = \{[-15]_{39}, [-2]_{39}, [11]_{39}\} = \{[24]_{39}, [37]_{39}, [11]_{39}\}$
+    \end{boxA}
+\end{flushleft}
+
+\begin{boxA}
+    \textcolor{olive}{\textbf{Dimostrazione}} \\
+    \textcolor{red}{\textbf{Prima Parte}}: dimostriamo l'esistenza di una soluzione.
+
+    {\centering
+        \begin{minipage}[t]{0.45\textwidth}
+            \centering
+            \textbf{Hp.} $a \cdot x_0 = b \; \text{mod} \; n$
+        \end{minipage}
+        \begin{minipage}[t]{0.45\textwidth}
+            \centering
+            \textbf{Th.} $x_0 + h \cdot \frac{n}{d}$ è soluzione $\forall h \in \mathbb{Z}$
+        \end{minipage}
+    \par}
+    Consideriamo $a \cdot x_0 + a \cdot h \frac{n}{d}$ per \textbf{Hp} $\exists k \in \mathbb{Z} \; \text{t.c.} \; a \cdot x_0 = b + k \cdot n$
+
+    {\centering
+    $a \cdot (x_0 + h \frac{n}{d}) = b + kn + h \cdot \underset{mcm(a, n)}{\fcolorbox{red}{white}{$\frac{an}{d}$}}$
+    \par}
+    Quindi avremo che \fcolorbox{red}{white}{$a(x_0 + h \frac{n}{d}) \equiv b \; \text{mod} \; n$}
+
+    \textcolor{red}{\textbf{Seconda Parte}}: cerchiamo di dimostrare che \textbf{ogni} soluzione della congruenza lineare è del tipo considerato.
+
+    {\centering
+        \begin{minipage}[t]{0.45\textwidth}
+            \centering
+            \textbf{Hp.} $x_0, x'_0$ soluzioni di $a \cdot x = b \; \text{mod} \; n$
+        \end{minipage}
+        \begin{minipage}[t]{0.45\textwidth}
+            \centering
+            \textbf{Th.} $x'_0 \equiv x_0 + h \frac{n}{d}, \; h \in \mathbb{Z}$
+        \end{minipage}
+    \par}
+    Sappiamo per \textbf{Hp} che $\exists k \in \mathbb{Z} \; \text{t.c.} \; a \cdot x_0 = b + k \cdot n$ e $\exists k' \in \mathbb{Z} \; \text{t.c.} \; a \cdot x'_0 = b + k' \cdot n$ andando a eseguire la differenza membro per membro si ottiene: 
+
+    {\centering
+        $a (x_0 - x'_0) = n (k - k') \rightarrow \frac{1}{d} \cdot a (x_0 - x'_0) = \frac{1}{d} \cdot n (k - k') $ \textbf{||} divido per $\gcd (a, n) = d$
+    \par}
+    Andando ad ottenere \fcolorbox{red}{white}{$\frac{a}{d}(x_0 - x'_0) = \frac{n}{d}(k - k')$} in questo modo $\frac{n}{d}$ divide il primo membro dell'equazione, ma poiché $\frac{n}{d}$ è coprimo con $\frac{a}{d}$, per il \textbf{lemma di euclide} $\frac{n}{d}$ divide anche $(x_0 - x'_0)$ e quindi avremo che
+
+    {\centering
+        $\exists h \in \mathbb{Z} \; \text{t.c.} \; x_0 - x'_0 = h \cdot \frac{n}{d}$
+    \par}
+    In questo modo abbiamo dimostrato l'esistenza di infinite soluzioni in $\mathbb{Z}$, bisogna fare la stessa cosa per $\mathbb{Z}_n$
+
+    \textcolor{red}{\textbf{Terza Parte}}: dimostriamo che le soluzioni siano distinte in $\mathbb{Z}_n$, supponiamo per \textbf{assurdo} che:
+    
+    {\centering
+        $\exists h, h' \in \mathbb{Z}_d \; \text{t.c.} \; x_0 + h \frac{n}{d} = x_0 + h' \frac{n}{d} \; \text{mod} \; n$ \\
+        $\cancel{x_0} + h \frac{n}{d} = \cancel{x_0} + h' \frac{n}{d} \; \text{mod} \; n$
+    \par}
+    Per dividere entrambi i lati per $\frac{n}{d}$ dobbiamo anche dividere anche il modulo per per il $\gcd (\frac{n}{d}, n) = \frac{n}{d} \Rightarrow h \equiv h' \; \text{mod} \; (\frac{n}{n / d}) \Rightarrow \fcolorbox{red}{white}{$h \equiv h' \; \text{mod} \; d$}$ questo rappresenta che $h$ e $h'$ sono la stessa classe, quindi abbiamo raggiunto l'\textit{assurdo}.
+
+    \textcolor{red}{\textbf{Quarta Parte}}: manca solo da dimostrare che ogni soluzione intera è congrua mod $n$ ad una delle $d$ soluzioni scritte:
+
+    {\centering
+        $\{x_0, x_0 + \frac{n}{d}, ..., x_0 + (d-1) \frac{n}{d}\}$
+    \par}
+    Consideriamo la generica soluzione intera $x_0 + h \frac{n}{d}, h \in \mathbb{Z}$. Per la divisione euclidea tra $h$ e $d$: $\exists q, r \in \mathbb{Z}, 0 \leq r \leq d - 1 \; \text{t.c.} \; h = qd + r$ avremo che:
+
+    {\centering
+        $x_0 + h \frac{n}{d} = x_0 (dq + r) \frac{n}{d} = x_0 + q\cancel{d}\frac{n}{\cancel{d}} + r \frac{n}{d} = x_0 + \underset{\text{multiplo di } n}{\fcolorbox{red}{white}{\cancel{qn}} + r \frac{d}{n}}$
+    \par}
+    Quindi avremo che \fcolorbox{red}{white}{$x_0 + h \frac{n}{d} = x_0 + r \frac{n}{d}$}, dove il resto $r$ varia tra $1$ e $d - 1$.
+\end{boxA}
+
+\begin{flushleft}
+    \textbf{Corollario}: se $\gcd (a, n) = 1$ allora la congruenza lineare \fcolorbox{red}{white}{$ax \equiv b \; \text{mod} \; n$} ammette una ed una sola soluzione in $\mathbb{Z}_n$
+\end{flushleft}
+
+\begin{boxA}
+    \textcolor{orange}{\textbf{Esempio}}
+
+    {\centering
+        $5x \equiv 3 \; \text{mod} \; 7$
+    \par}
+    Calcoliamo il \textit{massimo comun divisore}: $\gcd (5, 7) = 1$, allora esiste una sola soluzione in $\mathbb{Z}_7$, infatti troviamo i parametri dell'\textit{identità di bezout}: $1 = 5 \cdot (3) + 7 \cdot (-2)$
+
+    {\centering
+        $3 \cdot 1 = 5 \cdot (3 \cdot 3) + 7 \cdot (-2 \cdot 3) \Rightarrow (9, -6)$ è soluzione della diofantea
+    \par}
+    In particolare a noi interessa \fcolorbox{red}{white}{$x = 9$} è soluzione della congruenza. In $\mathbb{Z}$: $\text{Sol} = \{9 + k \cdot 7 \; \text{t.c.} \; k \in \mathbb{Z}\} = \{9 + 7k\}$, mentre in $\mathbb{Z}_7$:
+
+    {\centering
+        $\mathbb{Z}_7: \; \text{Sol} = \{9 + k \cdot 7 \; \text{t.c.} \; k \in \mathbb{Z}_1\} = \{[9]_7\} = \{[2]_7\}$
+    \par}
+\end{boxA}

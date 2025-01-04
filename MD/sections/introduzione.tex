@@ -133,8 +133,6 @@ Se X è un insieme \textbf{finito} con $\#X = n$ ed Y è un insieme \textbf{nume
         \end{cases}
     \end{math}
 \end{center}
-
-\newpage
 \subsection{Proprietà 3}
 Se X e Y sono due insiemi \textbf{numerabili}, allora anche $X \cup Y$ è \textbf{numerabile}. \\
 \textcolor{olive}{\textbf{Dimostrazione}}: senza perdere di generalità, supponiamo che $X \cap Y = \emptyset$. Per ipotesi esistono due funzioni biettive $f : X \rightarrow \mathbb{N}$ e $g : Y \rightarrow \mathbb{N}$. Per dimostrare la proprietà occorre costruire una funzione biettiva $h : X \cup Y \rightarrow \mathbb{N}$. Ad esempio, $\forall c \in (X \cup Y)$, si può porre:
@@ -148,17 +146,8 @@ Se X e Y sono due insiemi \textbf{numerabili}, allora anche $X \cup Y$ è \textb
     \end{math}
 \end{center}
 
-\begin{boxA}
-    \textcolor{purple}{\textbf{Off-Topic}}: \\
-    \textbf{Paradosso del Grand Hotel di Hilbert}: il paradosso del \textit{Grand Hotel} inventato dal matematico \textit{David Hilbert} per mostrare alcune caratteristiche del concetto di infinito e le differenze fra opzioni con insieme finiti ed infiniti. Hilbert immagina un hotel con infinite stanze, tutte occupate, e afferma che qualsiasi sia il numero di altri ospiti che sopraggiungano, sarà sempre possibile ospitarli tutti, anche se il loro numero è infinito, purché numerabile. \\
-    Nel caso semplice, arriva un singolo nuovo ospite. Il furbo albergatore sposterà tutti i clienti nella camera successiva (l'ospite della 1 alla 2, quello della 2 alla 3, etc.); in questo modo, benché l'albergo fosse pieno è comunque, essendo infinito, possibile sistemare il nuovo ospite.
-    Un caso meno intuitivo si ha quando arrivano infiniti nuovi ospiti. Sarebbe possibile procedere nel modo visto in precedenza, ma solo scomodando infinite volte gli ospiti (già spazientiti dal precedente spostamento): sostiene allora Hilbert che la soluzione sta semplicemente nello spostare ogni ospite nella stanza con numero doppio rispetto a quello attuale (dalla 1 alla 2, dalla 2 alla 4,etc.), lasciando ai nuovi ospiti tutte le camere con i numeri dispari, che sono essi stessi infiniti, risolvendo dunque il problema. Gli ospiti sono tutti dunque sistemati, benché l'albergo fosse pieno.
-\end{boxA}
-
-
 \textbf{Proposizione}: se X è un insieme numerabile e $Y \subseteq X$ allora Y è un insieme \textbf{discreto}.
 
-\newpage
 \subsection{Proprietà 4}
 Se $\{A_i \; | \; i \in \mathbb{N}\} = \{A_1, A_2, ..., A_i, ...\}$ è un \textbf{insieme numerabile} di \textbf{insiemi numerabili}, si ha che:
 \begin{center}
@@ -212,6 +201,14 @@ In questo modo abbiamo ``etichettato'' anche tutti gli elementi che precedono il
     \item $\mathbb{Q}$ è numerabile.
 \end{itemize}
 
+
+\begin{boxA}
+    \textcolor{purple}{\textbf{Off-Topic}}: \\
+    \textbf{Paradosso del Grand Hotel di Hilbert}: il paradosso del \textit{Grand Hotel} inventato dal matematico \textit{David Hilbert} per mostrare alcune caratteristiche del concetto di infinito e le differenze fra opzioni con insieme finiti ed infiniti. Hilbert immagina un hotel con infinite stanze, tutte occupate, e afferma che qualsiasi sia il numero di altri ospiti che sopraggiungano, sarà sempre possibile ospitarli tutti, anche se il loro numero è infinito, purché numerabile. \\
+    Nel caso semplice, arriva un singolo nuovo ospite. Il furbo albergatore sposterà tutti i clienti nella camera successiva (l'ospite della 1 alla 2, quello della 2 alla 3, etc.); in questo modo, benché l'albergo fosse pieno è comunque, essendo infinito, possibile sistemare il nuovo ospite.
+    Un caso meno intuitivo si ha quando arrivano infiniti nuovi ospiti. Sarebbe possibile procedere nel modo visto in precedenza, ma solo scomodando infinite volte gli ospiti (già spazientiti dal precedente spostamento): sostiene allora Hilbert che la soluzione sta semplicemente nello spostare ogni ospite nella stanza con numero doppio rispetto a quello attuale (dalla 1 alla 2, dalla 2 alla 4,etc.), lasciando ai nuovi ospiti tutte le camere con i numeri dispari, che sono essi stessi infiniti, risolvendo dunque il problema. Gli ospiti sono tutti dunque sistemati, benché l'albergo fosse pieno.
+\end{boxA}
+
 \section{Confronto tra Cardinalità}
 Si dice che un insieme A ha \textbf{cardinalità minore o uguale} ad un insieme B (e si indica con: $\#A \leq \#B$) se: $\exists f : A \rightarrow B, \; f \; è \; iniettiva$. \\
 \textbf{Proprietà}:
@@ -227,6 +224,7 @@ La relazione ``$\leq$'' fra cardinalità è una relazione di ordine totale.
     \textcolor{blue}{\textbf{Lemma}}: $A \subseteq B \subseteq C$ con $\#A = \#B \Rightarrow \#A = \#B = \#C$.
 \end{boxA}
 
+\newpage
 \textbf{Teorema di Cantor-Bernstein-Schroeder}: Se $\exists f : A \rightarrow B, \; f \; iniettiva$ ed $\exists g : B \rightarrow A, \; g \; iniettiva$ allora $\exists h : A \rightarrow B, \; h \; biunivoca$. \\
 \textcolor{olive}{\textbf{Dimostrazione}}: poiché $f$ e $g$ sono iniettive se le restriangamo alla loro immagine biunivoca:
 \begin{center}
@@ -288,7 +286,6 @@ Questa tipologia di cardinalità viene definita \textbf{cardinalità del continu
     non esistono cardinalità comprese tra $\#X$ e $\mathcal{P}(X) = 2^{\#X} \; \forall X$ di cardinalità non finita.
 \end{boxA}
 
-\newpage
 \section{Relazioni di Equivalenza}
 Una \textbf{relazione} $\mathcal{R}$ tra due insiemi A e B è un \textbf{sottoinsieme} del \textbf{prodotto cartesiano} fra A e B, ovvero $\mathcal{R} \in A \times B$.
 \begin{boxA}
@@ -344,7 +341,6 @@ L'insieme quoziente $\frac{\mathbb{R}}{\mathcal{R}}$ è in corrispondenza biuniv
     Sia $\mathcal{R}$ la relazione di equivalenza su $\mathbb{R}$ definita da $(a, b) \in \mathbb{R}$ se e solo se $\lfloor a \rfloor = \lfloor b \rfloor$. L'\textbf{insieme quoziente} è in corrispondenza biunivoca con $\mathbb{Z}$ (il passaggio da $\mathbb{R}$ a $\frac{\mathbb{R}}{\mathcal{R}}$ è un esempio di \textbf{discretizzazione}): $\frac{\mathbb{R}}{\mathcal{R}} = \{ [ n, n+1[, n \in \mathbb{Z} \}$
 \end{boxA}
 
-\newpage
 \section{Congruenza modulo n}
 \textbf{Definizione}: fissa un intero $n \in \mathbb{N}$, si definisce una relazione di equivalenza $\equiv_n$ su $\mathbb{Z}$:
 \begin{center}
@@ -399,9 +395,9 @@ Occorre provare che le n classi $[0], [1], ..., [n-1]$ sono a due a due disgiunt
 \end{boxA}
 
 \begin{boxA}
-    \begin{minipage}[t]{0.45\textwidth}
+    \begin{minipage}[t]{0.5\textwidth}
         \centering
-        $\mathbb{Z}_4 = \{[0], [1], [2], [3]\}$
+        $\mathbb{Z}_4 = \{[0], [1], [2], [3]\}$ \\
     \begin{tikzpicture}[scale=0.6]
         \draw[thick] (0,0) circle(2);
         \foreach \angle/\label in {90/{[0]}, 0/{[1]}, 270/{[2]}, 180/{[3]}} {
@@ -412,7 +408,7 @@ Occorre provare che le n classi $[0], [1], ..., [n-1]$ sono a due a due disgiunt
     \end{tikzpicture}
     \hfill
     \end{minipage}
-    \begin{minipage}[t]{0.45\textwidth}
+    \begin{minipage}[t]{0.5\textwidth}
         \centering
     $\mathbb{Z}$ è più facilemente rappresentabile tramite una circonferenza
     \end{minipage}

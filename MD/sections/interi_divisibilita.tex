@@ -1,9 +1,10 @@
 \chapter{Gli Interi e la Divisibilità}
 \section{Strutture algebriche elementari}
 Una \textbf{operazione binaria intera} su un insieme G è un'applicazione 
-\begin{center}
+
+{\centering
     $\ast \; : \; G \times G \rightarrow G$
-\end{center}
+\par}
 L'immagine della coppia $(x,y)$ si denoterà con $x \ast y$. 
 \begin{itemize}[nosep]
     \item $e \in G$ si dice \textbf{elemento neutro} rispetto a $\ast$ se:
@@ -47,10 +48,12 @@ La terna $(\mathbb{K}, +, \cdot)$ con $\mathbb{K}$ un insieme e $+, \cdot$ (somm
     \item per ogni $x,y,z \in \mathbb{K}$ si ha $x \cdot (y + z) = (x \cdot y) + (x \cdot z)$ quindi il prodotto è distribuito rispetto alla somma.
 \end{itemize}
 In qualunque campo vale la \textbf{legge di annullamento del prodotto}:
-\begin{center}
-    $x \cdot y = 0 \rightarrow x = 0 \; \text{oppure} \; y = 0$
-\end{center}
 
+{\centering
+    $x \cdot y = 0 \rightarrow x = 0 \; \text{oppure} \; y = 0$
+\par}
+
+\newpage
 \subsection{Domini d'integrità}
 \textbf{Divisori dello zero}: sia $(A, +, \cdot)$ un anello. Due elementi $a,b \in A$ si dicono \textbf{divisori dello zero} se $a \neq 0$, $b \neq 0$, ma $a \cdot b = 0$. Ovvero, può succedere che in un anello due elementi non nulli il cui prodotto fa 0.
 \begin{boxA}
@@ -99,6 +102,7 @@ In qualunque campo vale la \textbf{legge di annullamento del prodotto}:
 \end{center}
 Definito questo possiamo dire che $(\mathbb{Z}, \boxplus, \boxdot)$ è \textbf{dominio di integrità}.
 
+\newpage
 \section{Teoria della Divisibilità}
 \textbf{Divisibilità}: dati due numeri $a,b \in \mathbb{Z}$, si dice che $a$ \textbf{divide} $b$ (e si scrive $a|b$) se: $\exists c \in \mathbb{Z} \; | \; b = a \cdot c$
 \begin{boxA}
@@ -132,6 +136,7 @@ Definito questo possiamo dire che $(\mathbb{Z}, \boxplus, \boxdot)$ è \textbf{d
     \end{boxA}
 \end{itemize}
 
+\newpage
 \section{Massimo Comune Divisore}
 Dati $a,b \in \mathbb{Z}$ non entrambi nulli, si dice che $d \in \mathbb{Z}$ è \textcolor{red}{\textbf{UN}} \textbf{massimo comune divisore} tra $a$ e $b$ se valgono contemporaneamente le due proprietà:
 \begin{center}
@@ -196,9 +201,7 @@ Questi valori ($\alpha$ e $\beta$) però non sono strettamente univocamente dete
 
         \item in perfetta analogia si può dimostrare che \fcolorbox{red}{white}{$d|b$}, partendo dalla \textbf{divisione euclidea} tra $b$ e $d$.
     \end{itemize}
-\end{boxA}
 
-\begin{boxA}
     \begin{itemize}[nosep]
         \item bisogna ora \textcolor{olive}{dimostrare} che $\forall d' \in \mathbb{Z} \; | \; d'|a, \; d'|b \Rightarrow d'|d$. Poiché $d = \overline{\lambda} \cdot a + \overline{\mu} \cdot b$ allora bisognerà che \fcolorbox{red}{white}{$\exists h \in \mathbb{Z} \; | \; a = d' \cdot h$} e \fcolorbox{red}{white}{$\exists k \in \mathbb{Z} \; | \; b = d' \cdot k$}. Usando queste due relazioni, segue che:
         \begin{align*}
@@ -211,14 +214,16 @@ Questi valori ($\alpha$ e $\beta$) però non sono strettamente univocamente dete
     Siamo riusciti a dimostrare il teorema di esistenza del \textbf{massimo comune divisore} in S, come il suo minimo: $d = \min(S) = \gcd(a, b)$
 \end{boxA}
 
-Siano $a,b \in \mathbb{Z}$, con $|a| \geq |b| > 0$. Se $a = b \cdot q + r$ è la \textbf{divisione euclidea} fra $a$ e $b$ allora avremo:
-\begin{center}
-    $\{c \in \mathbb{Z} \; \vert \; c | a, \; c | b \} = \{c \in \mathbb{Z} \; | \; c | b, \; c | r \}$
-\end{center}
-Ovvero l'insieme degli interi che dividono $a$ e $b$ sono gli stessi che dividono sia $b$ che $r$, conseguenza di questo fatto è che:
-\begin{center}
-     $\gcd(a, b) = \gcd(b, r)$
-\end{center}
+\begin{flushleft}
+    Siano $a,b \in \mathbb{Z}$, con $|a| \geq |b| > 0$. Se $a = b \cdot q + r$ è la \textbf{divisione euclidea} fra $a$ e $b$ allora avremo:
+    \begin{center}
+        $\{c \in \mathbb{Z} \; \vert \; c | a, \; c | b \} = \{c \in \mathbb{Z} \; | \; c | b, \; c | r \}$
+    \end{center}
+    Ovvero l'insieme degli interi che dividono $a$ e $b$ sono gli stessi che dividono sia $b$ che $r$, conseguenza di questo fatto è che:
+    \begin{center}
+        $\gcd(a, b) = \gcd(b, r)$
+    \end{center}
+\end{flushleft}
 
 \begin{boxA}
     \textcolor{olive}{\textbf{Dimostrazione}}
@@ -257,6 +262,7 @@ Ovvero l'insieme degli interi che dividono $a$ e $b$ sono gli stessi che dividon
     \end{itemize}
 \end{boxA}
 
+\newpage
 \textbf{Algoritmo delle Divisioni Successive (di Euclide)} \\
 Siano $a, b \in \mathbb{Z} - \{0\}$. Applicando ricorsivamente la divisione euclidea tra $a$ e $|b|$, e poi tra \textbf{divisore} e \textbf{resto} della divisione:
 
@@ -355,7 +361,8 @@ Una \textbf{equazione diofantea} è un'equazione lineare di primo rado in due in
 \end{flushleft}
 
 \begin{boxA}
-    \textcolor{olive}{\textbf{Dimostrazione}}: quando bisogna dimostrare un \textbf{se e solo se} ($\longleftrightarrow$), la dimostrazine sarà divisia in due parti: la prima parte dimostrerà il ``$\rightarrow$'', mentre la seconda il ``$\leftarrow$'' \\ \newline
+    \textcolor{olive}{\textbf{Dimostrazione}}: quando bisogna dimostrare un \textbf{se e solo se} ($\longleftrightarrow$), la dimostrazine sarà divisia in due parti: la prima parte dimostrerà il ``$\rightarrow$'', mentre la seconda il ``$\leftarrow$'' 
+
     \textcolor{red}{\textbf{Prima Parte}} \\
     \textbf{Hp}: $\exists (\overline{x}, \overline{y}) \in \mathbb{Z} \times \mathbb{Z} \; \text{t.c.} \; a\overline{x} + b\overline{y} = c$ \\
     \textbf{Th}: $\underset{d \in \mathbb{Z}}{\underbrace{\gcd (a, b)}|c}$
@@ -385,9 +392,7 @@ Una \textbf{equazione diofantea} è un'equazione lineare di primo rado in due in
             $d|c$ in questo modo abbiamo dimostrato che $\gcd (a, b)$ divide il termine noto $c$
         \end{minipage}
     \end{center}
-\end{boxA}
 
-\begin{boxA}
     \textcolor{red}{\textbf{Seconda Parte}} \\
     \textbf{Hp}: $\gcd (a, b)|c$ \\
     \textbf{Th}: $\exists (\overline{x}, \overline{y}) \in \mathbb{Z} \times \mathbb{Z} \; \text{t.c.} \; a\overline{x} + b\overline{y} = c$ \\
@@ -401,7 +406,10 @@ Una \textbf{equazione diofantea} è un'equazione lineare di primo rado in due in
         c = d \cdot h &= (\alpha \cdot a + \beta \cdot b) \cdot h \\
         &= a \cdot \underset{\in \mathbb{Z}}{\underbrace{(\alpha \cdot h)}} + b \cdot \underset{\in \mathbb{Z}}{\underbrace{(\beta \cdot h)}}
     \end{align*}
-    In questo modo abbiamo dimostrato che $(\overline{x}, \overline{y}) = (a \cdot h, b \cdot h)$ e che quindi \textbf{se esiste} è soluzione. \\ \newline
+    In questo modo abbiamo dimostrato che $(\overline{x}, \overline{y}) = (a \cdot h, b \cdot h)$ e che quindi \textbf{se esiste} è soluzione.
+\end{boxA}
+
+\begin{boxA}
     \textcolor{red}{\textbf{Terza Parte}} \\
     L'ultima parte della dimostrazione ci permette di verificare che \textbf{se esiste} una soluzione, ne \textbf{esistono infinite}, ovvero se:
 
@@ -440,6 +448,7 @@ Una \textbf{equazione diofantea} è un'equazione lineare di primo rado in due in
             \item \textbf{identità di bezout}: $1 = (n + 1) \cdot (1) + n \cdot (-1) \; \Rightarrow \; 1 \in \mathcal{S}$ dove $\mathcal{S}$ è l'insieme delle combinazioni lineari. Siccome $\min (\mathcal{S}) = \gcd (n + 1, n) \; \Rightarrow \; \fcolorbox{red}{white}{$\gcd (n + 1, n) = 1$}$
         \end{enumerate}
     \end{boxA}
+    \newpage
     \item due dispari consecutivi sono sempre coprimi.
     \begin{boxA}
         \textcolor{olive}{\textbf{Dimostrazione}}: anche in questo caso è possibile dimostrarlo tramite gli stessi due approcci della proprioetà precedente, visualizziamo solo quello con l'\textbf{identità di bezout}:
@@ -466,3 +475,212 @@ Una \textbf{equazione diofantea} è un'equazione lineare di primo rado in due in
         \end{align*}
     \end{boxA}
 \end{itemize}
+\textbf{Numeri Primi}: un intero $p \in \mathbb{Z}$ si dice \textbf{primo} se gli unici suoi divisori sono $\pm 1$ e $\pm p$.
+\begin{boxA}
+    \textcolor{blue}{\textbf{Lemma di Euclide}}: se $a, b \in \mathbb{Z}$ sono \textbf{coprimi}:
+    
+    {\centering
+        $a|(bc) \; \Rightarrow \; a|c$
+    \par}
+    \textcolor{olive}{\textbf{Dimostrazione}}: se $a|(bc)$ allora $\exists h \in \mathbb{Z} \; \text{t.c.} \; \fcolorbox{red}{white}{$b \cdot c = h \cdot a$}$, poiché $\gcd (a, b) = 1$, per l'\textbf{identità di bezout} $\exists \alpha, \beta \in \mathbb{Z} \; \text{t.c.} \; 1 = \alpha \cdot a + \beta \cdot b$. \\
+    Moltiplicando entrambi i membri per $c$ si ottiene:
+    \begin{align*}
+        c \cdot 1 &= c \cdot (\alpha \cdot a + \beta \cdot b) \\
+        c &= c \cdot \alpha \cdot a + \fcolorbox{red}{white}{$c \cdot b$} \cdot \beta \\
+        c &= c \cdot \alpha \cdot a + h \cdot a \cdot \beta \\
+        c &= a \cdot (\underset{\in \mathbb{Z}}{\fcolorbox{red}{white}{$\alpha \cdot c + h \cdot \beta$}})
+    \end{align*}
+    In questo modo abbiamo dimostrato che $a|c$.
+\end{boxA}
+
+\newpage
+\begin{flushleft}
+    \textbf{Proprietà} \\
+    Se $a, b \in \mathbb{Z} - \{0\}$ sono coprimi
+
+    {\centering
+        $a|c, \; b|c \; \Rightarrow \; (ab)|c$
+    \par}
+\end{flushleft}
+\begin{boxA}
+    \textcolor{olive}{\textbf{Dimostrazione}}: siccome $b|c$ allora $\exists h \in \mathbb{Z} \; \text{t.c.} \; c = h \cdot b$. In questo modo $a|c \rightarrow a|(hb)$ che per il \textbf{Lemma di Euclide} implica che $a|h$, ovvero che $\exists h' \in \mathbb{Z} \; \text{t.c.} \; h = h' \cdot a$, sostituendo avremo:
+    
+    {\centering
+        $c = h \cdot b = h' \cdot ab \rightarrow \fcolorbox{red}{white}{$(ab)|c$}$
+    \par}
+\end{boxA}
+
+\begin{flushleft}
+    \textbf{Teorema della Caratterizzazione dei Numeri Primi} \\
+    Sia $p \in \mathbb{Z}$
+
+    {\centering
+        $p \; \text{è primo} \; \Longleftrightarrow \; (\forall m,n \in \mathbb{Z} \; \text{t.c.} \; p|(mn) \; \text{allora o} \; p|m \; \text{o} \; p|n)$
+    \par}
+\end{flushleft}
+\begin{boxA}
+    \textcolor{olive}{\textbf{Dimostrazione}}
+
+    \textcolor{red}{\textbf{Prima Parte}} ``$\Rightarrow$'' \\
+    Sia $p$ primo. Per \textbf{Hp.} supponiamo esistano $n, m \in \mathbb{Z}$ tali che $p|(mn)$, con p \textbf{non divide $n$}. Poichè $p$ è primo significa che $n$ non è multiplo di $p$ e quindi $\gcd (p, n) = 1$ per il \textbf{Lemma di Euclide}, da $\gcd (p, n) = 1$ e $p|(mn)$ (le nostre ipotesi) segue che $p|m$, ovvero la tesi.
+
+    \textcolor{red}{\textbf{Seconda Parte}} ``$\Leftarrow$'' \\
+    Supponiamo ora che $\forall m, n \in \mathbb{Z} \; \text{t.c.} \; p|(mn)$ allora o $p|m$ o $p|n$. Immaginiamo di scrivere $p$ come prodotto di due fattori
+    
+    {\centering
+        $p = a \cdot b, \; \text{con} \; a, b \in \mathbb{Z}$
+    \par}
+    Da $p = a \cdot b$ segue che $p|(ab)$; per ipotesi, allora, $p|(ab)$ implica che o $p|a$ oppure $p|b$, supponiamo che $p|a$. Siccome $p = a \cdot b$ allora sicuramente $a|p$, ma visto che $p|a \; \text{e} \; a|p \rightarrow a = \pm p$. \\
+    Se $a = p$, allora $b = 1$, mentre se $a = -p$ allora $b = -1$. In entrambi i casi gli unici divisori di $p$ sono $\pm p$ e $\pm 1$, per cui $p$ è \textbf{primo}.
+\end{boxA}
+
+\begin{flushleft}
+    \textbf{Minimo Comune Multiplo} \\
+    Dati $a, b \in \mathbb{Z} - \{0\}$ si dice che $M \in \mathbb{Z}$ è \textcolor{red}{\textbf{UN}} \textbf{minimo comune multiplo} tra $a$ e $b$ se:
+    \begin{itemize}[nosep]
+        \item $a|M$ e $b|M$
+        \item $\forall c \in \mathbb{Z} \; \text{t.c.} \; a|c, \; b|c \Rightarrow M|c$
+    \end{itemize}
+    Mentre si definisce il \textcolor{red}{\textbf{IL}} \textbf{minimo comune multiplo} tra $a$ e $b$ l'unico \textit{minimo comune multiplo} \textbf{positivo}:
+
+    {\centering
+        $M = mcm(a,b) \in \mathbb{Z}^+$
+    \par}
+    tale che $a|M$, $b|M$; $\forall c \in \mathbb{Z} \; \text{t.c.} \; a|c, \; b|c \Rightarrow M|c$
+\end{flushleft}
+
+\newpage
+\begin{flushleft}
+    \textbf{Teorema dell'Esistenza del Minimo Comune Multiplo} \\
+    Dati $a, b \in \mathbb{Z} - \{0\}, \; \exists M = mcm(a, b)$:
+    
+    {\centering
+        $M = \frac{|ab|}{\gcd (a, b)}$
+    \par}
+\end{flushleft}
+
+\begin{boxA}
+    \textcolor{olive}{\textbf{Dimostrazione}} \\
+    $a, b \in \mathbb{Z} - \{0\}, \; \exists M = mcm(a, b) \Longleftrightarrow \fcolorbox{violet}{white}{$a|M \; \text{e} \; b|M$} \; \fcolorbox{orange}{white}{$\forall c \in \mathbb{Z} \; \text{t.c.} \; a|c, \; b|c \Rightarrow M|c$}$ \newline
+
+    Dimostriamo per primo \fcolorbox{violet}{white}{$a|M \; \text{e} \; b|M$} ovvero che il \textbf{minimo comune multiplo} divide contemporaneamente $a$ e $b$. \\
+    $mcm(a, b) = mcm(|a|, |b|)$ possiamo quindi supporre che entrambi i valori siano positivi. So che $\exists d = \gcd (a, b) \in \mathbb{Z}$ e vado a considerare:
+    
+    {\centering
+    $M = \frac{a \cdot b}{d}$
+    \par}
+    Posso verificare che $M$ sia il \textit{minimo comune multiplo} perché se $d|a \rightarrow \exists h \in \mathbb{Z} \; \text{t.c.} \; a = h \cdot d$ e contemporaneamente $d|b \rightarrow \exists k \in \mathbb{Z} \; \text{t.c.} \; b = k \cdot d$ posso riscrivere la relazione di prima come:
+
+    {\centering
+        $M = \frac{a \cdot b}{d} = \frac{(d \cdot h)(d \cdot k)}{d} = dhk$
+    \par}
+    In questo modo abbiamo che $M = (d \cdot h) \cdot k = a \cdot k$ quindi \fcolorbox{violet}{white}{$a|M$} e che $M = (d \cdot k) \cdot h = b \cdot h$ quindi \fcolorbox{violet}{white}{$b|M$} \newline
+
+    Dimostriamo ora che \fcolorbox{orange}{white}{$\forall c \in \mathbb{Z} \; \text{t.c.} \; a|c, \; b|c \Rightarrow M|c$} ovvero che $M$ è il \textbf{minimo}. Sappiamo che $a|c$ significa che $\exists \alpha \in \mathbb{Z} \; \text{t.c.} \; c = a \cdot \alpha = (d \cdot h) \cdot \alpha$ e che $b|c$ significa che $\exists \beta \in \mathbb{Z} \; \text{t.c.} \; c = b \cdot \beta = (d \cdot k) \cdot \beta$, in questo modo possiamo dire che $\exists c' \in \mathbb{Z} \; \text{t.c.} \; c= d \cdot c'$ con $c' = h \cdot \alpha$ oppure $c' = k \cdot \beta$. \\
+    Poiché:
+
+    {\centering
+        $h = \frac{a}{\gcd (a, b)} \qquad k = frac{b}{\gcd (a, b)}$
+    \par}
+    $h$ e $k$ sono \textbf{coprimi} e sono entrambi divisiori di $c'$, segue che $hk|c'$, ma allora $\exists \gamma \in \mathbb{Z} \; \text{t.c.} \; hk \cdot \gamma = c'$, moltiplicando per $d$ avremo che $dhk \cdot \gamma = d \cdot c' = c$ e $dhk = M \Rightarrow \fcolorbox{orange}{white}{$M|c$}$
+\end{boxA}
+
+\newpage
+\begin{flushleft}
+    \textbf{Teorema Fondamentale dell'Aritmetica} \\
+    Per ogni $n \in \mathbb{Z}, \; \exists p_1, p_2, ..., p_s$ con $p_i$ \textbf{primo} $\forall i \in \mathbb{N}_s, \; s \geq 1$ e $p_i \neq p_j \; \forall i \neq j$ ed $\exists h_1, h_2, ..., h_s \in \mathbb{Z}^+$:
+
+    {\centering
+        $n = sign(n) \cdot p_1^{h_1} \cdot p_2^{h_2} \cdot ... \cdot p_s^{h_s}$
+    \par}
+    Inoltre se 
+
+    {\centering
+        $n = sign(n) \cdot q_1^{k_1} \cdot q_2^{k_2} \cdot ... \cdot q_r^{k_r}$
+    \par}
+    con $q_j$ \textbf{primo} $\forall j \in \mathbb{N}_r, \; r \geq 1$ e $q_j \neq q_l \; \forall j \neq l$ e $k_j \in \mathbb{Z}^+, \; \forall j \in \mathbb{N}_r$, allora $r = s$ ed $\exists \phi : \mathbb{N}_r \rightarrow \mathbb{N}_s$ biunivoca tale che $p_i = q_{\phi(i)}$ e $h_i = k_{\phi(i)} \forall i \in \mathbb{N}_s$ \\
+    Ovvero che i numeri primi che compongono $n$ sono sempre gli stessi ma cambiati di posizione (combinazione unica, può solo permutare la poszione.) \newline
+
+    \textbf{Conseguenza}: Dati due numeri $a, b \in \mathbb{Z}$ posso sempre rappresentarli come il prodotto di numeri primi (ad eccezione di quelli con esponente nullo) ad esempio:
+
+    {\centering
+        $a = p_1^{h_1} \cdot p_2^{h_2} \cdot ... \cdot p_r^{h_r} \qquad \mathcal{S}_a = \{p_1^{h_1}, p_2^{h_2}, ..., p_r^{h_r}\}$ \\
+        $b = p_1^{k_1} \cdot p_2^{k_2} \cdot ... \cdot p_s^{k_s} \qquad \mathcal{S}_b = \{p_1^{k_1}, p_2^{k_2}, ..., p_s^{k_s}\}$
+    \par}
+    avremo che:
+    \begin{itemize}[nosep]
+        \item $\gcd (a, b)$ è la sequenza di tutti i numeri primi con esponente minore che sta nell'intersezione della rappresentazione: $\mathcal{S}_a \cap \mathcal{S}_b$.
+        \item $mcm(a, b)$ è la sequenza dei numeri primi comuni e non con esponente maggiore presenti nell'unione: $\mathcal{S}_a \cup \mathcal{S}_b$
+    \end{itemize}
+
+    \begin{boxA}
+        \textcolor{orange}{\textbf{Esempio}} \\
+        $12 = 2^2 \cdot 3^1 \rightarrow \mathcal{S}_a = \{2^2, 3^1\} \qquad \qquad 45 = 3^2 \cdot 5^1 \rightarrow \mathcal{S}_b = \{3^2, 5^1\}$ \\
+        $\gcd (12, 45) = 3^1 = 3 \qquad \qquad mcm(12, 45) = 2^2 \cdot 3^2 \cdot 5^1 = 180$
+    \end{boxA}
+\end{flushleft}
+
+\begin{flushleft}
+    \textbf{Teorema dell'Esistenza di infiniti numeri primi}: esistono \textbf{infiniti} numeri \textbf{primi}.
+    \begin{boxA}
+        \textcolor{olive}{\textbf{Dimostrazione}}: supponiamo \textbf{per assurdo} che i numeri primi siano \textbf{finiti}, ovvero che $\exists N \in \mathbb{N}, \; \text{t.c.} \; p_1, p_2, ..., p_N$ siano tutti e soli i numeri primi. Consideriamo ora $\overline{n} = p_1 \cdot p_2 \cdot p_N + 1$, sicuramente $\forall i \in \mathbb{N}_N$, non può essere vero che $p_i|\overline{n}$ poiché il resto della \textbf{divisione euclidea} tra $\overline{n}$ e $p_i$ vale 1. Tuttavia per il \textbf{teorema fondamentale dell'aritmetica}, anche $\overline{n}$ deve essere rappresentabile come il prodotto di potenze di numeri primi, ma se $p_1, p_2, ..., p_N$ sono gli unici numeri primi allora si ottiene \textbf{assurdo}.
+    \end{boxA}
+\end{flushleft}
+
+\newpage
+\begin{flushleft}
+    \textbf{Proprietà}: $\sqrt{3}$ è \textbf{irrazionale}.
+
+    \begin{boxA}
+        \textcolor{olive}{\textbf{Dimostrazione}}: supponiamo per \textbf{assurdo} che $\sqrt{3}$ sia \textit{razionale}, ovvero che:
+        
+        {\centering
+            $\sqrt{3} = \frac{m}{n}, \; m, n \in \mathbb{Z}^+$
+        \par}
+        Allora avremo che $m = \sqrt{3} \cdot n$ elevando entrambi i membri al quadrato avremo che $\underset{c'}{\underbrace{m^2}} = \underset{c''}{\underbrace{3 \cdot n^2}}$
+
+        Poiché per il \textbf{teorema fondamentale dell'aritmetica} la scomposizione in fattori primi è unica a meno dell'ordine dei fattori, da $c' = m^2$ segue che gli esponenti di tutti i fattori primi di $c'$ sono pari, mentre da $c'' = 3n^2$ segue che il fattore primo $3$ compare in $c''$ con esponente dispari, ma visto che $c' = c''$ avremo dimostrato l'\textbf{assurdo}.
+    \end{boxA}
+\end{flushleft}
+
+\begin{flushleft}
+    \textcolor{blue}{\textbf{Lemma}}: se $n$ è dispari, fattorizzare n equivale a scrivere $n$ come differenza di due quadrati.
+
+    {\centering
+        $n = x^2 - y^2 = (x + y) \cdot (x - y)$
+    \par}
+    \begin{boxA}
+        \textcolor{olive}{\textbf{Dimostrazione}}: siccome $n \in \mathbb{D}$, una sua fattorizzazione $n = a \cdot b$ implica che anche $a, b \in \mathbb{D}$, mentre $(a+b), (a-b) \in \mathbb{P}$. Allora 
+
+        {\centering
+            $n = a \cdot b = (\frac{a + b}{2})^2 - (\frac{a - b}{2})^2 = \frac{a^2 + b^2 + 2ab}{4} - \frac{a^2 + b^2 - 2ab}{4} = \frac{4ab}{4} = a \cdot b, \quad \text{con} \; \frac{a + b}{2}, \frac{a - b}{2} \in \mathbb{Z}$
+        \par}
+
+    \end{boxA}
+\end{flushleft}
+
+\begin{flushleft}
+    \textbf{Metodo di Fattorizzazione di Fermat} \\
+    Senza perdere di generalità, si consideri $n \in \mathbb{Z}^+$ dispari. Per cercare due interi $x$ e $y$ tali che $n = x^2 - y^2$ si cerca un intero $x$ tale che $x^2 - n$ sia un quadrato perfetto. Allora:
+    \begin{itemize}[nosep]
+        \item inizialmente si pone $x = \lfloor \sqrt{n} \rfloor + 1$ e si verifica se $n - x^2$ è un quadrato perfetto, o no.
+        \item in caso affermativo si ottiene una decomposizione di $n$ e l'algoritmo termina; altrimenti, si pone $x := x + 1$ e si itera il procedimento.
+    \end{itemize}
+    Il procedimento avrà sicuramente termine, poiché al limite si arriva ad $x := \frac{n + 1}{2}$ in cui la condizione diventa 
+
+    {\centering
+        $(\frac{n + 1}{2})^2 - n = (\frac{n - 1}{2})^2 \rightarrow n = (\frac{n + 1}{2})^2 - (\frac{n - 1}{2})^2$
+    \par}
+    Se si arriva a questo punto, significa che l'unica decomposizione è quella banale, per cui $n$ è primo; altrimenti si ottiene una decomposizione non banale di $n$ e si procede ripetendo l'algoritmo su ciascuno dei fattori.
+
+    \begin{boxA}
+        \textcolor{orange}{\textbf{Esempio}}
+        
+        {\centering
+            $n = 194333 \qquad x = \lfloor \sqrt{n} \rfloor + 1 = 440 + 1 = 441$ \\
+            $441^2 - 194333 = 148 \rightarrow \text{non è un quadrato perfetto} \rightarrow x = x + 1 = 442$ \\
+            ... \\
+            $447^2 - 19433 = 5476 = 74^2 \Rightarrow n = 447^2 - 74^2 = (447 + 74) \cdot (447 - 74) = \fcolorbox{red}{white}{$521 \cdot 373$}$
+        \par}
+    \end{boxA}
+\end{flushleft}

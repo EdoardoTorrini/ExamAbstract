@@ -1,0 +1,148 @@
+\chapter{Funzione di Eulero e RSA}
+
+\section{Funzione di Eulero}
+
+Si dice \textbf{funzione di eulero} (o \textbf{toziente di eulero}) l'applicazione \fcolorbox{red}{white}{$\phi: \mathbb{N} \mapsto \mathbb{N}$} che associa ad ogni $n \in \mathbb{N}$ il numero di interi compresi fra 1 e $n$ coprimi con $n$. Se $n$ è \textbf{primo} allora si può dire che $\phi(n) = n - 1 \; \forall n$ primo. \newline
+\textbf{Proprietà}:
+\begin{itemize}[nosep]
+    \item Il numero di elementi invertibili in $\mathbb{Z}_n \; (\forall n \geq 2)$ è esattamente $\phi(n)$.
+    \begin{boxA}
+        \textcolor{olive}{\textbf{Dimostrazione}}: fissato $n \geq 2$, un elemento $x \in \mathbb{Z}$ è invertibile \textbf{se e solo se} $\exists y \in \mathbb{Z} \; \text{t.c.} \; x \cdot y \equiv_n 1$ questa è una congruenza lineare che ammette soluzioni \textbf{se e solo se} $\gcd (x, y) = 1$ ovvero se $x$ e $y$ sono \textbf{coprimi}. Quindi il numero di elementi invertibili in $\mathbb{Z}_n$ è pari al numero di elementi coprimi ad $n$ in $\mathbb{Z}_n$ che è la stessa definizione di $\phi(n)$
+    \end{boxA}
+    \item $\forall n \in \mathbb{N}$, il numero di stelle (distinte) a $n$ punte è:
+
+    {\centering
+        $\frac{\phi(n) - 2}{2}$
+    \par}
+
+    \item se $p \in \mathbb{Z}^+$ è un numero primo allora $\phi(p) = p - 1$.
+    \item se $p \in \mathbb{Z}^+$ è un numero primo allora $\phi(p^h) = p^h - p^{h - 1}, \; \forall h \geq 1$
+    \item se $p, q \in \mathbb{Z}^+$ sono due numeri primi distinti allora $\phi(pq) = \phi(p) \cdot \phi(q)$
+\end{itemize}
+\begin{flushleft}
+    \textcolor{blue}{\textbf{Corollario}}: se $n = p_1^{h_1} \cdot p_2^{h_2} \cdot ... \cdot p_r^{h_r}$, con $p_i$ \textbf{primi distinti} ($i \in \mathbb{N}_r)$ allora:
+
+    {\centering
+        $\phi(n) = \phi(p_1^{h_1}) \cdot \phi(p_2^{h_2}) \cdot ... \cdot \phi(p_r^{h_r})$
+    \par}
+    ovvero posso calcolare il \textbf{toziente di eulero} per ogni $n \in \mathbb{Z}$ se conosco la sua \textbf{fattorizzazione}.
+\end{flushleft}
+
+\newpage
+\begin{flushleft}
+    \textbf{Teorema di Eulero-Fermat} \\
+    $\forall n \in \mathbb{N}$ e $\forall a \in \mathbb{Z}$ tale che $\gcd (a, n) = 1$, si ha:
+    
+    {\centering
+        $a^{\phi(n)} \equiv_n 1$
+    \par}
+
+    \begin{boxA}
+        \textcolor{olive}{\textbf{Dimostrazione}}: dimostriamo il teorema per \textbf{induzione} con $n = p^h$ con p \textbf{primo} e $h_i \in \mathbb{N}, \; \forall i \in \mathbb{N}$
+
+        \textcolor{red}{\textbf{Passo Iniziale}} \newline
+        se $h = 1$, significa che $n = p^1 = p$ primo quindi la tesi non è altro che il \textbf{piccolo teorema di fermat}.
+
+        \textcolor{red}{\textbf{Passo Induttivo}}
+        
+        {\centering
+            \begin{minipage}[t]{0.45\textwidth}
+                \textbf{Hp.} $\forall a \in \mathbb{Z} \; | \; \gcd (a, p^h) = 1$ \\
+                $\Longrightarrow \;\; a^{\phi(p^h)} \equiv 1 \; \text{mod} \; p^h$
+            \end{minipage}
+            \hfill
+            \begin{minipage}[t]{0.45\textwidth}
+                \textbf{Th.} $\forall a \in \mathbb{Z} \; | \; \gcd (a, p^{h + 1}) = 1$ \\
+                $\Longrightarrow \;\; a^{\phi(p^{h + 1})} \equiv 1 \; \text{mod} \; p^{h + 1}$
+            \end{minipage}
+        \par}
+        Per la \textbf{proprietà} del \textit{toziente di eulero} $\phi(p^h) = p^h - p^{h - 1}$
+        \begin{align*}
+            \phi(p^{h + 1}) &= p^{h + 1} - p^h \\
+            &= p \cdot (p^h - p^{h - 1}) \\
+            &= p \cdot \phi(p^h)
+        \end{align*}
+        Quindi $a^{\phi(p + 1)} = a^{p \cdot \phi(p^h)}$ che si può rapprensentare anche come \fcolorbox{red}{white}{$(a^{\phi(p^h)})^p$}. Per \textbf{Hp.} induttiva $a^{\phi(p^h)} \equiv 1 \; \text{mod} \; p^h$, ovvero $\exists k \in \mathbb{Z} \; | \; a^{\phi(p^h)} = 1 + k \cdot p^h$ andando a sostituire otteniamo:
+
+        {\centering
+            $(a^{\phi(p^h)})^p = (1 + k \cdot p^h)^p$
+        \par}
+        che corrisponde alla \textbf{potenza di un binomio} (calcolabile con il \textbf{Binomio di Newton} $\rightarrow (A + B)^n = \underset{r=0}{\overset{n}{\sum}} \binom{n}{r} A^{n - r} \cdot B^r$), quindi avremo:
+
+        {\centering
+            $(1 + k \cdot p^h)^p = 1 + \binom{p}{1}(k \cdot p^h)^1 + \binom{p}{2}(k \cdot p^h)^2 + ... + \binom{p}{p}(k \cdot p^h)^p$
+        \par}
+        Ad eccezione del ``$1 +$'' tutti gli altri membri sono multipli di $p^{h + 1}$, infatti: \\
+        $\binom{p}{1} (k \cdot p^h)^1 = p \cdot kp^h = k \cdot \fcolorbox{red}{white}{$p^{h + 1}$}$ \\
+        $\binom{p}{1} (k \cdot p^h)^2 = \frac{p(p - 1)}{2} \cdot k^2 \cdot p^{2h} = \frac{p - 1}{2} \cdot k^2 \cdot \fcolorbox{red}{white}{$p^{2h + 1}$}$ \\
+        $\vdots$ \\
+        $\binom{p}{p} (k \cdot p^h)^p$ \\
+        Quindi tutti i fattori sono multipli di $p^{h + 1}$ quindi $\text{mod} p^{h + 1}$ si annullano quindi avremo che:
+        
+        {\centering
+            \fcolorbox{red}{white}{$(1 + k \cdot p^h)^p \equiv 1 \; \text{mod} \; p^{h + 1}$}
+        \par}
+        Questo dimostra il passo induttivo e quindi la nostra \textbf{Th.}
+    \end{boxA}
+    \begin{boxA}
+        \textcolor{olive}{\textbf{Dimostrazione}}: ora dimostriamo il teorema (\textbf{caso generale}) con $n = p_1^{h_1} \cdot p_2^{h_2} \cdot ... \cdot p_r^{h_r}$ con $p_i$ \textbf{primi distinti} e $h_i \in \mathbb{N}, \; \forall i \in \mathbb{N}_r$. Voglio provare che $\forall a \in \mathbb{Z} \; | \; \gcd (a, n) = 1$ e che quindi $a^{\phi(n)} \equiv_n 1$ (è la nostra \textbf{Th.})
+        \begin{itemize}[nosep]
+            \item so che $a^{\phi(p_i^{h_i})} \equiv 1 \; \text{mod} \; p_i^{h_i} \; \forall i \in \mathbb{N}_r$ dato che $\gcd (a, p_i^{h_i}) = 1$, perché se $a$ è \textbf{coprimo} con $n$, allora è \textbf{coprimo} anche con i singoli fattori.
+            \item d'altra parte so che $\phi(n) = \phi(p_1^{h_1}) \cdot \phi(p_2^{h_2}) \cdot ... \cdot \phi(p_r^{h_r})$, quindi $\phi(p_i^{h_i})|\phi(n) \; \forall i \in \mathbb{N}_r$, cioè 
+            
+            {\centering
+                \fcolorbox{red}{white}{$\frac{\phi(n)}{\phi(p_i^{h_i})} \in \mathbb{Z}$}
+            \par}
+            \item elevando entrambi i membri della prima equivalenza a tale esponente ottendo:
+            \begin{align*}
+                a^{\phi(p_i^{h_i})} &\equiv 1 \; \text{mod} \; p_i^{h_i} \\
+                (a^{\phi(p_i^{h_i})})^{\frac{\phi(n)}{\phi(p_i^{h_i})}} &\equiv (1)^{\frac{\phi(n)}{\phi(p_i^{h_i})}} \; \text{mod} \; p_i^{h_i} \\
+                (a^{\cancel{\phi(p_i^{h_i})}})^{\frac{\phi(n)}{\cancel{\phi(p_i^{h_i})}}} &\equiv (1)^{\frac{\phi(n)}{\phi(p_i^{h_i})}} \; \text{mod} \; p_i^{h_i} \\
+                a^{\phi(n)} &\equiv 1 \; \text{mod} \; p_i^{h_i} \; \forall i \in \mathbb{N}_r
+            \end{align*}
+            Ciò significa che $a^{\phi(n)} - 1$ è multiplo di $p_i^{h_i} \; \forall i \in \mathbb{N}_r$, ma poiché i $p_i$ sono \textbf{primi distinti}, si ha $a^{\phi(n)} - 1$ multiplo di $p_1^{h_1} \cdot p_2^{h_2} \cdot ... \cdot p_r^{h_r} = n$ e quindi avremo che:
+
+            {\centering
+                \fcolorbox{red}{white}{$a^{\phi(n)} \equiv_n 1$}
+            \par}
+        \end{itemize}
+    \end{boxA}
+
+    \textbf{Formulazione equivalente del Teorema di Eulero-Fermat} \\
+    $\forall n \in \mathbb{N}$ e $\forall a \in \mathbb{Z}$ tale che $\gcd (a, n) = 1$, si ha:
+    
+    {\centering
+        $a^{\phi(n) + 1} \equiv a \; \text{mod} \; n$
+    \par}
+    Inoltre $a^{h \cdot \phi(n) + 1} \equiv a \; \text{mod} \; n$ \\
+    \textcolor{red}{\textbf{N.B.}}: se $n$ non è primo, in generale l'ipotesi $\gcd (a, n) = 1$ \textbf{non} può essere rimossa.
+
+    $\Longrightarrow$ \textcolor{blue}{\textbf{intero libero da quadrati}}: un intero $n \in \mathbb{N}$ si dice \textbf{libero da quadrati} se la sua scomposizione è il prodotto di primi disgiunti: \fcolorbox{red}{white}{$n = p_1 \cdot p_2 \cdot ... \cdot p_r$}
+\end{flushleft}
+
+\newpage
+\begin{flushleft}
+    \textbf{Teorema di Eulero-Fermat Generalizzato}: se $n \in \mathbb{Z}$ è un \textit{intero libero da quadrati}, allora:
+
+    {\centering
+        $a^{\phi(n) + 1} \equiv a \; \text{mod} \; n \quad \forall a \in \mathbb{Z}$
+    \par}
+    Inoltre $a^{h \cdot \phi(n) + 1} \equiv a \; \text{mod} \; n \quad \forall a \in \mathbb{Z}, \; \forall h \in \mathbb{Z}^+$
+
+    \begin{boxA}
+        \textcolor{olive}{\textbf{Dimostrazione}}: supponiamo $n = p_1 \cdot p_2 \cdot ... \cdot p_r$ con $p_i$ \textbf{primo} $\forall i \in \mathbb{N}_r$ e $p_i \neq p_j, \; \forall i \neq j$ e consideriamo il sistema di congruenze lineari: \\
+        $\begin{cases}
+            x \equiv a \; \text{mod} \; p_1 \\
+            x \equiv a \; \text{mod} \; p_2 \\
+            \vdots \\
+            x \equiv a \; \text{mod} \; p_r
+        \end{cases}$ \\
+        Per il \textbf{Teorema Cinese del Resto} $\exists ! \text{Sol mod}(p_1 \cdot p_2 \cdot ... \cdot p_r)$ cioè $n$. Banalmente $\overline{x} = a$ è soluzione del sistema. Quindi per provare la \textbf{Th.} basta verificare che anche $a^{k \cdot \phi(n) + 1}$ è soluzione del sistema. Sappiamo che $\phi(n) = \phi(p_1 \cdot ... \cdot p_r) = \phi(p_1) \cdot ... \phi(p_r)$. Quindi $\forall i \in \mathbb{N}_r$ avremo che $\phi(n) = \phi(p_i) \cdot [\underset{j \neq i}{\prod}\phi(p_j)]$, che rappresenta la produttoria degli altri numeri primi escluso $p_i$ e la chiameremo $S_i \in \mathbb{Z}$. Allora:
+        \begin{align*}
+            a^{k \cdot \phi(n) + 1} &= a^{k \cdot S_i \cdot \phi(p_i) + i} & \forall i \in \mathbb{N}_r \\
+            &= a^{k \cdot S_i \cdot (p_i - 1) + 1} & k \cdot S_i \in \mathbb{Z} \\
+            &= a^{k \cdot S_i \cdot (p_i - 1) + 1} \equiv a \; \text{mod} \; p_i & \forall a \in \mathbb{Z}
+        \end{align*}
+        L'ultimo passaggio è possibile per il \textbf{corollario derivante dal piccolo teorema di fermat}. Quindi $a^{k \cdot \phi(n) + 1}$ verifica la $i$-esima congruenza del sistema, si può quindi dimostrare analogamente per le restanti $r - 1$ congruenze lineari del sistema.
+    \end{boxA}
+\end{flushleft}

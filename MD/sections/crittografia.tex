@@ -146,3 +146,89 @@ Si dice \textbf{funzione di eulero} (o \textbf{toziente di eulero}) l'applicazio
         L'ultimo passaggio è possibile per il \textbf{corollario derivante dal piccolo teorema di fermat}. Quindi $a^{k \cdot \phi(n) + 1}$ verifica la $i$-esima congruenza del sistema, si può quindi dimostrare analogamente per le restanti $r - 1$ congruenze lineari del sistema.
     \end{boxA}
 \end{flushleft}
+
+\section{Codici Correttori e Rilevatori}
+
+\begin{flushleft}
+    \textbf{Alfabeto}: insieme finito $\mathbb{F}$, ad esempio nel caso dell'alfabeto binario avremo che $\mathbb{F} = \{0, 1\}$ \\
+    \textbf{Parole}: Sequenze finite di elemnti di $\mathbb{F}$, ad esempio se consideriamo la parola binaria: $100100_{(2)}$ questa sarà una parola di lunghezza 6. \\
+    \textbf{Codice} (\textbf{a blocchi}): Un qualunque sottoinsieme non vuoto $\mathbb{C} \subseteq \mathbb{F}^n$, ad esempio $\mathbb{C} = \{00000, 01011, 10101, 11110\}$ è un codice binario di lunghezza 5. \newline
+
+    \textbf{N.B.} nell'addizione binaria, la somma di $m$ bit è 0 quando tra di essi vi è un numero pari di bit uguale 1.
+
+    \textbf{Controllo di Parità}: il controllo di parità è un bit che, aggiunto ad una parola binaria, è: \textbf{0} se la parola conteneva un numero pari di bit a 1, \textbf{1}, se la parola conteneva un numero dispari di bit a 1.
+\end{flushleft}
+
+\subsection{Sistemi di Comunicazione}
+Nei canali di comunicazione, sono presenti un codificatore (lato mittente) e un decodificatore (lato destinatario). Il compito del codificatore, conoscendo la regola di codificazione usata dal mittente, è di tentare di ricostruire, in caso di messaggio disturbato, la versione originale.
+\begin{itemize}[nosep]
+    \item \textbf{Decodificatore a controllo di parità}: Si limita a controllare se la somma dei bit fa 0 oppure no, in caso negativo, si limita a segnalare che nella trasmissione della parola, è avvenuto un errore. Questo codice rilevatore si chiama \textbf{codice 1-rilevatore}, perché si accore di un errore, ma non riesce a correggerlo, in quanto non riesce a stabilire quale bit è stato invertito.
+    \item \textbf{Codice ripetitivo}: viene inviato lo stesso messaggio di lunghezza $k$ più volte (ad esempio triplo $n = 3k$)
+    \begin{enumerate}[nosep]
+        \item suddivide la parola ottenuta in parole parziali.
+        \item partendo dal primo, si controlla l'$i$-esimo caratterre di ogni parola e, se una maggioranza dei caratteri coincide, allora si considera tale carattere come quello corretto.
+        \item se non c'è una maggioranza, il processo emette una comunicazione di errore e si ferma. Altrimenti, si itera il procedimento per tutti i caratteri.
+        \item infine, emette la parola ottenuta.
+    \end{enumerate}
+    \textbf{Problema}: se i caratteri errati compongono la maggioranza, allora il codice ripetitivo considera il bit errato come corretto, per ovviare a questo problema bisogna avere una probabilità di errore dei singoli bit bassa. \textbf{Tasso di informazione}: $\frac{1}{d}$, dove $d$ è il numero di ripetizioni del messaggio.
+    \item \textbf{Codice binario di Hamming}: il codificatore aggiunge al blocco di $k$ bit, $k - 1$ bit di controllo secondo la seguente regola:
+    
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.45\textwidth]{img/hamming}
+        \caption{Esempio con $k = 4$}
+    \end{figure}
+    Verrà poi inviata la sequenza $M = x_1x_2x_3x_4y_1y_2y_3$, il decodificatore calcolerà le 3 somme di controllo:
+    \begin{itemize}[nosep]
+        \item se sono tutte e tre uguali a 0, allora il decodificatore assume che non ci siano stati errori di comunicazione.
+        \item se una somma è diversa da 0, allora il decodificatore assume che l'errore sia avvenuto sul bit di controllo.
+        \item se 2 su 3 sono diverse da 0, allora il decodificatore assume che il bit scambiato è quello non presente nella terza somma.
+        \item se sono tutti e tre diversi da 0, allora l'errore è nel quarto bit (presente in tutte le somme)
+    \end{itemize}
+    In questo caso avremo un \textbf{Tasso di informazione}: $\frac{k}{n} = \frac{k}{k +(k - 1)}$, solitamente migliore del codice ripetitivo.
+    \item \textbf{Codice ISBM}:
+
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.35\textwidth]{img/isbm}
+        \caption{International Standard Book Number}
+    \end{figure}
+    \begin{itemize}[nosep]
+        \item 88: indica che il libro è stato pubblicato in Italia.
+        \item 203: indica l'editore.
+        \item 2519: identificativo di quel libro, dalla casa editrice.
+        \item 5: cifra di controllo
+    \end{itemize}
+    Il numero complessivo è ammissibile come numero \textbf{ISBM} se la somma pesata $10 \cdot Y_10 + 9 \cdot Y_9 + ... + 1 \cdot Y_1$ da un risultato divisibile per 11. La cifra di controllo serve quindi per riconoscere errori di trasmissione, dovuti ad errori di scrittura o di comunicazione del numero ISBM.
+\end{itemize}
+\begin{flushleft}
+    \textbf{Canale di Trasmissione}: Il canale binario simmetrico è uno dei modelli di trasmissione più utilizzati: accetta in ingresso e trasmette in usicta solo i caratteri $\mathbb{F} = \{0, 1\}$. \textbf{Probabilità cruda di errore} (\textbf{p}): è la probabilità con la quale, un bit entrato nel canale viene trasformato dal rumore nel bit complementare. Quindi, in una parola $x_1x_2...x_m$ avvengono $t$ errori con una probabilità pari:
+    
+    {\centering
+        \fcolorbox{red}{white}{$(1 - p)^{m - t} \cdot p^t$}.
+    \par}
+\end{flushleft}
+
+\newpage
+\subsection{Interleaving}
+\begin{flushleft}
+    Si è supposto che i disturbi coinvolgano i caratteri in maniera indipendente, tuttavia, in realtà se un carattere viene alterato, allora è più facile che anche quelli vicini a lui vengano alterati. Il metodo di \textit{interleaving} è efficace control scrosci di errori (\textbf{burst errors}), che non siano troppo lunghi.
+
+    \textcolor{orange}{\textbf{Esempi}} \\
+    Data la sequenza da trasmettere: $10 \; 00 \; 01 \; 11 \; 11 \; 11 \; 01 \; 10 \; 00 \; 00 \; 10 \; 10 \; ...$
+    Adottando il codice binario di lunghezza 5:$x_1x_2y_1y_2y_3$, dove $y_1 = x_1$, $y_2 = x_2$ e $y_3 = x_1 + x_2$, otteniamo delle parole che, memorizzate a gruppi di 4 creano delle matrici:
+
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.45\textwidth]{img/interleaving_1}
+    \end{figure}
+    Il contenuto di tali matrici viene inviato colonna per colonna. Supponiamo che avvengano dei disturbi ai bit: 3, 5, 6, 39, 40, 41, 42, 59 e 60. Quindi il messaggio letto dal decodificatore sarà:
+
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.45\textwidth]{img/interleaving_2}
+    \end{figure}
+    Riesce a decodificare correttamente i bit, perchè ogni riga ha al massimo 1 errore. I vantaggi dell'interleaving, tuttavia, si pagano con una maggiore complessità per la comunicazione e con dei ritardi nella trasmission dei dati.
+
+    \textbf{Conclusioni}: un buon algoritmo di decodificazione, oltre a correggere un alto numeri di errori di trasmissione, deve essere facile da implementare. Una regola aurea adottata è quella di cercare codici con un alto grado di simmetria (ovver che abbiamo un \textbf{gruppo di automorfismi} molto ricco).
+\end{flushleft}

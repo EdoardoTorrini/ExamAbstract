@@ -1,0 +1,226 @@
+\chapter{Funzioni Generatrici di una Successione}
+
+Una successione $\{a_n\}_{n \in \mathbb{N}_0}$ a volaroi interi può essere data:
+\begin{itemize}[nosep]
+    \item \textbf{per elencazione}: $\{a_0, a_1, ..., a_i, ...\}$, con $a_i \in \mathbb{Z} \; \forall i \in \mathbb{N}_0$
+    \item \textbf{in forma chiusa}: $a_n = f(n)$, con $f: \mathbb{N}_0 \mapsto \mathbb{Z}$ applicazione
+    \item \textbf{tramite una relazione ricorsiva}: ogni termine della successione è espresso in funzione dei termini precedenti, e la conoscenza di un certo numero di termini iniziali permettendo di individuare univocamente la successione.
+\end{itemize}
+
+\begin{flushleft}
+    Un altro modo per rappresentare una successione è attraverso una \textbf{Funzione Generatrice} di una successione, ovvero una serie formale di potenze i cui coefficienti coincidono con i termini della successione:
+
+    {\centering
+        $F(z) = \underset{n=0}{\overset{\infty}{\sum}}a_nz^n, \quad \text{con} \; z \in \mathbb{C}$
+    \par}
+    \begin{boxA}
+        \textcolor{orange}{\textbf{Esempio}} \\
+        Alla successione $\{a_n\}_n = (1, 1, 1, 1, ...)$, ovvero $a_n = 1 \; \forall n \in \mathbb{N}_0$, corrisponde la serie formale $\sum_{n \in \mathbb{N}_0}z^n$. Se si suppone $|z| < 1$ (quindi far convergere la serie) si ha $\sum_{n \in \mathbb{N}_0} z^n = \frac{1}{1-z}$; quindi la funzione generatrice è:
+
+        {\centering
+            $F(z) = \frac{1}{1-z}$
+        \par}
+    \end{boxA}
+    
+    \textbf{Proprietà di Linearità}: siano $F(z)$ e $G(z)$ le funzioni generatrici rispettivamente delle successioni: $\{f_n\}_n = (f_0, f_1, f_2, ..., f_n, ...)$ e $\{g_n\}_n = (g_0, g_1, g_2, ..., g_n, ...)$. Allora $\forall \alpha, \beta \in \mathbb{C}, \alpha \cdot F(z) + \beta \cdot G(z)$ è la funzione generatrice della successione:
+
+    {\centering
+        $\{\alpha f_n + \beta g_n\}_n = (\alpha f_0 + \beta g_0, \alpha f_1 + \beta g_1, ..., \alpha f_n + \beta g_n, ...)$
+    \par}
+
+    \begin{boxA}
+        \textcolor{olive}{\textbf{Dimostrazione}}: consideriamo: $G(z) = \sum_n g_nz^n$ e $F(z) = \sum_n f_nz^n$ allora avremo che:
+
+        {\centering
+            $\alpha F(z) + \beta G(z) = \sum_n (\alpha f_n + \beta g_n)z^n$
+        \par}
+    \end{boxA}
+
+    \begin{boxA}
+        \textcolor{orange}{\textbf{Esempio}}: data la successione $a_n = \{3, 0, 1, 0, 0, -2, 0, ...\}$, possiamo vedere la successione come combinazione lineare di 3 successione:
+        \begin{itemize}[nosep]
+            \item $a'_n = (1, 0, 0, ...)$ e possiamo definirla come $F(z) = 1$
+            \item $a''_n = (0, 0, 1, 0, 0, ...)$ definendola come $G(z) = z^2$
+            \item $a'''_n = (0, 0, 0, 0, 0, 1, 0, ...)$ definendola come $H(z) = z^5$
+        \end{itemize}
+        Possiamo trovare un $\alpha, \beta, \gamma \in \mathbb{C}$ che ci permettano di ottenere la successione $F(z)$:
+
+        {\centering
+            $\overline{F}(z) = 3 \cdot F(z) + G(z) - 2 \cdot H(z) = 3 + z^2 - 2z^5$
+        \par}
+    \end{boxA}
+    \textbf{N.B.} se una successione, da un certo punto in poi, ha tutti zeri, allora si può ricondurre ad una gunzione generatrice in forma polinomiale di grado pari all'ultimo elemento $\neq 0$ della successione.
+\end{flushleft}
+\begin{flushleft}
+    \textbf{Proprietà di Shift ``a destra''}: se $G(z)$ è una funzione generatrice della successione $\{g_n\}_n = (g_0, g_1, g_2, ..., g_n, ...)$, allora la funzione generatrice della successione $\{g_{n-m}\}_n = \{\underset{m}{\underbrace{0, ..., 0}}, g_0, g_1, g_2, ...\}$ è:
+
+    {\centering
+        $\overline{G}(z) = z^mG(z)$
+    \par}
+    
+    \begin{boxA}
+        \textcolor{olive}{\textbf{Dimostrazione}} \\
+        $\overline{G}(z) = 0 + 0z + ... + 0z^{m-1} + g_0z^m + g_1z^{m+1} + ... = z^m(g_0 + g_1z + g_2z^2 + ...) = z^mG(z)$
+    \end{boxA}
+    \begin{boxA}
+        \textcolor{orange}{\textbf{Esempio}} \\
+        La successione $(0, 0, 0, 1, 1, 1, 1, ...)$ ha come funzione generatrice $G(z) = z^3 \cdot \frac{1}{1-z} = \frac{z^3}{1-z}$
+    \end{boxA}
+\end{flushleft}
+
+\begin{flushleft}
+    \textbf{Proprietà di Shift ``a sinistra''}: se $G(z)$ è la funzione generatrice della successione $\{g_n\}_n = (g_0, g_1, g_2, ..., g_n, ...)$, allora la funzione generatrice della successione $\{g_{n+m}\}_n = (g_m, g_{m+1}, g_{m+2}, ...)$ è:
+
+    {\centering
+        $\overline{G}(z) = \frac{G(z) - g_0 - g_1z - ... - g_{m-1}z^{m-1}}{z^m}$
+    \par}
+    \begin{boxA}
+        \textcolor{olive}{\textbf{Dimostrazione}} \\
+        $\overline{G}(z) = g_m + g_{m+1}z^{m+1} + g_{m+2}z^{m+2} + ... + g_{n+m}z^n + g_{n+m+1}z^{n+1} + ...$ quindi segue che:
+
+        {\centering
+            $z^m \cdot \overline{G}(z) = g_mz^m + g_{m+1}z^{m+1} + ... + g_{n+m}z^{m+n} + ... = G(z) - g_0 - g_1z - ... - g_{m-1}z^{m-1}$
+        \par}
+    \end{boxA}
+    In pratica ``butto via'' i primi $m$ elementi e comincio da quello dopo.
+\end{flushleft}
+
+\newpage
+\begin{flushleft}
+    \textbf{Proprietà del Cambio di Variabile}: sia data una generica successione $\{g_n\}_{n \in \mathbb{N}_0}$ con funzione generatrice $G(z) = g_0 + g_1z + g_2z^2 + ... + g_nz^n + ...$ allora $G(z)$ è la funzione generatrice della successione $\{g_n \cdot c^n\}_{n \in \mathbb{N}_0}$
+    \begin{boxA}
+        \textcolor{olive}{\textbf{Dimostrazione}}: applicando a $G(\overline{z}) = \sum_n g_n\overline{z}^n$ il cambiamento di veriabile $\overline{z} = cz$, si ottiene:
+
+        {\centering
+            $G(zc) = g_0 + g_1(cz) + g_2(cz)^2 + ... + g_n(cz)^n + ... = g_0 + (g_1c)z + (g_2c^2)z^2 + ... + (g_nc^n)z^n + ...$
+        \par}
+    \end{boxA}
+    \begin{boxA}
+        \textcolor{orange}{\textbf{Esempio}}: data la successione $(1, 3, 9, 27, 81, ..., 3^n, ...)$ la sua funzione generatrice è $G(z) = 1 + 3z + 9z^2 + ... + 3^mz^n + ... = G(3z)$, dove $G(z) = \frac{1}{1-z}$ è la funzione generatrice della successione di soli 1.
+
+        {\centering
+            $H(z) = G(3z) = \frac{1}{1-3z}$ 
+        \par}
+    \end{boxA}
+\end{flushleft}
+\begin{flushleft}
+    \textbf{Proprietà di Derivazione}: sia data una generica successione $\{g_n\}_{n \in \mathbb{N}_0}$ con funzione generatrice $G(z) = g_0 + g_1z + g_2z^2 + ... + g_nz^n + ...$ allora la funzione derivata della funzione genratrice $G(z)$ ovvero $G'(z)$ è la funzione generatrice della successione $\{(n+1)g_{n+1}\}_{n \in \mathbb{N}_0}$
+
+    \begin{boxA}
+        \textcolor{olive}{\textbf{Dimostrazione}} \\
+        $\overline{G}(z) = g_1 + 2g_2z + 3g_3z^2 + ... + ng_nz^{n-1} + (n+1)g_{n+1}z^n + ... = \underset{n \in \mathbb{N}_0}{\sum}(n+1)g_{n+1}z^n$
+    \end{boxA}
+    In pratica moltiplico per la posizione corrent e shifto a sinistra.
+\end{flushleft}
+\begin{flushleft}
+    \textbf{Proprietà di Convoluzione}: siano $F(z)$ e $G(z)$ le funzioni generatrici rispettivamente delle successioni $\{f_n\}_n = (f_0, f_1, f_2, ..., f_n, ...)$ e $\{g_n\}_n = (g_0, g_1, g_2, ..., g_n, ...)$ allora, il prodotto delle due funzioni generatrici, $F(z)G(z)$, è la funzione generatrice della successione ottenuta per convoluzione da $\{f_n\}_n$ e $\{g_n\}_n$, ovvero della successione $\{\sum_{k=0}^n f_k \cdot g_{n-k}\}_n$
+    
+    \begin{boxA}
+        \textcolor{olive}{\textbf{Dimostrazione}}: per la proprietà distributiva del prodotto si ha che:
+
+        {\centering
+            $F(z)G(z) = (f_0g_0) + (f_0g_1 + f_1g_0)z + (f_0g_2 + f_1g_1 + f_2g_0)z^2 + ... = \underset{n \in \mathbb{N}_0}{\sum} (\underset{k=0}{\overset{n}{\sum}} f_k \cdot g_{n-k})z^n$
+        \par}
+    \end{boxA}
+    Che corrisponde alla successione delle somme dei possibili prodotti con cui ottengo il grado $z^n$.
+\end{flushleft}
+
+\newpage
+\section{Da relazioni ricorsive a funzioni generatrici}
+
+\begin{flushleft}
+    \textcolor{orange}{\textbf{Esempio}}: funzione generatrice della successione di Fibonacci:
+
+    {\centering
+        $\begin{cases}
+            F_n = F_{n-1} + F_{n-2} \; \forall n \geq 2 \rightarrow F_n - F_{n-1} - F_{n-2} = 0 \; \forall n \geq 2 \\
+            F_0 = 0 \\
+            F_1 = 1
+        \end{cases}$
+    \par}
+
+    Per prima cosa calcolo le $F(z)$ necessarie per la successione:
+    \begin{align*}
+        F(z) &= F_0 + F_1z + F_2z^2 + ... + F_nz^n + ... \\
+        z \cdot F(z) &= F_0z + F_1z^2 + F_2z^3 + ... \\
+        z^2 \cdot F(z) &= F_0z^2 + F_1z^3 + ...
+    \end{align*}
+    Ora le applico alla successione di Fibonacci:
+
+    {\centering
+        $F(z)(1-z-z^2) = F_0 + (F_1 - F_0)z + (F_2 - F_1 - F_0)z^2 + ... + (F_n - F_{n-1} - F_{n-2})z^n + ...$
+    \par}
+
+    Possiamo applicare anche le condizioni iniziali; $F_n - F_{n-1} - F_{n-2} = 0 \; \forall n \geq 2$
+
+    {\centering
+        $F(z)(1-z-z^2) = 0 + (1-0)z + 0 + 0 + ... = z \Rightarrow F(z) = \frac{z}{1-z-z^2}$
+    \par}
+
+    \textcolor{orange}{\textbf{Esempio}}:
+
+    {\centering
+        $\begin{cases}
+            a_n = 7a_{n-1} - 12a_{n-2} \; \forall n \geq 2 \rightarrow a_n - 7a_{n-1} + 12a_{n-2} = 0 \; \forall n \geq 2 \\
+            a_0 = 1 \\
+            a_1 = 2 
+        \end{cases}$
+    \par}
+    calcolo le $F(z)$:
+    \begin{align*}
+        F(z) &= a_0 + a_1z + a_2z^2 + ... \\
+        7z\cdot F(z) &=  7a_0z + 7a_1z^2 + ... \\
+        12z^2 \cdot F(z) &= 12a_0z^2
+    \end{align*}
+    E infine le applico alla successione:
+
+    {\centering
+        $F(z)(1 - 7z -12z^2) = a_0 + (a_1 - 7a_0)z + \cancel{(a_2 - 7a_1 + 12a_0)z^2} + \cancel{...} + \cancel{(a_n - 7a_{n-1} + 12a_{n-2})z^n} + \cancel{...} = 1 + (2-7)z \quad \Rightarrow \quad F(z) = \frac{1-5z}{1-7z+12z^2}$
+    \par}
+\end{flushleft}
+
+\newpage
+\section{Da funzioni Generatrici a Forma Chiusa}
+
+\begin{flushleft}
+    \textbf{Proprietà}:
+    \begin{itemize}[nosep]
+        \item se la funzione generatrice di una successione è \textbf{polinomiale}, la linearità permette di derminare banalmente la forma chiusa.
+        \begin{boxA}
+            \textcolor{orange}{\textbf{Esempio}}: $F(z) = 2 - 3z^2 + 5z^4$
+            \begin{itemize}[nosep]
+                \item $F'(z) = 1 \rightarrow (1, 0, 0, ..., 0, ...)$
+                \item $F''(z) = z^2 \rightarrow (0, 0, 1, 0, ..., 0, ...)$
+                \item $F'''(z) = z^4 \rightarrow (0, 0, 0, 0, 1, 0, ...)$
+            \end{itemize}
+            $\Rightarrow \{a_n\}_n = (2, 0, -3, 0, 5, 0, ...)$
+        \end{boxA}
+        \item se la funzione generatrice di una successione è \textbf{razionale fratta}, con grado del denominatore minore o uguale a due, è possibile passare dalla funzione generatrice alla forma chiusa della successione, attraverso al ``decomposizione in fratte semplici'' e la conoscenza della funzioni generatrici di alcune successioni ``tipiche'':
+        \begin{itemize}[nosep]
+            \item se il denominatore ha \textbf{grado uguale a uno}, o se ha \textbf{grado due con due radici distinte}, la decomposizione in fratte semplici coinvolge solo addendi del tipo $\frac{A}{1-cz}$; si ottiene pertanto la forma chiusa della successione utilizzando, inisieme alla \textit{linearità}, la conoscenza delle funizoni generatrici per le successioni del tipo $\{c^n\}_n$
+            \begin{boxA}
+                \textcolor{orange}{\textbf{Esempio}}: \\
+                $F(z) = \frac{1-5z}{1-7z+12x^2} = \frac{A}{(1-3z)} + \frac{B}{1-4z} = \frac{A(1-4z)+B(1-3z)}{1-7z+12z^2} = \frac{(A+B) + (-4A-3B)}{1-7z+12z^2}$
+
+                {\centering
+                    $\begin{cases}
+                        A + B = 1 \\
+                        -4A -3B = - 5
+                    \end{cases}
+                    \rightarrow
+                    \begin{cases}
+                        A = 2 \\
+                        B = -1
+                    \end{cases}$
+                \par}
+                $\Rightarrow F(z) = \frac{1-5z}{1-7z+12z^3} = \frac{2}{1-3z} - \frac{1}{1-4z} = 2 \cdot \frac{1}{1-3z} - 1 \cdot \frac{1}{1-4z}$ \\
+                Dove $\frac{1}{1-3z} = 3^n$ e $\frac{1}{1-4z} = 4^n$ quindi la $F(z)$ è la funzione generatrice della successione 
+                
+                {\centering
+                    $a_n = 2 \cdot (3)^n - (4)^n$
+                \par}
+            \end{boxA}
+            \item nel caso di un denominatore di secondo grado con \textbf{radice $c$ coincidente}, la decomposizione in fratte semplici diventa del tipo $\frac{a}{1-cz} + \frac{Bz}{(1-cz)^2}$; si ottiene pertanto la forma chiusa della successione utilizzando, insieme alla linearità, la conoscenza delle funzioni generatrici sia per le successioni del tipo $\{c^\}_n$ che per le successioni del tipo $\{nc^n\}_n$
+        \end{itemize}
+    \end{itemize}
+\end{flushleft}

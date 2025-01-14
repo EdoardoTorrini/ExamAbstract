@@ -260,9 +260,13 @@ e per il \textcolor{blue}{lemma} possiamo dire che $\#g(B) = \#A$ e $\#g(B) = \#
     \end{tabular}
 \end{center}
 Consideriamo la successione a valori in $\{0, 1\}$:
-\begin{center}
-    $\bar{S} = \textcolor{yellow}{\bar{S_1}}, \; \textcolor{green}{\bar{S_2}}, \; \textcolor{blue}{\bar{S_3}}, \; ..., \; \bar{S_j}, \; ...$ || dove $\bar{S_j} \neq S_{jj}$
-\end{center}
+
+{\centering
+    $\bar{S} = \textcolor{yellow}{\bar{S_1}}, \; \textcolor{green}{\bar{S_2}}, \; \textcolor{blue}{\bar{S_3}}, \; ..., \; \bar{S_j}, \; ...$ || dove $\bar{S_j} \neq S_{jj}$ \\
+    siccome valori in $\{0,1\}$ se $\bar{S}_j$ è 0 diventerà 1 e viceversa
+\par}
+
+\newpage
 In questo modo la successione $\bar{S}$ non coincide con nessuna delle successioni $s_j, \; \forall j \in \mathbb{N}$, poiché differisce dalla j-esima successione nel j-esimo elemento e quindi arriviamo ad un \textbf{assurdo}.
 Quindi l'insieme delle successioni a valori in $\{0, 1\}$  non può essere numerabile e, quindi, \textbf{non} è \textbf{numerabile} nemmeno $\mathcal{P}(A)$. \\ \newline
 \textbf{La Cardinalità di $\mathbb{R}$}: anche $\mathbb{R}$ \textbf{non} è \textbf{numerabile}, infatti: $\#\mathbb{R} = \# ]0,1[$, consideriamo un'applicazione biunivoca tale che $f : \mathbb{R} \rightarrow ]0,1[$, ad esempio:
@@ -287,7 +291,7 @@ Questa tipologia di cardinalità viene definita \textbf{cardinalità del continu
 \end{boxA}
 
 \section{Relazioni di Equivalenza}
-Una \textbf{relazione} $\mathcal{R}$ tra due insiemi A e B è un \textbf{sottoinsieme} del \textbf{prodotto cartesiano} fra A e B, ovvero $\mathcal{R} \in A \times B$.
+Una \textbf{relazione} $\mathcal{R}$ tra due insiemi A e B è un \textbf{sottoinsieme} del \textbf{prodotto cartesiano} fra A e B, ovvero $\mathcal{R} \subseteq A \times B$.
 \begin{boxA}
     \textcolor{orange}{\textbf{Esempio}} \\
     $\mathcal{R} = '\leq'$ è relazione tra i due insiemi $A = \mathbb{N}$ e $B = \mathbb{N}$, poiché definisce un sottoinsieme del prodotto cartesiamo $\mathbb{N} \times \mathbb{N}$. \\
@@ -306,9 +310,9 @@ Una relazione $\mathcal{R}$ su A si dice \textbf{relazione di equivalenza} se so
     \item $\forall a \in A, \; a \in [a]$ \\
           \textcolor{olive}{\textbf{Dimostrazione}}: è conseguenza diretta della proprietà riflessiva.
     \item $\forall a,b \in A, \; a \in [b] \Rightarrow [b] = [a]$ \\
-          \textcolor{olive}{\textbf{Dimostrazione}}: poiché $a \in [b], \; a\mathcal{R}b$. Se $x \in A, \; x \in [a]$, allora $x\mathcal{R}a$; per la \textbf{proprietà transitiva} segue $x\mathcal{R}v$ ovvero $x \in [b]$. Resta così dimostrato che $[a] \subseteq [b]$. Analogamente, se $y \in A, \; y \in [b]$, allora $y\mathcal{R}b$ per la \textbf{proprietà di simmetria}, $a\mathcal{R}b \Rightarrow b\mathcal{R}a$, per cui la transitività assicura $y\mathcal{R}a$, ovvero $y \in [a]$. Resta così dimostrato che $[b] \subseteq [a]$ e quindi $[b] = [a]$.
+          \textcolor{olive}{\textbf{Dimostrazione}}: poiché $a \in [b], \; a\mathcal{R}b$. Se $x \in A, \; x \in [a]$, allora $x\mathcal{R}a$; per la \textbf{proprietà transitiva} segue $x\mathcal{R}b$ ovvero $x \in [b]$. Resta così dimostrato che $[a] \subseteq [b]$. Analogamente, se $y \in A, \; y \in [b]$, allora $y\mathcal{R}b$ per la \textbf{proprietà di simmetria}, $a\mathcal{R}b \Rightarrow b\mathcal{R}a$, per cui la transitività assicura $y\mathcal{R}a$, ovvero $y \in [a]$. Resta così dimostrato che $[b] \subseteq [a]$ e quindi $[b] = [a]$.
     \item $\forall a,b \in A, \; [a] = [b] \; oppure \; [a] \cap [b] \neq \emptyset$ \\
-          \textcolor{olive}{\textbf{Dimostrazione}}: se $\exists c \in [a] \cap [b]$, si ha $c \in [a] e c \in [b]$, ovvero $c\mathcal{R}a$ e $c\mathcal{R}b$. Applicando la \textbf{proprietà di simmetria} a $c\mathcal{R}a$ si ottiene $a\mathcal{R}c$, per cui la proprietà transitiva assicura $a\mathcal{R}b$, ovvero $a \in [b]$. La seconda proprietà implica $[a] = [b]$. Quindi, se due classi hanno un elemento in comune, le due classi coincidono.
+          \textcolor{olive}{\textbf{Dimostrazione}}: se $\exists c \in [a] \cap [b]$, si ha $c \in [a]$ e $c \in [b]$, ovvero $c\mathcal{R}a$ e $c\mathcal{R}b$. Applicando la \textbf{proprietà di simmetria} a $c\mathcal{R}a$ si ottiene $a\mathcal{R}c$, per cui la proprietà \textbf{transitiva} assicura $a\mathcal{R}b$, ovvero $a \in [b]$. La seconda proprietà implica $[a] = [b]$. Quindi, se due classi hanno un elemento in comune, le due classi coincidono.
 \end{itemize}
 \textbf{Insieme Quoziente}: sia A un insieme ed $\mathcal{R}$ una relazione di equivalenza su A. Si definisce \textbf{insieme quoziente} di A rispetto ad $\mathcal{R}$,
 \begin{center}

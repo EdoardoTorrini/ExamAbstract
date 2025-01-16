@@ -185,7 +185,7 @@ Questi valori ($\alpha$ e $\beta$) però non sono strettamente univocamente dete
     Osserviamo che S contiene unicamente numeri naturali possiamo dire che $S \subseteq \mathbb{N}$ non vuoto e che quindi $\exists \min(s) = d$ ovvero l'insieme è limitato inferiormente. Siccome $d \in S$ questo vuol dire che è rappresentabile come \textbf{combinazione lineare}, ovvero \fcolorbox{red}{white}{$\exists \overline{\lambda}, \overline{\mu} \in \mathbb{Z} \; t.c. \; d = \overline{\lambda} \cdot a + \overline{\mu} \cdot b$}. \\
     Adesso cerchiamo di dimostrare che questo $d$ è proprio il massimo comune divisore che stavo cercando: \fcolorbox{red}{white}{\textbf{Th.} $d = \gcd(a, b)$} ovvero che $d|a$ e che $d|b$.
     \begin{itemize}[nosep]
-        \item partiamo \textcolor{olive}{dimostrando} che $a|b$, andiamo a considerare la \textbf{divisione euclidea} tra $a$ e $d$.
+        \item partiamo \textcolor{olive}{dimostrando} che $d|a$, andiamo a considerare la \textbf{divisione euclidea} tra $a$ e $d$.
 
         {\centering
             $\exists q \in \mathbb{Z}, \; \exists r \in \mathbb{Z}, \; 0 \leq r < d \; \vert \; a = q \cdot d + r$
@@ -241,11 +241,6 @@ Questi valori ($\alpha$ e $\beta$) però non sono strettamente univocamente dete
             & = c \cdot \underset{\in \mathbb{Z}}{\underline{(h - k \cdot q)}}
         \end{align*}
         Quindi in questo modo abbiamo dimostrato che $c|r$.
-    \end{itemize}
-\end{boxA}
-
-\begin{boxA}
-    \begin{itemize}[nosep]
         \item affrontiamo ora il secondo insieme $\{c \in \mathbb{Z} \; | \; c | b, \; c | r \}$ e andiamo a dimostrare che \fcolorbox{red}{white}{\textbf{Th.} $c|a$} (perché che $c|b$ è implicito per la costruzione del problema). Poichè $c|b$ e $c|r$ allora:
 
         {\centering
@@ -580,7 +575,7 @@ Una \textbf{equazione diofantea} è un'equazione lineare di primo rado in due in
     Poiché:
 
     {\centering
-        $h = \frac{a}{\gcd (a, b)} \qquad k = frac{b}{\gcd (a, b)}$
+        $h = \frac{a}{\gcd (a, b)} \qquad k = \frac{b}{\gcd (a, b)}$
     \par}
     $h$ e $k$ sono \textbf{coprimi} e sono entrambi divisiori di $c'$, segue che $hk|c'$, ma allora $\exists \gamma \in \mathbb{Z} \; \text{t.c.} \; hk \cdot \gamma = c'$, moltiplicando per $d$ avremo che $dhk \cdot \gamma = d \cdot c' = c$ e $dhk = M \Rightarrow \fcolorbox{orange}{white}{$M|c$}$
 \end{boxA}

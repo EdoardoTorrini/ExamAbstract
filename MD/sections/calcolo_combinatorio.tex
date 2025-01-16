@@ -7,7 +7,7 @@ Per scegliere le strutture combinatorie elementari coinvolte in un problema, occ
 
 \section{Strutture Combinatorie Elementari}
 \begin{enumerate}[nosep]
-    \item una \textbf{disposizione semplice} di $n$ oggetti a $k$ a $k$ con $k \leq n$ è una $k$-upla ordinata di $k$ oggetti distinti scelti tra gli $n$ dati (\textbf{non} si tiene conto dell'\textbf{ordine}, \textbf{non} si \textbf{ripetono} gli elementi).
+    \item una \textbf{disposizione semplice} di $n$ oggetti a $k$ a $k$ con $k \leq n$ è una $k$-upla ordinata di $k$ oggetti distinti scelti tra gli $n$ dati (si tiene conto dell'\textbf{ordine}, \textbf{non} si \textbf{ripetono} gli elementi).
     \begin{boxA}
         Il numero di disposizioni semplici è \fcolorbox{red}{white}{$D(n; k) = n \cdot (n - 1) \cdot ... \cdot (n - k + 1)$} \\
         \textcolor{orange}{\textbf{Esempio}}: In un collegio ci sono 10 professori, in quanti modi possono essere scelti \textit{presidente}, \textit{vicepresidente} e \textit{segretario}
@@ -91,9 +91,9 @@ Per scegliere le strutture combinatorie elementari coinvolte in un problema, occ
 
 \begin{itemize}[nosep]
     \item \textbf{Principio della Somma}: dati due insiemi finiti e disgiunti $A$ e $B$, allora: \fcolorbox{red}{white}{$\# (A \cup B) = \# A + \# B$}
-    \item \textbf{Principio Generalizzato della Somma}: dati $n$ insimi finiti $A_1, A_2, ..., A_n$ con $A_i \cap A_j = \emptyset \; \forall i \neq j \; i,j \in \mathbb{N}_n$, allora: \fcolorbox{red}{white}{$\# (\underset{i \in \mathbb{N}_n}{\bigcup} A_i) = \underset{i \in \mathbb{N}_n}{\sum}\# A_i$}
+    \item \textbf{Principio Generalizzato della Somma}: dati $n$ insiemi finiti $A_1, A_2, ..., A_n$ con $A_i \cap A_j = \emptyset \; \forall i \neq j \; i,j \in \mathbb{N}_n$, allora: \fcolorbox{red}{white}{$\# (\underset{i \in \mathbb{N}_n}{\bigcup} A_i) = \underset{i \in \mathbb{N}_n}{\sum}\# A_i$}
     \item \textbf{Principio del Prodotto}: dati due insiemi finiti $A$ e $B$, allora: \fcolorbox{red}{white}{$\# (A \times B) = \# A \cdot \# B$}
-    \item \textbf{Principio Generalizzato del Prodotto}: dati $n$ insimei finiti $A_1, A_2, ..., A_n$ allora: \\
+    \item \textbf{Principio Generalizzato del Prodotto}: dati $n$ insiemi finiti $A_1, A_2, ..., A_n$ allora: \\
     \fcolorbox{red}{white}{$\# (A_1 \times A_2 \times ... \times A_n) = \underset{i \in \mathbb{N}_n}{\prod} \# A_i$}
     \item \textbf{Principio di Inclusione/Esclusione}: siano $A$ e $B$ insiemi finiti, con $\# A = n$ e $\# B = m$, allora: \fcolorbox{red}{white}{$\# (A \cup B) = \# A + \# B - \# (A \cap B)$}
 

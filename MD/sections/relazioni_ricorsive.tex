@@ -3,7 +3,7 @@
 \begin{flushleft}
     Una successione $\{a_n\}_{n \in \mathbb{N}}$ a valori interi può essere data in due forme differenti:
     \begin{itemize}[nosep]
-        \item per \textbf{elencazione}: $\{a_0, a_1, ..., a_i, ...\}$, con $a_i \in mathbb{Z} \; \forall i \in \mathbb{N}_0$
+        \item per \textbf{elencazione}: $\{a_0, a_1, ..., a_i, ...\}$, con $a_i \in \mathbb{Z} \; \forall i \in \mathbb{N}_0$
         \item in \textbf{forma chiusa}: $a_n = f(n)$, con $f : \mathbb{N}_0 \mapsto \mathbb{Z}$, $f$ è un'\textbf{applicazione}
     \end{itemize}
 
@@ -198,7 +198,7 @@
     Si può supporre che $\exists z \in \mathbb{N}$ tale che $n = k^z$, ovvero $\log_k n = z$, possiamo esprimere la relazione ricorsiva come:
 
     {\centering
-        $s_{k^z} = b \cdot s_{\frac{k^z}{k}} + d(k^z) = b \cdot s_{k^z-1} + d(k^z)$
+        $s_{k^z} = b \cdot s_{\frac{k^z}{k}} + d(k^z) = b \cdot s_{k^{z-1}} + d(k^z)$
     \par}
 
     Definiamo $s_{k^z} = r_z$, poniamo $d(k^z) = d'(z)$ e $\log_k m = m'$ otteniamo la relazione ricorsiva del tipo:
@@ -254,7 +254,7 @@
         \end{cases}$
     \par}
 
-    \textcolor{blue}{\textbf{Lemma A}}: data la relazione ricorsiva $a_n = \alpha_1 \cdot a_{n-1} + \alpha_2 \cdot a_{n-2}$, se $a'_n$ e $a''_n$ sono due successione che la verificano, allora $\forall A, b \in \mathbb{C}$ andche la successione $a_n = A \cdot a'_n + B \cdot a''_n$ verifica la relazione ricorsiva data.
+    \textcolor{blue}{\textbf{Lemma A}}: data la relazione ricorsiva $a_n = \alpha_1 \cdot a_{n-1} + \alpha_2 \cdot a_{n-2}$, se $a'_n$ e $a''_n$ sono due successione che la verificano, allora $\forall A, B \in \mathbb{C}$ andche la successione $a_n = A \cdot a'_n + B \cdot a''_n$ verifica la relazione ricorsiva data.
     \begin{boxA}
         \textcolor{olive}{\textbf{Dimostrazione}}
 
@@ -297,7 +297,7 @@
         \par}
         
         \begin{flushleft}
-            Per \textbf{Hp.} abbiamo $r^2 - \alpha_1r - \alpha_2 = 0$, moltiplico per $r^{n-2}$ (siccome $r \neq 0$ posso farlo) e ottengo $r^n - \alpha_1r^{n-1} - \alpha_2r^{n-2} = 0$, ma a questo punto $a_n = r?n$ che verifica la relazione ricorsiva e quindi la nostra tesi.
+            Per \textbf{Hp.} abbiamo $r^2 - \alpha_1r - \alpha_2 = 0$, moltiplico per $r^{n-2}$ (siccome $r \neq 0$ posso farlo) e ottengo $r^n - \alpha_1r^{n-1} - \alpha_2r^{n-2} = 0$, ma a questo punto $a_n = r^n$ che verifica la relazione ricorsiva e quindi la nostra tesi.
         \end{flushleft}
         \textcolor{red}{\textbf{Seconda Parte}} ``$\Leftarrow$''
 

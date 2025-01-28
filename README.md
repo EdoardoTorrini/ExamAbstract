@@ -7,8 +7,12 @@
     * Digital signature, RSA algorithms, ElGamal, DSA
     * Elliptic curves, properties of key exchange algorithms (ECDH) and digital signature (ECDSA)
 * [Discrete Mathematics](https://github.com/EdoardoTorrini/ExamAbstract/tree/master/MD)
-    * Complements on sets and relations
-    * Integers and the theory of divisibility
+    * Cardinality of sets. Sets with the same power. Finite and infinite sets. Discrete sets. Countable sets. The cardinality of continuum. Comparison of cardinalities: Cantor-Berstein theorem. Equivalence relations. Equivalence classes. Quotient sets. Partitions.
+    * The Euclidean division. The greatest common divisor: definition, existence and uniqueness. The Euclidean algorithm and computation of the GCD. Properties of the co-prime numbers and characterisation of prime numbers. The least common multiple. Solution of diophantine linear equations. The unique factorization theorem. Existence of infinite prime numbers.
+    * Congruence relation modulus a positive integer n. The set of the remainder classes mod. n and its operations. The Chinese theorem of the remainder. Linear congruences. The Euler function and the Euler-Fermat theorem. Public key cryptography methods RSA. Error corrector codes. 
+    * Simple and repeating dispositions; permutations; simple and repeating combinations; permutations on a multiset. Sum and Product Principle. Inclusion/exclusion principle. Da Silva formula. 
+    * Recursion: recursive definitions and recursive algorithms. Closed formulas. Homogenous and non-homogeneous linear recursion relations. Solution of the first-order linear recursive relations. "Divide et impera" type algorithms. Characteristic equation of a recursive relation. Solution of second-order linear homogeneous relations. Fibonacci numbers. The Hanoi tower problem. Some elements of generating functions.
+    * Special graphs. Graph isomorphisms. Walks; paths; cycles. Connected components. The incidence matrix. Degree of a vertex and graph score. Eulerian and Hamiltonian graphs. Trees and recovering trees. Colourings and chromatic number of a graph; Chromatic polynomial; Whitney theorem.
 * [Real-Time Embedded System](https://github.com/EdoardoTorrini/ExamAbstract/tree/master/RTES)
     * Pthread programming: creation, join, scheduling, semaphores, mutexes, conditions.
     * Real-Time Scheduling: tasks, jobs, preemptive/non-preemptive systems, latencies, worst-case execution time, mixed-critical systems, periodic/sporadic/aperiodic tasks, scheduling anomalies. Scheduling algorithms: FCFS, SJF, round robin, fixed/dynamic priorities, EDF (and related optimality).

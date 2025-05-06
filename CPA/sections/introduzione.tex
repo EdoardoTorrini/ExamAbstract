@@ -73,5 +73,14 @@ Quando si studi/analizza/progetta un protocollo crittografico è necessario iden
 Alcuni \textbf{protocolli}:
 \begin{enumerate}[nosep]
     \item \textbf{\textit{Secure key exchange protocol}} (scambio sicuro di chiavi): Alice e Bob non hanno nessuna \textbf{chiave}, ne vogliono ottenere una \textbf{sicura} e \textbf{condivisa} comunicando su un canale sincrono e non sicuro.
-    \item \textbf{\textit{Secure storage}}
+    \item \textbf{\textit{Secure storage}}: gli algoritmi di crittografia possono aggiungere protezione su dati conservati in canali protetti, l'avversario ha avuto accesso ai dati dopo aver sconfitto le difese iniziali, negli scenari di storage possiamo andare ad analizzare due tipologie di dati: ``\textit{data at rest}'' (è lo standard e la \textit{best-practice}) oppure ``\textit{data in use}'' (continua ricerca soprattuto per i dispositivi mobili).
+    \item \textbf{\textit{(Identity) Authentication}}: (\textbf{\textit{challenge-response protocols}}) ovvero dimostrare il possesso di un segreto senza mandarlo.
+    \item \textbf{\textit{Password Protection}}: gli schemi crittografici possono ``proteggere'' le password in caso di \textit{data breaches}, non solo usando l'hash (anche se aggiunto il \textit{salt}), ma anche tecniche per prevenire il \textbf{\textit{brute-forcing}} attraverso \textbf{ASICs} (\textbf{Application-specific integrated circuit}).
 \end{enumerate}
+Per riassumere quanto visto fino ad adesso, possiamo dire che la \textbf{crittografia applicata} è l'insieme di molti \textbf{\textit{system models}} (comunicazioni sincroni, messaggi di gruppi asincroni, \textit{disk encryption}, ...), molti \textbf{\textit{security guarantees}} (\textit{information security}), integrità e autenticazione, molti \textbf{\textbf{type of attackers}} (passivi e attivi oppure online e offline). La \textbf{crittografia applicata} mira a dimostrare la sicurezza sfruttando ``strati inferiori'':
+\begin{itemize}[nosep]
+    \item la sicurezza dei \textbf{protocolli} viene ridotta alla sicurezza sugli schemi.
+    \item la sicurezza degli \textbf{schemi} viene ridotta alla sicurezza delle primitive.
+    \item la sicurezza delle \textbf{primitive} viene ridotta alla robusteza di problemi matematici.
+\end{itemize}
+Per progettare un \textbf{protocollo di comunicazione sicuro} è necessario utilizzare un approccio modulare basato su uno \textit{stack} di altri ``oggetti'', un approccio tipico per lo \textit{stack} è quello che ogni \textit{layer} ha un determinato compito: il protocollo o lo schema è modificato su certi \textbf{\textit{cryptographic settings}} e la sicurezza viene provato contro uno specifico tipo di avversario (\textbf{\textit{security models}}).

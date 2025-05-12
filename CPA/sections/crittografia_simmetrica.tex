@@ -214,3 +214,54 @@ Le condizioni necessarie avere degli schemi computazionalmente sicuri sono:
 \end{flushleft}
 
 \section{Stream Cipher}
+Il primo approccio per implementare una funzione ``reale'' che approssimi la funzione ideale PRF. Gli \textit{stream cipher} sono \textbf{\textit{Deterministic Pseudorandom Bitstring Generators (DPBG)}}. Gli schemi a flusso sono funzioni \textbf{deterministiche} che prendono in input \textbf{\textit{small random input}} e generano come output dati che non possono essere distinti (\textbf{\textit{indistinguishably}}) da dati random e non su cui non si può fare una previsione (\textbf{\textit{unpredictable}}), il dato \textbf{pseudo-random} viene chiamato \textbf{\textit{keystream}}, la funzione di cifrazione richiede xor\textit{are} il \textit{keystream} con il messaggio, infatti gli \textit{stream cipher} cercano di approssimare il \textbf{OTP}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{img/stream_cipher}
+    \label{fig:stream_cipher}
+\end{figure}
+
+\begin{flushleft}
+    Il \textbf{\textit{nonce}} è un valore non confidenziale che \textbf{deve} essere \textbf{univoco} per ogni operazioni di \textit{encryption}. \\
+    Uno dei più popolari cifrari a flusso è \textbf{\textit{ChaCha20}}, utilizzo:
+    \begin{lstlisting}[language=bash]
+    $ echo Hello! | openssl chacha20 -pbkdf2 -k pippo -a -e | \
+        openssl chacha20 -pbkdf2 -k pippo -a -d
+    \end{lstlisting}
+
+    Questa tipologia di schema è \textbf{malleabile} ed è vulnerabile a \textbf{riutilizzo della chiave}, sia in caso di messaggi diversi che nel caso di due stati diversi di un certo file (dipende dal contesto)
+
+    {\centering
+        $c_1 = m_1 \oplus \text{DPGB}(k) \qquad c_2 = m_2 \oplus \text{DPGB}(k)$ \\
+        $c_1 \oplus c_2 = (m_1 \oplus \text{DPGB}(k)) \oplus (m_2 \oplus \text{DPGB}(k)) = (m_1 \oplus m_2) \oplus (\text{DPGB}(k) \oplus \text{DPGB}(k)) = m_1 \oplus m_2$
+    \par}
+
+    In questo modo la \textit{keystream} viene generata in modo che dipenda unicamente dalla chiave, se noi andiamo a ad utilizzare un altro valore (\textbf{\textit{nonce}}) è possibile rimuovere la vulnerabilità di riutilizzo della chiave. Definendo $k_i$ la \textit{keystream} nell'istante $i$-esimo avremo:
+
+    {\centering
+        $k_i = \text{DPBG}(k, n)$
+    \par}
+    Dove:
+    \begin{itemize}[nosep]
+        \item \textbf{k} è la chiave privata della comunicazione.
+        \item \textbf{n} è il \textbf{nonce}, il problema permane se nessuno dei due viene aggiornato.
+    \end{itemize}
+\end{flushleft}
+
+\begin{flushleft}
+    \textcolor{red}{\textbf{\textit{Trasparent Data Encryption (TDE)}}} \\
+    Nel caso in cui si voglia cifrare un disco, si vuole non inficiare lo spazio totale che si ha, quindi per evitare che il nonce venga salvato per ogni porzione scritta su disco normalmente si tende ad utilizzare informazioni che esistono già. \\
+    Il contesto non può essere utilizzato in quanto nel tempo non cambia mai quindi si è comunque affetti da \textit{key reuse}.
+\end{flushleft}
+
+\section{Block Cipher \& Modes of Operation}
+Un \textbf{cifrario a blocchi} è una famiglia di permutazioni pseudo-causali con chiave [\textbf{\textit{keyed family of pseudorandom permutation (PRP)}}].
+
+{\centering
+    $\mathbf{F} \; : \; \{0, 1\}^{Lk} \times \{0, 1\}^{Lb} \mapsto \{0,1\}^{Lb}$
+\par}
+
+\begin{flushleft}
+Dove \textbf{Lb} è la lunghezza del blocco da cifrare, mentre \textbf{Lk} è la lunghezza della chiave. Nei \textit{block cipher} sia la funzione $F$ che $F^{-1}$ sono \textbf{efficenti}
+\end{flushleft}

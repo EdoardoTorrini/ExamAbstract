@@ -263,5 +263,225 @@ Un \textbf{cifrario a blocchi} è una famiglia di permutazioni pseudo-causali co
 \par}
 
 \begin{flushleft}
-Dove \textbf{Lb} è la lunghezza del blocco da cifrare, mentre \textbf{Lk} è la lunghezza della chiave. Nei \textit{block cipher} sia la funzione $F$ che $F^{-1}$ sono \textbf{efficenti}
+Dove \textbf{Lb} è la lunghezza del blocco da cifrare, mentre \textbf{Lk} è la lunghezza della chiave. Nei \textit{block cipher} sia la funzione $F$ che $F^{-1}$ sono \textbf{efficenti}.
+\end{flushleft}
+
+\begin{boxA}
+    \textcolor{orange}{\textbf{Esempio}}: consideriamo un \textit{block cipher} ideale che utilizza una permutazione dell'alfabeto, per mappare ogni carattere, che è noto in crittografia classica come \textbf{\textit{substitution cipher}}.
+    \begin{center}
+        \begin{tabular}{p{0.2cm}p{0.2cm}p{0.2cm}p{0.2cm}p{0.2cm}p{0.2cm}p{0.2cm}p{0.2cm}p{0.2cm}p{0.2cm}p{0.2cm}p{0.2cm}p{0.2cm}p{0.2cm}p{0.2cm}p{0.2cm}p{0.2cm}p{0.2cm}p{0.2cm}p{0.2cm}p{0.2cm}p{0.2cm}p{0.2cm}p{0.2cm}p{0.2cm}p{0.2cm}}
+            \textbf{A} & \textbf{B} & \textbf{C} & \textbf{D} & \textbf{E} & \textbf{F} & \textbf{G} & \textbf{H} & \textbf{I} & \textbf{J} & \textbf{K} & \textbf{L} & \textbf{M} & \textbf{N} & \textbf{O} & \textbf{P} & \textbf{Q} & \textbf{R} & \textbf{S} & \textbf{T} & \textbf{U} & \textbf{V} & \textbf{W} & \textbf{X} & \textbf{Y} & \textbf{Z} \\
+            H & L & S & T & G & R & I & J & V & F & U & K & D & M & Z & B & P & A & E & W & N & Y & Y & X & Q & C \\
+        \end{tabular}
+    \end{center}
+    La mappatura delle lettere è la chiave del nostro cifrario e la lunghezza della chiave è pari a:
+
+    {\centering
+        $26 \cdot \log_2 26 \simeq 112 \; \text{bits}$
+    \par}
+\end{boxA}
+
+\begin{boxA}
+    \textcolor{orange}{\textbf{Esempio: \textit{Ideal Block Cipher} con \textit{block size} 2}} \\
+    In questo caso andiamo a mappare ogni possibile valore di due bit $2^2 = 4$ con ogni possibile permutazione dei suoi valori $4! = 24$ e utilizziamo l'\textbf{indice} come chiave che va a selezionarci la permutazione associata.
+    \begin{center}
+        \renewcommand{\arraystretch}{0.7}
+        \begin{tabular}{c|cccc}
+            \textbf{Indice} & \textbf{00} & \textbf{01} & \textbf{10} & \textbf{11} \\ \hline
+            \textbf{0}  & 00 & 01 & 10 & 11 \\
+            \textbf{1}  & 00 & 01 & 11 & 10 \\
+            \textbf{2}  & 00 & 10 & 01 & 11 \\
+            \textbf{3}  & 00 & 10 & 11 & 01 \\
+            \textbf{4}  & 00 & 11 & 01 & 10 \\
+            \textbf{5}  & 00 & 11 & 10 & 01 \\
+            \textbf{6}  & 01 & 00 & 10 & 11 \\
+            \textbf{7}  & 01 & 00 & 11 & 10 \\
+            \textbf{8}  & 01 & 10 & 00 & 11 \\
+            \textbf{9}  & 01 & 10 & 11 & 00 \\
+            \textbf{10} & 01 & 11 & 00 & 10 \\
+            \textbf{11} & 01 & 11 & 10 & 00 \\
+            \textbf{12} & 10 & 00 & 01 & 11 \\
+            \textbf{13} & 10 & 00 & 11 & 01 \\
+            \textbf{14} & 10 & 01 & 00 & 11 \\
+            \textbf{15} & 10 & 01 & 11 & 00 \\
+            \textbf{16} & 10 & 11 & 00 & 01 \\
+            \textbf{17} & 10 & 11 & 01 & 00 \\
+            \textbf{18} & 11 & 00 & 01 & 10 \\
+            \textbf{19} & 11 & 00 & 10 & 01 \\
+            \textbf{20} & 11 & 01 & 00 & 10 \\
+            \textbf{21} & 11 & 01 & 10 & 00 \\
+            \textbf{22} & 11 & 10 & 00 & 01 \\
+            \textbf{23} & 11 & 10 & 01 & 00 \\
+        \end{tabular}
+    \end{center}
+    Una tabella è un \textbf{\textit{block cipher} ideale}, quindi se volessimo generalizzare nel caso di una tabella a $n$ bit, quanti bit servirebbero per memorizzarla:
+    \begin{itemize}[nosep]
+        \item trasferendo unicamente la permutazione unica del blocco a $n$ bit avremo bisogno di $n \cdot 2^n$ bit, il che è un costo esponenziale.
+        \item trasferendo l'intera tabella, avremo bisogno di $n \cdot 2^n \cdot 2^n !$ bit il che la renderebbe impraticabile da gestire.
+    \end{itemize}
+\end{boxA}
+
+\begin{flushleft}
+    \textcolor{red}{\textbf{\textit{Encryption schemes} basati su \textit{Block cipher}}} \\
+    I \textit{block cipher} sono \textbf{primitive} crittografiche che possono essere utilizzate per costruire degli \textbf{schemi di crittografia simmetrica} (\textit{block cipher $\neq$ encryption scheme}). \\
+    I \textit{block cipher} possono essere utilizzati direttamente con \textit{encryption scheme} solo \textbf{in certi casi particolari} (\textbf{KEM}), negli altri casi per costruire uno schema crittografico è necessario un ulteriore algoritmo chiamato \textbf{\textit{operations modes}} (\textit{encryption mode}).
+    \begin{itemize}[nosep]
+        \item \textbf{AES}: è un \textit{block cipher} che ha una \textbf{\textit{block size}} di 128bits e una \textbf{\textit{key size}} che può variare a 128bits, 192bits, 256bits.
+        \item \textbf{AES-128}: una particolare implementazione di \textbf{AES} con la \textit{key size} a 128bits.
+        \item \textbf{AES-128-CBC}: è un \textbf{\textit{encryption scheme}} che si basa su un \textit{block cipher} \textbf{AES-128} usato in combinazione con l'\textit{operations mode} \textbf{CBC}.
+    \end{itemize}
+
+    \textcolor{red}{\textbf{\textit{Real Block Ciphers}}}: distribuire un algoritmo invece che una tabella è molto più ``facile''. Possibili \textit{block cipher}:
+
+    \begin{center}
+        \begin{tabular}{|c|c|c|c|c|} \hline
+            \textbf{\textit{block cipher}} & \textbf{\textit{block size}} & \textbf{\textit{key size}} & \textbf{supporto hardware} & \textbf{deprecato} \\ \hline
+            DES & 64 bits & 56 bits & si & si \\ \hline
+            AES & 128 bits & 128, 192, 256 bits & si & no \\ \hline
+            3DES & 64 bits & 56 bits x 3 & si & ni \\ \hline
+        \end{tabular}
+    \end{center}
+    \textbf{AES-NI} mette a disposizione nuove instruzioni hardware per la crittografia tramite \textbf{AES} è diffuso per tutte le CPU x86. \textbf{ARMv8 Cryptography Extensions} che invece non è disponibile su CPU ARM vecchie o di ``fascia bassa''. \\
+
+    \bigskip
+    
+    Un \textbf{\textit{block cipher}} deve essere progettato basandosi su due proprietà:
+    \begin{enumerate}[nosep]
+        \item \textbf{Diffusione}: ogni bit del testo in chiaro influsci su ogni bit del crittogramma (durante la modifica).
+        \item \textbf{Confusione}: i pattern all'interno del testo in chiaro non influenzano i pattern del testo cifrato.
+    \end{enumerate}
+
+    \textbf{Nota}: i \textbf{\textit{block ciphers}} possono lavorare come \textbf{primitive} all'interno di altri blocchi di crittografia, ad esempio \textbf{ChaCha20} e \textbf{SHA2} utilizzano al loro interno dei \textit{block cipher}.
+\end{flushleft}
+
+\begin{flushleft}
+    \textcolor{red}{\textbf{\textit{Block cipher Operation Modes}}} \\
+    Abbiamo detto che \textit{block cipher} sono primitive non schemi di crittografia, infatti sono utilizzabili unicamente su dati che hanno come lunghezza massima la \textit{block size}. Un \textit{block cipher} è \textbf{deterministico}, il che lo rende vulnerabile a \textbf{\textit{frequency attack}}, è però possibile creare uno \textit{symmetric encryption scheme} utilizzando un \textbf{\textit{modes of operations}}. È Possibile suddividerli in famiglie in base al loro comportamento:
+    \begin{itemize}[nosep]
+        \item costruire un \textbf{\textit{stream cipher}} da un \textit{block cipher}.
+        \item cifrare blocco per blocco per ridurlla la \textbf{malleabilità}.
+        \item combinare la \textbf{riservatezza} con altre operazioni crittografiche, ad esempio garantire \textbf{integrità}: \textbf{\textit{authenticated encryption}}.
+    \end{itemize}
+\end{flushleft}
+
+\begin{flushleft}
+    \textcolor{red}{\textbf{\textit{Mode of Operation - Electronic CodeBook (ECB)}}}
+
+    {\centering
+        \includegraphics[width=\textwidth]{img/ecb.png}
+    \par}
+
+    Viene usato direttamente il \textit{block cipher}, è necessario utilizzare un informazione con lunghezza multipla della \textit{block size} il dato viene diviso in $n$ blocchi e successivamente cifrati tramite il blocco e gli $n$ blocchi di \textit{ciphertext} vengono concatenati, è molto inefficiente e \textbf{vulnerabile} (\textbf{\textit{ECB Penguin}}). \\
+    In alcuni casi particolari viene comunque utilizzato, soprattuto per sviluppare e mantenere del codice.
+
+    \textcolor{red}{\textbf{\textit{Mode of Operation - Counter Mode (CTR)}}}
+
+
+    {\centering
+        \includegraphics[width=\textwidth]{img/ctr.png}
+    \par}
+
+    Permette di costruire un \textbf{\textit{stream cipher}} da un \textit{block cipher}, dove il blocco viene utilizzato come funzione per generare bit pseudo-casuali (\textbf{\textit{stream key}}). È molto utilizzato nelle comunicazioni, è importante l'uso del \textbf{\textit{nonce}}. \\
+    È importante andare ad analizzare il \textbf{\textit{nonce}}, infatti sappiamo che $len_n + len_c = b$ dove \textbf{b} è la \textit{block size} come bilanciamo la \textbf{lunghezza} del \textbf{\textit{nonce}} ($len_n$) e la \textbf{lunghezza} del \textbf{\textit{counter}} ($len_c$). Ipotizziamo di utilizzare \textbf{AES} come \textit{block cipher} e fissiamo $len_n = 64$ avremo problemi di \textbf{ricorsione statistica} dopo:
+    
+    {\centering
+        $2^{len_c} \cdot 2^{\log_2 b} = 2^{64} \cdot 2^7 = 2^{71}$
+    \par}
+
+    Andando ad aumentare $len_n = 96$ avremo invece problemi di ricorsione dopo $2^{39}$ bytes $\simeq$ 64gb. La lunghezza del \textbf{\textit{nonce}} va a modificare il \textbf{numero di messaggi} prima che ci siano problematiche legate alla crittoanalisi statistica, mentre la lunghezza del \textbf{\textit{counter}} va a modificare la \textbf{grandezza del messaggio} prima che al suo interno possano esserci problematiche legate alla crittoanalisi statistica.
+
+    \textcolor{red}{\textbf{\textit{Mode of Operation - Cipher Block Chaning (CBC)}}}
+
+
+    \begin{figure}[h]
+        \centering
+        \begin{minipage}[t]{0.45\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{img/cbc_enc.png}
+            \caption{\textbf{CBC \textit{encryption}}}
+        \end{minipage}
+        \begin{minipage}[t]{0.45\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{img/cbc_dec.png}
+            \caption{\textbf{CBC \textit{decryption}}}
+        \end{minipage}
+    \end{figure}
+    Il \textbf{CBC} usa il blocco cifrato precedente ottenendo così un \textbf{effetto a valanga} (\textit{avalanche effect}) questo porta ad avere a parità di blocchi di testo in chiaro differenti blocchi di crittogramma. Aumenta, inoltre, la resistenza contro attacchi del tipo di \textbf{\textit{frequency analysis}} questo non rimuove l'utilità di modifica nel tempo della chiave (\textbf{\textit{re-keying}} è comunque importante dopo una certa quantità di dati cifrati).
+
+    \bigskip
+
+    Introduce l'utilizzo di un \textbf{\textit{Initialization Vector}} per abilitare \textbf{\textit{multi-message security}} (molto simile al \textit{nonce} ma si basa su assunzioni di sicurezza diversi). L'\textbf{IV} è un dato random non c'è bisogno di mantenerlo segreto.
+
+    \bigskip
+
+    Al contrario del \textbf{CTR} che è vulnerabile (come l'\textbf{OTP}) a \textbf{malleabilità} il \textbf{CBC} è abbastanza resistente, assumiamo che un attaccante abbia un \textbf{\textit{decryption oracle}} e posso modificare l'$n$-esimo blocco avremo controllo di modifica dell'$n$-esimo bit dell'$(n + 1)$-esimo blocco. Il \textbf{CBC} al contrario è molto più sensibile a problematiche legate a disturbi o malfunzionamenti della rete. Altre grande differenza è che a differenza del \textbf{CTR} che è \textbf{parallelizzabile} per entrambi le funzioni (\textit{encryption} e \textit{decryption}) il \textbf{CBC} no.
+
+    \bigskip
+
+    \textcolor{red}{\textbf{\textit{Re-Keying}}} è la pratica per cui dopo $\Delta$ messaggi inviati la chiave simmetrica deve cambiare, ma questa pratica è in mano al protocollo e non allo schema.
+
+\end{flushleft}
+
+\begin{flushleft}
+    \textcolor{red}{\textbf{\textit{Multi-message Security}}} \\
+    Dobbiamo considerare che gli \textit{encryption scheme} come un \textit{tool} \textbf{\textit{general purpose}}, normalmente ogni informazione può essere trasmessa come dati binario a lunghezza variabile e bisogna essere capaci di cifrare messaggi differenti con la stessa chiave senza che l'attaccante sia capace di distinguere se stiamo cifrando due messaggi uguali o differenti. Per questo motivo si è deciso di utilizzare o il \textbf{\textit{nonce (n)}} o il \textbf{\textit{initialization vector (iv)}}, anche se è un informazione pubblica devono essere scelti da un attore ``onesto'' non dall'attaccante, se così non fosse ci possono essere attacchi potenziali a strutture simmetriche. È anche importante ricordare che i \textit{block cipher} sono deterministici e che quindi utilizzando (nel caso del \textbf{CBC}) lo stesso \textbf{IV}, stesso \textit{plaintext} e stessa \textbf{chiave} avremo lo stesso \textbf{\textit{ciphertext}}.
+
+    \bigskip
+
+    Esistono altre \textbf{\textit{mode of operations}} oltre a \textbf{ECB}, \textbf{CTR}, \textbf{CBC} che affronteremo più avanti e che avranno a che fare con garanzie di \textbf{autenticazione}.
+\end{flushleft}
+
+\section[Section Title. Section Subtitle]{Opeation Framework for Symmetric Encryption\\ {\small Developer view to symmetric encryption}}
+
+\textcolor{red}{\textbf{\textit{Operations Framework}}} $\leftrightarrow$ \textbf{\textit{interface}} anche note come \textbf{API} che vengono utilizzate per interagire con uno \textbf{schema} o \textbf{protocollo}.
+
+\begin{center}
+    \begin{tikzpicture}[
+    node distance=0.9cm and 1.5cm,
+    main/.style={font=\bfseries, align=center},
+    category/.style={text=blue, font=\bfseries, align=center},
+    detail/.style={font=\scriptsize, align=center}
+    ]
+
+    \node[main] (enc) {encryption scheme};
+
+    \node[category, below left=of enc] (interface) {interface};
+    \node[category, below=of enc] (functional) {functional};
+    \node[category, below right=of enc] (security) {security};
+
+    \node[detail, below=0.2cm of interface] (interfaceDetail) {deterministic vs. random};
+    \node[detail, below=0.2cm of functional] (functionalDetail) {stream vs. block};
+    \node[detail, below=0.2cm of security] (securityDetail) {initialization vector vs. nonce};
+
+    % Arrows
+    \draw[->, red, thick] (enc) -- (interface);
+    \draw[->, red, thick] (enc) -- (functional);
+    \draw[->, red, thick] (enc) -- (security);
+
+    \end{tikzpicture}
+\end{center}
+
+\begin{flushleft}
+    Alcune interfacce non espongono un \textbf{API} che non richiede \textbf{IV} o \textbf{nonce}, ma lo generano internamente, quindi a pari input possono esistere più output. Questo è stato scelto per evitare che nel ``mondo reale'' \textbf{IV} e \textbf{nonce} vengono spesso confusi ed esposti nelle interfacce in maniera invertibile, questa cosa è molto pericolosa in quanto hanno requisiti differenti:
+    \begin{itemize}[nosep]
+        \item nel caso del \textit{nonce} è fondamentale l'\textbf{unicità}.
+        \item nel caso del \textit{iv} è fondamentale la \textbf{randomicità}.
+    \end{itemize}
+    In alcuni casi è possibile utilizzare un \textit{nonce} per generare un \textit{iv}. 
+
+    \bigskip
+
+    Il \textit{nonce} a volte ci serve generali ``a mano'' infatti generandolo in maniera random esiste la possibilità dopo un certo numero $n$ di iterazioni della cifratura la possibilità di duplicarlo. Generandoli ``a mano'', ad esempio con un \textbf{contatore}, si ha la garanzia di utilizzare tutti i possibili valori dello spazio, ad esempio considerando un \textit{nonce} a 96 bit, se utilizzo un contatore il \textit{nonce} avrà tutti i possibili valori da $0$ a $2^{96} - 1$ prima di avere un duplicato. Il \textbf{NIST - \textit{National Institute of Standard Technology}} definisce la probabilità massima con la quale può avvenire una duplicazione del \textit{nonce} andando a basarsi sulla lunghezza dello stesso: $p = 2^{-32}$.
+    \begin{itemize}[nosep]
+        \item se uso un contatore (\textbf{\textit{statefull}}) allora ho $2^{96}$ combinazioni da utilizzare.
+        \item se uso un random (\textbf{\textit{stateless}}) allora ho $2^{32}$ combinazioni prima di trovarmi nella condizione di \textbf{\textit{nonce} duplicati}.
+    \end{itemize}
+
+    \textcolor{red}{\textbf{\textit{SIV - Syntetic Initialization Vector}}}: è un modo per ottenere metodi alternativi il \textit{nonce} dall'\textit{iv} e viceversa, oppure è possibile cambiare schema di cifratura.
+
+    \bigskip
+
+    \textcolor{red}{\textbf{\textit{Encryption \& Padding}}} \\
+    Siccome bisogna essere capaci di cifrare dati che hanno una lunghezza non multipla della \textit{block size}, abbiamo la necessità di aggiungere informazioni fittizie per raggiungere la lunghezza richiesta: \textbf{\textit{padding}}. L'unico requisito è che sia distinguibile dal contenuto reale. \\
+    \textcolor{red}{\textbf{\textit{PKCS\#7}}}: aggiunge $n$ volte il valore $n$ per tutto il numero di bytes che mancano, nel caso in cui i dati sono già in lunghezza multipla della \textit{block size} allora bisogna aggiungere un blocco intero di padding.
 \end{flushleft}

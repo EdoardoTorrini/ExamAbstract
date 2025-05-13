@@ -343,7 +343,7 @@ Dove \textbf{Lb} è la lunghezza del blocco da cifrare, mentre \textbf{Lk} è la
     \end{center}
     \textbf{AES-NI} mette a disposizione nuove instruzioni hardware per la crittografia tramite \textbf{AES} è diffuso per tutte le CPU x86. \textbf{ARMv8 Cryptography Extensions} che invece non è disponibile su CPU ARM vecchie o di ``fascia bassa''. \\
 
-    \bigskip
+    \medskip
     
     Un \textbf{\textit{block cipher}} deve essere progettato basandosi su due proprietà:
     \begin{enumerate}[nosep]
@@ -408,15 +408,15 @@ Dove \textbf{Lb} è la lunghezza del blocco da cifrare, mentre \textbf{Lk} è la
     \end{figure}
     Il \textbf{CBC} usa il blocco cifrato precedente ottenendo così un \textbf{effetto a valanga} (\textit{avalanche effect}) questo porta ad avere a parità di blocchi di testo in chiaro differenti blocchi di crittogramma. Aumenta, inoltre, la resistenza contro attacchi del tipo di \textbf{\textit{frequency analysis}} questo non rimuove l'utilità di modifica nel tempo della chiave (\textbf{\textit{re-keying}} è comunque importante dopo una certa quantità di dati cifrati).
 
-    \bigskip
+    \medskip
 
     Introduce l'utilizzo di un \textbf{\textit{Initialization Vector}} per abilitare \textbf{\textit{multi-message security}} (molto simile al \textit{nonce} ma si basa su assunzioni di sicurezza diversi). L'\textbf{IV} è un dato random non c'è bisogno di mantenerlo segreto.
 
-    \bigskip
+    \medskip
 
     Al contrario del \textbf{CTR} che è vulnerabile (come l'\textbf{OTP}) a \textbf{malleabilità} il \textbf{CBC} è abbastanza resistente, assumiamo che un attaccante abbia un \textbf{\textit{decryption oracle}} e posso modificare l'$n$-esimo blocco avremo controllo di modifica dell'$n$-esimo bit dell'$(n + 1)$-esimo blocco. Il \textbf{CBC} al contrario è molto più sensibile a problematiche legate a disturbi o malfunzionamenti della rete. Altre grande differenza è che a differenza del \textbf{CTR} che è \textbf{parallelizzabile} per entrambi le funzioni (\textit{encryption} e \textit{decryption}) il \textbf{CBC} no.
 
-    \bigskip
+    \medskip
 
     \textcolor{red}{\textbf{\textit{Re-Keying}}} è la pratica per cui dopo $\Delta$ messaggi inviati la chiave simmetrica deve cambiare, ma questa pratica è in mano al protocollo e non allo schema.
 
@@ -426,7 +426,7 @@ Dove \textbf{Lb} è la lunghezza del blocco da cifrare, mentre \textbf{Lk} è la
     \textcolor{red}{\textbf{\textit{Multi-message Security}}} \\
     Dobbiamo considerare che gli \textit{encryption scheme} come un \textit{tool} \textbf{\textit{general purpose}}, normalmente ogni informazione può essere trasmessa come dati binario a lunghezza variabile e bisogna essere capaci di cifrare messaggi differenti con la stessa chiave senza che l'attaccante sia capace di distinguere se stiamo cifrando due messaggi uguali o differenti. Per questo motivo si è deciso di utilizzare o il \textbf{\textit{nonce (n)}} o il \textbf{\textit{initialization vector (iv)}}, anche se è un informazione pubblica devono essere scelti da un attore ``onesto'' non dall'attaccante, se così non fosse ci possono essere attacchi potenziali a strutture simmetriche. È anche importante ricordare che i \textit{block cipher} sono deterministici e che quindi utilizzando (nel caso del \textbf{CBC}) lo stesso \textbf{IV}, stesso \textit{plaintext} e stessa \textbf{chiave} avremo lo stesso \textbf{\textit{ciphertext}}.
 
-    \bigskip
+    \medskip
 
     Esistono altre \textbf{\textit{mode of operations}} oltre a \textbf{ECB}, \textbf{CTR}, \textbf{CBC} che affronteremo più avanti e che avranno a che fare con garanzie di \textbf{autenticazione}.
 \end{flushleft}
@@ -469,7 +469,7 @@ Dove \textbf{Lb} è la lunghezza del blocco da cifrare, mentre \textbf{Lk} è la
     \end{itemize}
     In alcuni casi è possibile utilizzare un \textit{nonce} per generare un \textit{iv}. 
 
-    \bigskip
+    \medskip
 
     Il \textit{nonce} a volte ci serve generali ``a mano'' infatti generandolo in maniera random esiste la possibilità dopo un certo numero $n$ di iterazioni della cifratura la possibilità di duplicarlo. Generandoli ``a mano'', ad esempio con un \textbf{contatore}, si ha la garanzia di utilizzare tutti i possibili valori dello spazio, ad esempio considerando un \textit{nonce} a 96 bit, se utilizzo un contatore il \textit{nonce} avrà tutti i possibili valori da $0$ a $2^{96} - 1$ prima di avere un duplicato. Il \textbf{NIST - \textit{National Institute of Standard Technology}} definisce la probabilità massima con la quale può avvenire una duplicazione del \textit{nonce} andando a basarsi sulla lunghezza dello stesso: $p = 2^{-32}$.
     \begin{itemize}[nosep]
@@ -479,9 +479,70 @@ Dove \textbf{Lb} è la lunghezza del blocco da cifrare, mentre \textbf{Lk} è la
 
     \textcolor{red}{\textbf{\textit{SIV - Syntetic Initialization Vector}}}: è un modo per ottenere metodi alternativi il \textit{nonce} dall'\textit{iv} e viceversa, oppure è possibile cambiare schema di cifratura.
 
-    \bigskip
+    \medskip
 
     \textcolor{red}{\textbf{\textit{Encryption \& Padding}}} \\
     Siccome bisogna essere capaci di cifrare dati che hanno una lunghezza non multipla della \textit{block size}, abbiamo la necessità di aggiungere informazioni fittizie per raggiungere la lunghezza richiesta: \textbf{\textit{padding}}. L'unico requisito è che sia distinguibile dal contenuto reale. \\
     \textcolor{red}{\textbf{\textit{PKCS\#7}}}: aggiunge $n$ volte il valore $n$ per tutto il numero di bytes che mancano, nel caso in cui i dati sono già in lunghezza multipla della \textit{block size} allora bisogna aggiungere un blocco intero di padding.
+
+    \medskip
+
+    Nel caso di \textbf{\textit{stream cipher}} le interfacce sono simili a quello del \textbf{CBC}, non è necessario fare \textit{padding}, ma bisogna fare i conti con il \textbf{\textit{nonce}} in quanto deve essere un valore unico, mai usato fino a quel momento e che non utilizzerò più tardi per cifrare dei dati con la stessa chiave.
 \end{flushleft}
+
+\begin{flushleft}
+    \textcolor{red}{\textbf{\textit{Nonce vs Initialization Vector}}} \\
+    Sono normalmente adottate in base ai requisiti di sicurezza di un \textit{encryption scheme}:
+    \begin{itemize}[nosep]
+        \item \textbf{\textit{nonce}}: utilizzato per schemi che richiedono \textbf{unicità} $\rightarrow$ \textbf{\textit{stream cipher}}.
+        \item \textbf{IV}: utilizzato per schemi che richiedono \textbf{randomizzazione} ed \textbf{non predicibilità} $\rightarrow$ \textbf{\textit{block encryption}}.
+    \end{itemize}
+    È comunque buona prassi accertarsi che la descrizione fornita dalla libreria sia congrua all'utilizzo che se ne fa.
+
+    \medskip
+
+    Ma cosa succede se il \textit{nonce} viene riutilizzato? \\
+    Dipende dallo schema ma bisogna cercare di evitarlo in quanto permette di fare la \textit{disclosure} di informazioni in quanto lo schema diventerebbe deterministico e ci permetterebbe di rilevare se due testi cifrati (\textit{frequency attacks}), ma anche rompere completamente la sicurezza dello schema come ad esempio rivelare la chiave o rivelare il valore del \textit{plaintext}.
+
+    \medskip
+
+    Alcuni casi d'uso necessitano, però, la capacità di essere resistenti al \textit{nonce reuse} (\textbf{\textit{nonce reuse resistance}}) ad esempio:
+    \begin{itemize}[nosep]
+        \item dispositivi \textit{low-power} che necessitano di scambiare messaggi più piccoli $\rightarrow$ \textit{nonce} più piccoli $\rightarrow$ alta probabilità di collisione.
+        \item librerie in cui manca l'implementazione di tale controllo.
+    \end{itemize}
+
+    Abbiamo definito dei requisiti di sicurezza sugli schemi crittografici che possono essere: un \textit{nonce} univoco o un \textit{iv} randomico e/o non predicibile, ma se il nostro sistema non è capace di crearli, ad esempio perché la fonte di randomicità del nostro dispositivo non ha un \textit{poll} abbastanza ampio? È possibile utilizzare un \textit{nonce} e utilizzando un \textbf{\textit{block cipher}} trasformarlo in un \textit{iv}. \\
+    È importante rimarcare che la \textbf{segretezza} di \textit{nonce} ed \textit{iv} non è richiesta, vengono normalmente concatenati come prefisso del \textit{ciphertext}.
+\end{flushleft}
+
+\begin{figure}[h]
+    \centering
+    \textcolor{red}{\textbf{\textit{Probabilistic vs Deterministic Encryption}}} \\
+    L'unica differenza è la presenza esplicita del \textit{nonce/iv} negli input della funzione di \textit{encryption}.
+    \begin{minipage}[c]{0.4\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{img/prob_enc.png}
+        \caption{Probabilistic Encryption}
+        Nata per correggere errori di uso improprio delle primitive di crittorafia, infatti si assumeva che chi le utilizzava avesse una buona conoscenza delle basi crittografiche. A pari input l'ouput varia.
+    \end{minipage}
+    \hfill
+    \begin{minipage}[c]{0.4\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{img/det_enc.png}
+        \caption{Deterministic Encryption}
+        Alcune librerie non sono in grado di scegliere in maniera corretta i valori in base ai requisiti di sicurezza impostati per via dell'architettura o dell'ambiente, ad esempio \textit{low-level device} (\textbf{IOT}).
+    \end{minipage}
+\end{figure}
+
+\section{How much data can we encrypt?}
+Ogni \textit{cipher} e ogni \textit{mode of operation} permette di cifrare un certo numero di messaggi, che è proporzionale alla gestione e dimensione del \textit{nonce}/\textit{iv}, ma anche una certa quantità di dati, fissati una chiave e un \textit{nonce}/\textit{iv} è importante capire quanti dati possiamo cifrare, utilizzare le raccomandazione degli \textit{standard} (calcolate utilizzando statistiche e calcoli approfonditi).
+\begin{itemize}[nosep]
+    \item \textit{block cipher} utilizzati come \textit{stream cipher}: \textbf{AES-128-CTR} normalmente il testo da cifrare per generare la \textit{stream key} viene splittato in 96bits di \textit{nonce} e 32bits di \textit{counter}.
+    \item \textit{stream cipher} ad esempio \textbf{chacha20} che è simile ad un \textit{block cipher} utilizzato in \textbf{CTR mode} ne esistono due varianti:
+    \begin{itemize}[nosep]
+        \item 64bits \textit{nonce} e 64bits \textit{counter} lo schema originale.
+        \item 96bits \textit{nonce} e 32bits \textit{counter} la variante \textbf{IETF} per il protocollo \textbf{TLS}.
+    \end{itemize}
+    \item \textbf{xchacha20} utilizza 192bits \textit{nonce} e 64bits \textit{counter}
+\end{itemize}

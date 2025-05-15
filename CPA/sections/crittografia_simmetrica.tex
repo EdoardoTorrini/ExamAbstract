@@ -8,7 +8,7 @@
 Le garanzie di sicurezze che si cercano di mantenere sono:
 \begin{itemize}[nosep]
     \item \textbf{confidenzialità}: Eve non può accedere a nessuna della informazioni sul messaggio.
-    \item \textbf{autenticazione}: Bob può verificare se il messaggio non è stato inviato da Alice, viene anche chiamata \textbf{\textit{data orgin authenticity}} nel contesto della comunicazioni e implica anche la protezione contro modifiche illegittime (\textbf{integrità}).
+    \item \textbf{autenticazione}: Bob può verificare se il messaggio non è stato inviato da Alice, viene anche chiamata \textbf{\textit{data origin authenticity}} nel contesto della comunicazioni e implica anche la protezione contro modifiche illegittime (\textbf{integrità}).
 \end{itemize}
 
 \begin{flushleft}
@@ -30,6 +30,7 @@ Le garanzie di sicurezze che si cercano di mantenere sono:
             Ha capacità di lettura dei soli \textit{ciphertext} e non è capace di \textbf{scegliere nulla}
         \end{boxA}
     \end{minipage}
+    \hfill
     \begin{minipage}[t]{0.45\textwidth}
         \centering
         \begin{boxA}
@@ -431,7 +432,7 @@ Dove \textbf{Lb} è la lunghezza del blocco da cifrare, mentre \textbf{Lk} è la
     Esistono altre \textbf{\textit{mode of operations}} oltre a \textbf{ECB}, \textbf{CTR}, \textbf{CBC} che affronteremo più avanti e che avranno a che fare con garanzie di \textbf{autenticazione}.
 \end{flushleft}
 
-\section[Section Title. Section Subtitle]{Opeation Framework for Symmetric Encryption\\ {\small Developer view to symmetric encryption}}
+\section{Opeation Framework for Symmetric Encryption\\ \small{Developer view to symmetric encryption}}
 
 \textcolor{red}{\textbf{\textit{Operations Framework}}} $\leftrightarrow$ \textbf{\textit{interface}} anche note come \textbf{API} che vengono utilizzate per interagire con uno \textbf{schema} o \textbf{protocollo}.
 

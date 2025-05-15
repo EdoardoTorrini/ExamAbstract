@@ -1,9 +1,9 @@
 \chapter{Introduzione}
 \textbf{Crittologia}: l'arte delle scritture segrete, può essere divisa in 3 macro argomenti:
 \begin{enumerate}[nosep]
-    \item \textbf{crittografia}: come \textit{trasformare} messaggi per proteggerne il contenuto (l'informazione).
-    \item \textbf{steganografia}: come \textit{nascondere} messaggi per evitare che venga individuato (ex. \textbf{least significant bit steganography}).
-    \item \textbf{crittoanalisi}: come \textit{analizzare} messaggi e rivelarne l'informazione.   
+    \item \textbf{crittografia}: come \textbf{trasformare} messaggi per proteggerne il contenuto (l'informazione).
+    \item \textbf{steganografia}: come \textbf{nascondere} messaggi per evitare che venga individuato (ex. \textbf{\textit{least significant bit steganography}}).
+    \item \textbf{crittoanalisi}: come \textbf{analizzare} messaggi e rivelarne l'informazione.   
 \end{enumerate}
 
 \section{Crittografia Classica}
@@ -27,17 +27,17 @@ La crittografia moderna si basa su due principi:
         \item \textbf{diffusione}: se viene cambiato un singolo bit del testo in chiaro, allora almeno la metà dei bit del crittogramma devono cambiare, e viceversa.
     \end{itemize}
 \end{enumerate}
-Nella crittografia moderna lo spazio delle chiavi deve essere sufficentemente ampio per evitare una ricerca esaustiva su di esso, in più, nessuna informazione (nè del \textit{plaintext}, né della \textit{key}) deve poter essere estrapolata dal \textit{ciphertext}. Viene detto che il \textit{ciphertext} deve essere \textbf{indistinguibile} da una sequenza di bit \textit{random}.
+Nella crittografia moderna lo spazio delle chiavi deve essere sufficentemente ampio per evitare una ricerca esaustiva su di esso, in più, nessuna informazione (né del \textit{plaintext}, né della \textit{key}) deve poter essere estrapolata dal \textit{ciphertext}. Viene detto che il \textit{ciphertext} deve essere \textbf{indistinguibile} da una sequenza di bit \textit{random}.
 
 \subsection{Extended and applied settings}
 Gli avversari (i crittoanalisti) non sono più unicamente \textbf{passivi}, ma bisogna modellare delle tipologia di avversari che siano capaci anche di \textbf{interagire} con i nostri sistemi e \textbf{manipolare} dei messaggi. \\
 Per ognuna di queste modellazioni è necessario \textbf{provare la sicurezza} dei sistemi andando a \textbf{definire} delle attività (tramite la comprensione e modellare cosa è ``sicuro'') e \textbf{costruendo} attività (progettandole e provandone la veridicità). \\ \newline
 Bisogna definire le \textbf{primitive}, gli \textbf{schemi}, i \textbf{protocolli} e le \textit{applicazioni} che vengono utilizzati, andandoli ad analizzare separatamente e completa. \\
-$\Rightarrow$ può essere necessario costruire schemi e protocolli modellati su misura per applicazioni reali inerenti ad un certo caso d'uso: \textcolor{red}{\textbf{Applied Cryptography}}.
+$\Rightarrow$ può essere necessario costruire schemi e protocolli modellati su misura per applicazioni reali inerenti ad un certo caso d'uso: \textcolor{red}{\textbf{Crittografia Applicata}}.
 
 \newpage
 \section{Crittografia Applicata}
-È un layer di astrazione che può essere (quasi) direttamente mappato all'interno di una soluzione per un caso d'uso reale (quindi tecniche ``pratiche''). Siccome analizziamo \textbf{soluzioni pratiche} bisogna gestire possibili errori dovuti ad \textbf{implementazioni} o \textbf{\textit{deployment}} errati. I protcolli sicuri assumono che un attaccante tenti di accedere alle informazioni in transito (violazione della \textbf{confidenzialità}) e cerchi di impersonificare un mittente (violazione dell'\textbf{autenticazione}). \\ 
+È un layer di astrazione che può essere (quasi) direttamente mappato all'interno di una soluzione per un caso d'uso reale (quindi tecniche ``pratiche''). Siccome analizziamo \textbf{soluzioni pratiche} bisogna gestire possibili errori dovuti ad \textbf{implementazioni} o \textbf{\textit{deployment}} errati. I protocolli sicuri assumono che un attaccante tenti di accedere alle informazioni in transito (violazione della \textbf{confidenzialità}) o cerchi di impersonificare un mittente (violazione dell'\textbf{autenticazione}). \\ 
 Una delle sicurezze che deve garantire un protocollo sicuro è la \textbf{confidenzialità}. \\ \newline
 Quando si studi/analizza/progetta un protocollo crittografico è necessario identificare:
 \begin{itemize}[nosep]
@@ -66,7 +66,7 @@ Quando si studi/analizza/progetta un protocollo crittografico è necessario iden
         \par}
     \end{boxA}
     \item \textbf{security guarantees}: quale aspetto di sicurezza vogliamo garantire: \textbf{confidenzialità}, \textbf{integrità} (autenticazione), \textbf{disponibilità}, \textbf{non ripudio} (è anche presente il concetto di \textbf{\textit{forward security}}).
-    \item \textbf{cryptogrphy settings}: le due classi principali sono: crittografia \textbf{simmetrica} (le funzioni di \textit{encrypt} e \textit{decrypt} utilizzano lo stesso \textbf{segreto}) e crittografia \textbf{asimmetrica} (sono presenti due differenti \textbf{chiavi}, uno utilizzabile durante la funzione di \textit{encrypt} - \textit{public} - e l'altro utilizzato durante la funzione di \textit{decrypt} - \textit{secret}).
+    \item \textbf{cryptography settings}: le due classi principali sono: crittografia \textbf{simmetrica} (le funzioni di \textit{encrypt} e \textit{decrypt} utilizzano lo stesso \textbf{segreto}) e crittografia \textbf{asimmetrica} (sono presenti due differenti \textbf{chiavi}, uno utilizzabile durante la funzione di \textit{encrypt} - \textit{public} - e l'altro utilizzato durante la funzione di \textit{decrypt} - \textit{secret}).
     \item \textbf{security assumptions of a proposed scheme}
 \end{itemize}
 

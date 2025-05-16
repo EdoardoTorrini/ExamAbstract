@@ -36,7 +36,11 @@
     Andiamo, velocemente, ad analizzare quelle situazioni in cui è richiesta \textbf{\textit{integrità}} fuori dai requisiti di crittografia: come ad esempio modifiche al dato per errori di trasmissione o per guasti - normalmente scaturite da fenomeni fisici - per i quali sono presenti molteplici algoritmi, tra i quali: \textbf{\textit{parity}}, \textbf{CRC}, \textbf{\textit{checksum}}. In questo caso è possibile modellare la tipologia di attaccante come un \textbf{attaccante irrazionale} (perdita di bit randomici o a raffica). \\
     Nei settaggi di crittografia moderna, l'attaccante è sempre \textbf{razionale} e conosce gli \textbf{algoritmi crittografici} e si comporta di conseguenza, grazie al requisito di \textbf{\textit{cryptographic integrity-protection}} anche se noti i dati di base non deve essere capace di trovare una soluzione al problema nonostante l'assenza di una chiave condivisa. Anche in questo caso è presente la sicurezza computazione ma viene applicata in maniera differente.
 
-    \medskip
+\end{flushleft}
+
+\section{Hash Function}
+
+\begin{flushleft}
 
     \textcolor{red}{\textbf{Cryptography Hash Function}}: una funzione hash $H$ viene definita come: 
 
@@ -103,9 +107,126 @@
 
     \smallskip
 
-    In questo caso la funzione hash $H$ deve rispettare la ``normativa'' di sicurezza \textit{second pre-image collision resistance} in quanto il messaggio iniziale - la nostra \textit{*.iso} - viene fornita dal provider. L'attaccante vincerebbe se riuscisse a trovare un messaggio $m_a \; \text{t.c.} \; H(m_d) = H(m_a)$ e contemporaneamente quel messaggio dovrebbe contenere un \textit{payload} malevolo. Solo in quel caso l'utente lo scaricherebbe il messaggio e la funzione di verifica - chiamata \textbf{\textit{verify}} - andrebbe a buon fine e quindi l'utente accetterebbe il nuovo messaggio.
+    In questo caso la funzione hash $H$ deve rispettare la ``normativa'' di sicurezza \textit{second pre-image collision resistance} in quanto il messaggio iniziale - la nostra \textit{*.iso} - viene fornita dal \textit{server mirror}. L'attaccante vincerebbe se riuscisse a trovare un messaggio $m_a \; \text{t.c.} \; H(m_d) = H(m_a)$ e contemporaneamente quel messaggio dovrebbe contenere un \textit{payload} malevolo. Solo in quel caso l'utente lo scaricherebbe il messaggio e la funzione di verifica - chiamata \textbf{\textit{verify}} - andrebbe a buon fine e quindi l'utente accetterebbe il nuovo messaggio.
 \end{boxA}
 
 \begin{flushleft}
     \textcolor{red}{\textbf{\textit{Collision Resistance}}}: riuscire ad ottenere, arbitrariamente, due messaggi $m_1$ e $m_2$ tali che $H(m_1) = H(m_2)$ è la più forte come garanzia di sicurezza, nel caso dovesse mancare, la funzione hash sarebbe molto facile da violare.
+\end{flushleft}
+
+\begin{boxA}
+    \textcolor{orange}{\textbf{Esempio}}
+
+    \medskip
+
+    {\centering
+        \includegraphics[width=0.45\textwidth]{img/hash_es_2.png}
+    \par}
+
+    Il \textit{provider} è malevolo e riesce a trovare due messaggio $m$ e $m'$ tali che $H(m) = H(m')$ a questo punto fa l'upload del messaggio malevolo sul \textit{server mirror}, l'utente che si scarica riesce a verificare la correttezza del \textit{digest}.
+\end{boxA}
+
+\begin{flushleft}
+    \textcolor{red}{\textbf{\textit{Hash Function Security Parameters}}}: il \textbf{parametro di sicurezza} delle funzioni \textit{hash} è la \textbf{lunghezza del \textit{digest}} in quanto rappresenta le prossibili combinazioni di $n$ bit, ovvero i possibili valori prodotti dalla funzione \textit{hash} ($2^n$). Come discusso nel paragrafo di sicurezza computazionale, il valore di $n$ deve essere scelto considerando l'attacco noto più efficiente, analizzando anche il numero di operazioni richieste per trovare una collisione. 
+
+    \smallskip
+
+    Una funzione hash sicura è quello in cui l'attacco più efficiente per trovare una collisione è il \textbf{\textit{Birthday Attack}} che richiede $2^{n/2}$ ovvero la probabilità di trovare una collisione è del $50\%$ su $N$ ($\sqrt{N}$)
+
+    \medskip
+
+    Alcune delle più popolari funzioni hash:
+    \begin{itemize}[nosep]
+        \item \textbf{md5}: ad oggi deprecata, molto facile trovare delle collisioni.
+        \item \textbf{sha1}: anche questa ad oggi deprecata, vi sono trovate delle collisioni. 160bit di \textit{digest}.
+        \item \textbf{sha2}: sha1 ``potenziata'' ha diverse lunghezze del \textit{digest} in base alla versione: \textbf{sha224}, \textbf{sha256}, \textbf{sha384} e \textbf{sha512}.
+        \item \textbf{sha3}: è stata implementata con una primitiva differente rispetto a sha1 e sha2, è stata standardizzata ufficialmente nel 2015, ha le stesse sottoversioni del sha2.
+        \item \textbf{blake2}: utilizza come primitiva \textbf{chacha} non è ancora stata standardizzata dal NIST ma è molto popolari in certi ambienti, ad esempio, quello del \textit{software open source}.
+    \end{itemize}
+
+    Sia le funzioni \textbf{\textit{hash}} che le funzioni \textbf{\textit{mac}} vengono definite come funzioni con un solo input, ma è possibile concatenare più input, ma bisogna farlo in maniera sicura.
+
+    {\centering
+        $H('builtin' || 'security') = H('built' || 'insecurity') = H('builtinsecurity')$
+    \par}
+
+    Concatenare i risultati cercando di rendere univoco l'output:
+    \begin{itemize}[nosep]
+        \item utilizzando \textbf{caratteri speciali} per concatenare, se possibile: considersiamo che il carattere $;$ non sia ammesso come input allora sarà possibile concatenare gli input come: $d = H('builtin' \; || \; ';' \; || \; 'security')$
+        \item \textbf{esplicitando} la \textbf{lunghezza dell'input}: $d = H('7buildinsecurity')$ 
+    \end{itemize}
+\end{flushleft}
+
+\section{Message Authentication Code}
+
+\begin{flushleft}
+    Il destinatario può rilevare se il messaggio non è stato mandato da un mittente legittimo, che nel caso lo si andasse a definire all'interno della crittografia simmetrica, identificherebbe colui che conosce il segreto condiviso. Il \textbf{MAC} è una funzione che ha due input: la chiave e il message e come output un \textbf{\textit{tag}}.
+
+    {\centering
+        \textbf{tag} = \textbf{MAC}(\textit{key}, \textit{message})
+    \par}
+
+    La funzione \textbf{\textit{verify}} è simile a quella delle funzioni hash, ma include come input anche la chiave simmetrica.
+
+    {\centering
+        $\{0, 1\} \leftarrow$ \textbf{verify}(\textit{key}, \textit{message}, \textit{tag})
+    \par}
+
+    Il \textbf{MAC} permette a Bob di verificare che il messaggio è stato generato da Alice.
+\end{flushleft}
+
+\begin{flushleft}
+    \textcolor{red}{\textbf{\textit{Attack Models for MAC}}}
+
+    \medskip
+
+    \begin{minipage}[c]{0.45\textwidth}
+        \centering
+        \textbf{\textit{Existential Forgery for Passive Eavesdropper}} \\
+        L'attaccante osserva coppie $(m_i, t_i)$ trasmesse tra gli attori benevoli (Alice e Bob) ed è capace di \textit{forgiare} una nuova coppia $(m', t')$ mai inviata e l'attacco ha successo nel caso in cui il messaggio venga accettato.
+
+        \smallskip
+
+        \includegraphics[width=\textwidth]{img/mac_am_1.png}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[c]{0.45\textwidth}
+        \centering
+        \textbf{\textit{Existential Forgery for Chosen Message}} \\
+        In questo caso l'attaccante controlla i messaggi che vengono autenticati, quindi sceglie $n$ volte un messaggio $m_i$ e osserva il tag generato $t_i$ a quel punto se riesce a generare una nuova coppia $(m', t')$ non ancora inviata che verrà accettata l'attacco avrà avuto successo.
+
+        \smallskip
+
+        \includegraphics[width=\textwidth]{img/mac_am_2.png}
+    \end{minipage}
+
+    \smallskip
+
+    \textcolor{red}{\textbf{\textit{MAC: Security Parameters}}}:
+    \begin{itemize}[nosep]
+        \item la \textbf{lunghezza della chiave}: l'attacco più efficiente deve essere quello di \textit{brute force}.
+        \item la \textbf{lunghezza del \textit{tag}}: permette di determinare la dimensione del dato o il numero di messaggi autenticabili con la stessa chiave (dipende dal tipo di \textbf{\textit{MAC scheme}} che si vuole utilizzare). Ricordiamo che il \textit{tag} è \textbf{\textit{overhead}} sul messaggio e quindi è possibile minimizzarlo ma aggiungendo a livello di protocollo altri fattori di sicurezza. 
+    \end{itemize}
+
+    La scelta del \textbf{MAC} dipende dai requisiti nei quali va applicato. Disponibilità software (presenza di librerie), disponibilità hardware (accelleratore hardware) e l'abilità di soddisfare requisiti degli schemi (creare \textit{nonce}). Ogni tipologia di \textbf{MAC} offre un diverso \textit{trade-offs} in termini di: lunghezza e numero di messaggi, modelli di attacco e lunghezza del tag consentita.
+
+    \medskip
+
+    Consideriamo i \textbf{MAC} all'interno di una situazione di \textcolor{red}{\textbf{\textit{Replay Attack}}}. Abbiamo detto che il \textbf{MAC} può garantire che il \textit{tag} sia stato creato con una certa \textbf{chiave simmetrica}, ma nel contesto in cui siamo Eve re-invia lo stesso messaggio che ha inviato Alice a Bob, che è valido, perché creato da Alice - se Alice e Bob fossero due banchieri e Alice inviasse un messaggio con scritto "Aggiungi 1000 euro nell'account di Carlo". Con queste tipologie di attacco utilizzando la crittografia è difficile arginarle, è possibile però metterci una ``pezza'' lato architetturale (a livello \textbf{trasporto} o \textbf{applicazione}) ad esempio aggiungendo un \textbf{contatore univoco} al messaggio:
+    
+    {\centering
+        \textbf{m} = (id=n, data), tag
+    \par}
+
+    Se consideriamo che la comunicazione sia \textit{full-duplex} - \textbf{\textit{Reflection Attacks}} - la possibilità che il messaggio venga inviato al mittente dello stessa e che venga verificato il \textit{tag} non è nulla, quindi si è aggiunto un bit di direzione del messaggio:
+
+    {\centering
+        \textbf{m} = (id=n, dir=val, data), tag
+    \par}
+
+    Il bit di direzione è aggiunto come \textbf{metadato} per un verifica ulteriore da parte del destinatario. È anche possibile utilizzare una difesa diversa, gestire la comunicazione \textit{full-duplex} come due \textbf{comunicazioni sicure \textit{half-duplex}} quindi utilizzare due \textbf{chiavi differenti} entrambe condivise, ma se invia Alice, verrà utilizzata $k_1$, se invia Bob $k_2$.
+
+    \medskip
+
+    \textcolor{red}{\textbf{\textit{MAC \& Hash function}}}
 \end{flushleft}

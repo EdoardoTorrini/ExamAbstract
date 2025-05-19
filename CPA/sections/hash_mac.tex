@@ -228,5 +228,127 @@
 
     \medskip
 
-    \textcolor{red}{\textbf{\textit{MAC \& Hash function}}}
+    \textcolor{red}{\textbf{\textit{MAC \& Hash function}}} \\
+    Consideriamo un \textit{tag} generato in questo modo: \textbf{H}(\textbf{key} || \textbf{message}), ovvero ci calcoliamo l'hash di una stringa generata concatenando la chiave con il messaggio. Si potrebbe pensare che se la funzione hash è \textit{collision resistance} un'attaccante non riuscirebbe a calcolare un \textit{digest} la cui pre-immagine è (parzialmente) sconosciuta. In verità questo tipo di costrutto è vulnerabile al \textbf{\textit{length extension attack}} in quanto molte funzioni hash si basano sulla primitiva di \textbf{\textit{Merkle-Damgard}} (non vale per \textbf{sha3})
+\end{flushleft}
+
+\begin{boxA}
+    \textcolor{red}{\textbf{\textit{Merkle-Damgard Design}}} \\
+
+    {\centering
+        \includegraphics[width=0.45\textwidth]{img/hash_md.png}
+    \par}
+
+    È la primitiva che viene utilizzata da \textit{hash function} come \textbf{md5}, \textbf{sha1}, \textbf{sha2}. Considerando la figura, vediamo che:
+    \begin{itemize}[nosep]
+        \item \textbf{K} è il segreto.
+        \item \textbf{M[0]} e \textbf{M[1]} è pubblico.
+        \item la costruzione del \textbf{pad} è pubblica.
+        \item $D_2$ è pubblico (\textbf{\textit{tag}})
+    \end{itemize}
+    In questa circostanza l'attaccante vince se riesce a generare un \textit{tag} valido per un certo messaggio arbitrario senza conoscere la chiave \textbf{K}. Noi (come attaccante) sappiamo che il \textit{tag} è generato \textbf{H}(\textbf{key} || \textbf{message}) dove \textbf{K} è un segreto con una data lunghezza \textbf{l} fissata, noi vogliamo calcolare un certo \textit{tag'} che venga generato \textbf{H}(\textbf{key} || \textbf{message} || \textbf{message'}).
+    \begin{enumerate}[nosep]
+        \item Consideriamo di utilizzare la stessa \textit{hash function}, e di ripristinare il suo stato interno come, quindi ponendo come nostro \textbf{IV} il \textit{tag} generato dalla computazione legittima, ma è necessario impostare anche il punto iniziale da dove andare a calcolare il \textbf{pad'} e deve essere pari a $len(K) + len(M) + len(pad)$.
+        \item Inviamo come messaggio \textbf{M || pad || M'} e come tag quello appena calcolato \textbf{\textit{tag'}}.
+        \item il destinatario calcolerà \textbf{H}(\textbf{K} || \textbf{pad} || \textbf{M} || \textbf{pad} || \textbf{M'}) e produrrà lo stesso \textit{tag'} 
+    \end{enumerate}
+\end{boxA}
+
+\begin{flushleft}
+    \textcolor{red}{\textbf{\textit{HMAC}}}: è un MAC che viene costruito con alla base una funzione hash (alcune volte chiamato \textbf{\textit{keyed-hash function}}), è necessario che mantenga due requisiti funzionali:
+    \begin{itemize}[nosep]
+        \item il \textbf{MAC} deve essere sicuro fintanto che la primitiva hash su cui è costruito è \textit{collision resistance}.
+        \item per molti degli scenari presi in considerazione è sufficiente una \textit{second pre-image collision resistance}
+    \end{itemize}
+    Viene definito come:
+
+    {\centering
+        \textbf{HMAC}(\textbf{K}, \textbf{M}) = \textcolor{blue}{\textbf{H(}}(Kp $\oplus$ opad) || \textcolor{red}{\textbf{H(}}(Kp $\oplus$ ipad) || (m)\textcolor{red}{\textbf{)}}\textcolor{blue}{\textbf{)}}
+    \par}
+    Dove: 
+    \begin{itemize}[nosep]
+        \item \textbf{K} è un segreto a lunghezza variabile, mentre \textbf{Kp} è la sua versione \textit{zero-padded}.
+        \item \textbf{opad}(\textbf{\textit{outer padding}}) e \textbf{ipad}(\textbf{\textit{inner padding}}) sono costanti con un elevata distanza di Hamming (ovvero che le posizioni di bit diversi sono elevate), utilizzate per consentire alle due funzioni hash di utilizzare chiavi diverse.
+    \end{itemize}
+\end{flushleft}
+
+\begin{flushleft}
+    Andiamo a considerare i \textbf{MAC} costruiti su \textit{block cipher}, il primo e il più semplice per costruire un \textbf{MAC} basato su \textit{block cipher} fu quello di utilizzare la \textbf{CBC} \textit{mode of operation} e utilizzare come \textit{tag} il testo cifrato dell'ultimo blocco.
+
+    {\centering
+        \includegraphics[width=0.45\textwidth]{img/cbc_mac.png}
+    \par}
+
+    È possibile \textit{forgiare} un messaggio, da parte di un attaccante, infatti dato \textbf{(m, t)} e \textbf{(m', t')}, un \textcolor{red}{\textbf{CBC-MAC}} producerà \textbf{t'} per un messaggio costruito come: \textbf{m || t $\oplus$ m' || m'}.
+
+    \medskip
+    
+    \textcolor{red}{\textbf{\textit{CMAC}}} è il successore del \textbf{CBC-MAC} utilizza come primitiva \textbf{AES-SIV}(\textbf{CTR-CMAC}), lo schema è molto simile ma aggiunge due operazioni sull'ultimo blocco prima di utilizzarlo. Lo schema deriva due chiavi $k_1$ e $k_2$ dalla chiave originale e una delle due viene \textit{xorata} con l'ultimo blocco del messaggio $m_n$ (\textbf{\textit{tweak block}}) prima di utilizzare il blocco del \textbf{CMAC}.
+
+    {\centering
+        \includegraphics[width=0.45\textwidth]{img/cmac.png}
+    \par}
+
+    \newpage
+
+    \textcolor{red}{\textbf{\textit{UHF - Universal Hash Function}}} si riferisce ad una \textbf{\textit{keyed hash function}} che prende due input: una chiave \textbf{k} e un messaggio \textbf{m}. Questa funzione garantisce che la probabilità - che dati due messaggi distinti $m_1$ e $m_2$ - di avere $UHF(m_1) = UHF(m_2)$ è \textbf{trascurabile}. Un'implementazione popolare per una funzione \textbf{UHF} è quella basata su \textbf{polinomi modulo p} (con \textbf{p} primo):
+    \begin{itemize}[nosep]
+        \item scegliamo un primo \textbf{p}
+        \item consideriamo il messaggio $m$ come un vettore di interi in $\mathbb{Z}_p$ con un massimo di $n$ elementi: $m = [m_1, m_2, ..., m_n]$
+        \item la funzione hash \textbf{H} viene calcolata utilizzando gli elementi di $m$ come coefficienti del polinomio $F(k)$:
+        
+        {\centering
+            $H(k, M) = \overset{n}{\underset{i=1}{\sum}} (m_i \cdot k^i) \mod p$
+        \par}
+
+    \end{itemize}
+
+    \medskip
+    
+    \textcolor{red}{\textbf{\textit{One-Message Polynomial evaluation MACs}}}: è possibile costruire un \textbf{MAC} partendo da delle \textbf{UHF}, consideriamo il messaggio $m = m_1, m_2, ..., m_n$
+
+    {\centering
+        $mac(m, k, r) = r + H(m, k) = r + \overset{n}{\underset{i=1}{\sum}} (m_i \cdot k^i) \mod p$
+    \par}
+
+    In questo caso il \textbf{MAC} è un polinomio di grado $n$, \textbf{p} è fissato ed è pubblico, se $m_i$ è 128bit allora $p > 128$. \textbf{k} e \textbf{r} vengono scelti randomicamente:
+    \begin{itemize}[nosep]
+        \item \textbf{k} lavora come la chiave per la computazione, può essere utilizzata per più messaggi.
+        \item \textbf{r} ha la stessa funzionalità di un \textbf{\textit{nonce}} random, e bisogna utilizzarlo assolutamente per un unico messaggio, in questo caso \textbf{r} è \textbf{segreto}.
+    \end{itemize}
+    Nel caso in cui \textbf{r} venisse ripetuto per due \textit{tag}:
+    \begin{align*}
+        \mathbf{t_1} &= mac(m_1, k, r) = r + H(m_1, k) \\
+        t_1 - r - H(m_1, k) &= 0 \\
+        \mathbf{t_2} &= mac(m_2, k, r) = r + H(m_2, k) \\
+        t_2 - r - H(m_2, k) &= 0
+    \end{align*}
+
+    \begin{align*}
+        t_1 - \cancel{r} - H(m_1, k) &= t_2 - \cancel{r} - H(m_2, k) \\
+        \overset{n}{\underset{i=1}{\sum}}(m_{1,i} \cdot k^i) + t_1 &= t_2 + \overset{n}{\underset{i=1}{\sum}}(m_{2,i} \cdot k^i) \\
+        \overset{n}{\underset{i=1}{\sum}}((m_{1, i} - m_{2, i}) \cdot k^i) + t_1 - t_2 &= 0 \mod p
+    \end{align*}
+    In questo modo la chiave \textbf{k} è tra le radici del polinomio $m_2 - m_1 + t_1 + t_2$. 
+    \smallskip
+    È possibile estendere \textit{one-message poly MACs} ad un \textit{multi-message} utilizzando o una \textbf{PRF} oppure \textbf{PRP} (ad esempio un \textit{block cipher}), in questo modo, invece che utilizzare un valore di \textbf{r} random possiamo calcolarlo partendo da una chiave e un \textit{nonce}:
+
+    {\centering
+        $mac(m, k = \langle k_1, k_2 \rangle, n) = AES(n, k_1) + H(m, k_2)$
+    \par}
+
+    Se $k_1$ è segreta, un avversario, non sarebbe in grado di calcolarsi \textbf{AES}(n, $k_1$) anche se il valore $n$ fosse pubblico e non randomico, ma utilizzare lo stesso \textit{nonce} più volte esporrebbe $k_2$ e quindi romperebbe lo schema.
+
+    \medskip
+
+    \textcolor{red}{\textbf{\textit{GMAC}}} è basato su \textbf{AES-GCM} e in questo caso i rischi per la sicurezza in caso di errori di utilizzo sono molto più elevati a causa del comportamento lineare della funzione. Richiede un \textbf{\textit{unpredictable nonce}}, riutilizzare lo stesso \textit{nonce} per firmare messaggi diversi permette la \textbf{\textit{key recovery}}, in questo caso è molto importante utilizzare la variante \textbf{SIV} - molto più robusti a discapito delle \textit{performance} - come primivita dello schema (\textbf{AES-GCM-SIV}). La probabilità di successo in caso di attacco \textbf{aumenta} all'\textbf{aumentare della dimensione del messaggio}.
+
+    \smallskip
+
+    Non possiamo effettuare un'analisi a \textit{black-box} per definire come la dimensione del \textit{tag} influenzi il \textbf{livello di sicurezza}. Il dimensionamento richiede la conoscenza dello schema e le analisi sono parecchio complesse. Alcuni esempi:
+    \begin{itemize}[nosep]
+        \item \textbf{HMAC} e \textbf{CMAC}: è possibile mandare un numero di messaggi pari alla radice quadrata della dimensione del \textit{digest}
+        \item \textbf{GHASH} (e \textbf{GMAC}): il numero dei messaggi è lineare con la dimensione del \textit{digest}, ma diminuisce rispetto alla dimensione di ogni messaggio.
+        \item \textbf{Poly1305}: rappresenta un \textit{trade-off}, alto numero di messaggi dimensionalmente limitati.
+    \end{itemize}
 \end{flushleft}

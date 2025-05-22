@@ -1,0 +1,116 @@
+\chapter{Authenticated Protocol pt. 1}
+
+\begin{flushleft}
+    I moderni sistemi informativi devono implementare dei controlli per l'\textbf{identificazione}, l'\textbf{autenticazione} e \textbf{autorizzazione} per gli utenti:
+    \begin{itemize}[nosep]
+        \item \textbf{identificazione}: bisogna garantire univocità nel riconoscimento di un utente.
+        \item \textbf{autenticazione}: permette di prevenire che un'attaccante impersonifichi un attore legico.
+        \item \textbf{autorizzazione}: determina a quali risorse un utente autenticato può accedere.
+    \end{itemize}
+
+    \textcolor{red}{\textbf{\textit{AutN} - Autenticazione}}: è il processo per determinare se un utente ha o meno \textbf{accesso} al \textbf{sistema}.
+    
+    \smallskip
+
+    \textcolor{red}{\textbf{\textit{AutZ} - Autorizzazione}}: è il processo per regolare a quali risorse un utente autenticato è autorizzato ad accedere - la tipologia di regole che vengono applicate dipendono dal \textit{access model control} adottato.
+\end{flushleft}
+
+\begin{boxA}
+    \textcolor{orange}{\textbf{Esempio - \textit{Authentication in WebApp}}}
+
+    \begin{center}
+        \includegraphics[width=0.75\textwidth]{img/web_app_auth.png}
+    \end{center}
+
+    È possibile estendere la complessità dell'architettura in modo da permettere \textbf{\textit{Single Sign On (SSO)}}, \textbf{\textit{Identity Federation (OpenID)}}, \textbf{\textit{Authorization delegation (OAuth2)}}, ma tutti questi hanno come blocco base (primitiva) l'autenticazione dell'utente.
+\end{boxA}
+
+\begin{flushleft}
+    La procedura di \textbf{autenticazione} si basa su \textbf{fattori di autenticazione} (\textbf{\textit{authentication factor}}), ovvero dei metodi che utilizza un utente per dimostrare la sua identità, vengono anche chiamate \textbf{credenziali}. Ci sono diverse tipologie di fattori di autenticazione:
+    \begin{itemize}[nosep]
+        \item qualcosa \textbf{posseduto} dall'utente, ad esempio: \textbf{PIV - \textit{Personal Identifty Verification card}} o \textbf{U2F - \textit{Universal 2nd Factor}}.
+        \item qualcosa \textbf{conosciuto} dall'utente, ad esempio una \textbf{password} o un \textbf{PIN}.
+        \item Qualcosa che può essere eseguito dall'utente, tipologie di gesti.
+    \end{itemize}
+    Una procedura di autenticazione può richiedere ad un utente di fornire uno o più fattori di autenticazione - al giorno d'oggi è consigliato avere la \textbf{\textit{two-factor authentication}}.
+
+    \medskip
+
+    \textbf{Classi di Attacco}:
+    \begin{enumerate}[nosep]
+        \item attacchi \textit{client-side} (attacchi all'utente o al dispositivo dello stesso): possono essere ``\textbf{\textit{on-site}}'' ovvero un attacco allo \textbf{\textit{user-agent}} oppure attacchi ``\textbf{\textit{in motion}}'' quindi un attacco al canale di comunicazione, come ad esempio \textbf{\textit{snooping}}, \textbf{\textit{man-in-the-middle}} e \textbf{\textit{phishing}}
+        \item attacchi \textit{server-side} che possono essere divise a loro volta in: \textbf{sfruttamento di \textit{weak credentials}} presenti nel servizio di autenticazione oppure \textbf{accesso alle credenziali del DB} anche noto come \textbf{\textit{data breach}}
+    \end{enumerate}
+\end{flushleft}
+
+\section{Types of AuthN Protocol}
+
+\begin{boxA}
+    \textcolor{red}{\textbf{\textit{CAPTCHA - ``Turing Test''}}} \\
+    Definiamo il concetto di utente: vogliamo differenziare gli ``umani'' da computer, anche detti \textbf{bot}. Vorremmo che l'autenticazione fosse riservata a persone, in modo da escludere bot che potrebbero essere degli \textit{exploit} eseguiti da un attaccante per automatizzare, ad esempio, il \textit{brute force} delle password. Il \textbf{CAPTCHA} è una procedura che ne ingloba altre, normalmente definite difficili o impossibili per un computer, per escludere che un utente sia un bot.
+
+    \smallskip
+
+    Un tipo particolare di CAPTCHA viene detto \textbf{reCAPTCHA} e si basa su degli input presi dal mondo reale. Spesso vengono fornite dalle aziende in maniera ``\textit{as-a-service}''
+\end{boxA}
+
+\begin{flushleft}
+    \textcolor{red}{\textbf{\textit{Bearer Token}}} - \textit{basic authentication} \\
+    Il protocollo di autenticazione più semplice è la dimostrazione di conoscere un segreto, che deve essere inviato al servizio ``\textit{as-is}'', ma deve essere ovviamente fatto attraverso un canale di comunicazione sicuro, nel caso opposto un avversario sarebbe capace di leggerlo. Il \textit{bearer token} può essere implementato in vari modi, ad esempio: password, \textit{API key}, \textbf{JWT}. Lo svantaggio maggiore è che se l'attaccante è capace di ottenere il segreto in transito è capace di \textbf{impersonificare permanentemente} l'utente - almeno finché la credenziale non verrà revocata.
+\end{flushleft}
+
+\begin{flushleft}
+    \textcolor{red}{\textbf{\textit{One-time credentials}}} \\
+    Permette di mitigare il danno in caso di accesso alla password sul canale di comunicazione tramite l'invio di \textbf{diverse \textit{authentication information} per ogni autenticazione}. Dopo ogni autenticazione il server \textbf{invalida} la credenziale utilizzata. Il \textcolor{olive}{\textbf{vantaggio}} è che anche violando il canale trasmissivo il danno è limitato, lo \textcolor{red}{\textbf{svantaggio}} è che il \textit{client} e \textit{server} devono riservare dello spazio propozionale al numero di procedure di autenticazione.
+    
+    \smallskip
+
+    \textbf{\textit{Backup OTP codes}}: credenziali monouso pregenerate da mantenere offline in maniera sicura.
+\end{flushleft}
+
+\begin{flushleft}
+    \textcolor{red}{\textbf{\textit{Challenge-Response}}} \\
+    I protocolli del tipo \textit{challenge-response} consentono agli utenti di calcolare un valore in relazione ad una \textit{challenge} utilizzando le proprie credenziali utente. Le credenziali non vengono mai inviate attraverso il canale trasmissivo, e la sfida è monodirezionale per evitare attacchi del tipo \textbf{\textit{reply}}. Le credenziali potrebero non essere note all'utente ma solamente controllate. Alcuni esempi possono essere \textit{challenge} basate sul \textbf{tempo} (preso nell'istante di tempo iniziale della comunicazione, con una certa \textbf{tolleranza}) - nei server web è sempre presente (\textbf{NTP}) a differenza degli apparati embedded.
+
+    \smallskip
+
+    I protocolli \textit{challenge-response} possono essere implementati sia con crittografia \textbf{simmetrica} che tramite crittografia \textbf{asimmetrica}. In un caso la chiave di autenticazione è uguale a quella di verifica, nell'altro divergono.
+\end{flushleft}
+
+\begin{flushleft}
+    \textcolor{red}{\textbf{\textit{Credential Ddatabases}}}: i database richiesti per permettere protocolli di autenticazione possono includere diverse tipologie di informazioni in relazione al tipo di protocollo utilizzato.
+    \begin{itemize}[nosep]
+        \item \textbf{\textit{bearer token}} (o informazioni derivate)
+        \item \textbf{\textit{public keys}} (crittografia asimmetrica)
+        \item \textbf{\textit{secret keys}}
+        \item altri \textbf{metadati} o materiale crittografico
+    \end{itemize}
+    Il \textbf{database delle credenziali} è normalmente \textbf{statico} - a differenza \textcolor{red}{\textbf{\textit{dynamic credential database}}} che permette di aumentare la \textbf{resilienza} delle credenziali salvate modificandolo - il che implica che non varia durante tutta la procedura di autenticazione.
+\end{flushleft}
+
+\newpage
+
+\section{OTP, OATH OTP}
+
+\begin{flushleft}
+    Andiamo ad analizzare i protocolli \textcolor{red}{\textbf{\textit{Challenge-Response based on Symmetric Cryptography}}}. \textbf{\textit{One-Time Password}} - è riferito alla credenziali $\neq$ password - sono funzioni \textit{challenge} che si basano sugli \textbf{HMAC}, esistono due standard:
+    \begin{enumerate}[nosep]
+        \item \textbf{HOTP, RFC4226 - \textit{Hash-based Ont Time Password}} è basato su un \textbf{HMAC} $\rightarrow \; \text{HTOP}(k, c) = \text{Truncate}(\text{HMAC}(k, c))$ dove $k$ è una \textbf{chiave}, $c$ è un \textbf{\textit{counter}} e la funzione $\text{Truncate}$ dipende dal livello di sicurezza che volgiamo garantire. In questo caso il \textit{client} non mantiene alcuno stato (ad eccezione della chiave) - a differenza del \textit{server} il cui stato è il \textbf{\textit{counter}} - quando il client vuole accedere, il server gli invia il \textbf{counter} e il client si riesce ad autenticarsi, contemporaneamente il server incrementa il counter.
+
+        \begin{figure}[h]
+            \centering
+            \includegraphics[width=0.65\textwidth]{img/hotp.png}
+        \end{figure}
+
+        Questo tipo di protocollo prova che Alice ha \textbf{controllo} sull'informazione secreta, ma potrebbe anche non averla - il segreto potrebbe essere gestito da un ``device'' differente tipo \textbf{\textit{Trust Platform Module - TPM}}. È possibile evitare di inviare esplicitamente la \textit{challenge} se abbiamo una sorgente comune (\textbf{variabile}) di informazioni, ad esempio il \textbf{tempo}.
+
+        \begin{figure}[h]
+            \centering
+            \includegraphics[width=0.65\textwidth]{img/hotp_1.png}
+        \end{figure}
+
+    \item \textbf{TOTP, RFC6238 - \textit{Time-Based One-Time Password}}: è un caso speciale dell'\textbf{HOTP}, infatti $\text{HTOP}(k, t) = \text{TOTP}(k, t)$ dove $t$ esprime \textbf{\textit{time step}} calcolati $t = \lfloor \frac{(\text{CurrentUnixTime} - T_0)}{X}$ dove $T_0$ è un tempo base Unix che decreta dove iniziare il conteggio, $X$ è il parametro che indica gli \textit{step} temporali. Assumiamo che client e server hanno accesso ad un'\textbf{informazione condivisa} - normalmente \textbf{\textit{UTC time}}.
+    \end{enumerate}
+\end{flushleft}
+
+\section{Password e PIN}

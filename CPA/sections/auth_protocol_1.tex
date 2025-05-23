@@ -114,3 +114,41 @@
 \end{flushleft}
 
 \section{Password e PIN}
+
+\begin{flushleft}
+    Il più semplice sistema di autenticazione richiesto ad un client è quello di fornire le sue credenziali, \textit{username:password}. L'utente invia le sue credenziali (attraverso un canale sicuro), il server esegue una \textit{query} al database per ottenere la password salvata per un certo username e poi effettua il confronto tra quella fornita e quella salvata.
+
+    \smallskip
+
+    \textbf{Definizione}: Le \textbf{password} sono dei segreti ricordabili dagli umani e quindi \textbf{deboli} per definizione. Questo non toglie la possibilità che utenti possano scegliere ``password forti'', ma nella maggior parte degli scenari dobbiamo assumere il contrario.
+
+    \smallskip
+
+    Andiamo a definere cosa vuol dire ``\textbf{segreto debole}'': un avversario può ``indovinare'' il segreto con un numero fattibile di tentativi. Il che può essere dovuto a:
+    \begin{itemize}[nosep]
+        \item \textbf{\textit{enumeration}}: con molti pochi tentativi, abbiamo un segreto ``molto debole'': \textbf{\textit{dictionary attack}}.
+        \item \textbf{\textit{brute-forcing}}: il numero di tentativi diventa non trascurabile, numero limitato di password possibili.
+    \end{itemize}
+
+    \smallskip
+
+    \textbf{Password}: segreti a bassa entropia, facilmente memorizzabili. Possono essere scelte corte e con un alfabeto ridotto. Anche password che non sono ``deboli'' possono diventare vulnerabili nel lungo periodo, infatti vengono considerate deboli in termini crittografici. \\
+    \textbf{PIN}: segreti a bassa entropia (molto bassa), sono intrinsecamente vulnerabili a \textbf{ricerca esaustiva}, devono essere utilizzati solo in contesti vincolati dall'interfaccia per l'immissione.
+
+    \medskip
+
+    Un avversario può provare ad ``\textbf{indovinare}'' la password di un utente che sa che esiste, andando a fare richieste ripetute fino a che non riesce ad ottenere il login. 
+
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.55\textwidth]{img/int_attack.png}
+        \caption{\textbf{\textit{Interactive Attack}}}
+    \end{figure}
+
+    Per conoscere il risultato del tentativo l'attaccante deve interagire con il server, per attenuare l'attacco il server può e deve applicare un \textbf{\textit{delay}} tra i tentativi del login per mitigare l'attacco di \textit{brute-force}. Con i \textbf{PIN} l'idea è la medesima, ma siccome sappiamo che il \textbf{PIN} è molto più debole è quindi necessario inserire un \textbf{numero massimo di tentativi} e in caso di mancata autenticazione si ricade in un altro sistema di \textbf{AuthN} più ``forte'' (\textbf{\textit{fallback}}). \\
+
+    Libreria \textbf{python} per \textbf{HOTP} e \textbf{TOTP}: \textbf{\textit{pyotp}}.
+
+\end{flushleft}
+
+\section{Password Protection against Data Breaches}

@@ -152,3 +152,115 @@
 \end{flushleft}
 
 \section{Password Protection against Data Breaches}
+
+\begin{flushleft}
+    Focalizziamoci sul problema di \textbf{protezione delle password}, assumendo che il server sia completamente \textbf{compromesso} dall'avversario. I vincoli intrinsici che espone questa assunzione sono:
+    \begin{enumerate}[nosep, start=0]
+        \item non bisogna salvare le password in chiaro
+        \item bisogna essere protettti conto \textit{pre-computational attacks}
+        \item aumentare al protezione contro le password deboli.
+        \item essere in grado di difenderci contro \textbf{attacchi ``specializzati''}
+    \end{enumerate}
+
+    \medskip
+
+    \textcolor{red}{\textbf{[0] Non salvare le password in chiaro}}: salvare le password in chiaro comporta che se il server è completamente compromesso e l'attaccante ha accesso a tutte le coppie \textit{(username, password)}. La sua speranza è il riutilizzo della stessa coppia per altri applicazioni.
+
+    \smallskip
+
+    \textcolor{red}{\textbf{[1] Proteggere le credenziali nel database utilizzando le \textit{hash function}}}: in questo modo sarà possibile fare il confronto con il \textit{digest} salvato e il \textit{digest} ottenuto dall'applicazione della funzione hash alla password immessa dall'utente per autenticarsi. Siccome la funzione hash è \textbf{unidirezionale} se l'attaccante ha compromesso il sistema non sarà capace a partire dal \textit{digest} ottenere la password (\textbf{\textit{one-way}}).
+    \begin{itemize}[nosep]
+        \item se l'attaccante ottiene $H(p)$ dove $p$ è la password dell'utente, l'unico modo per ottenere $p$ è trovare una funzione inversa $H^{-1}$ (che dalle proprietà delle \textit{hash function} dovrebbe essere impossibile) oppure riuscire a trovare una password $p'$ (tramite \textbf{attacco esaustivo} sullo spazio delle password o con un \textbf{attacco a dizionario}) il cui \textit{digest} è uguale ad $H(p) = H(p')$
+        \item quindi l'attaccante fallisce fintanto che $h$ è una funzione crittografica sicura? se le password venissero scelte come \textbf{chiavi crittografiche} allora \textbf{si}, nel caso in cui vengano scelte da un utente non paranoico allora \textbf{no}.
+        \item infatti l'attaccate riesce a fare un \textbf{\textit{pre-computation attack}} potrebbe diminuire il tempo per trovare delle collisioni, soprattutto in caso di password corte; tipico esempio di \textbf{compromesso-spazio tempo} (possono essere violate anche password buone).
+        \item non è possibile difendersi se l'avversario compromette la logica applicativa, quindi unicamente in caso di \textbf{\textit{data breach}}.
+    \end{itemize}
+\end{flushleft}
+\begin{boxA}
+    \textcolor{red}{\textbf{\textit{Pre-computation Attack to Credential Database}}}
+
+    \begin{center}
+        \includegraphics[width=\textwidth]{img/pre_attack_pwd.png}
+    \end{center}
+
+    L'obiettivo dell'attaccante è quello di ottenere una pre-immagine della password con l'hash non appena accede al database. Una possibilità sarebbe quella di \textbf{pre-calcolare} tutte le possibili password e il \textit{digest} corrispondente, la problematica di questa tipologia di approccio è che richiederebbe un mole memoria infattibile $\rightarrow$ \textbf{\textit{rainbow tables}} permettono di pre-calcolare attachi agli hash delle password senza dover memorizzare tutte le possibili corrispondenze per un dato \textit{domain}, la loro dimensione dimenta infattibile per lunghi input (16bytes alfanumerici).
+
+    \smallskip
+
+    $\Delta(t_0, t_1) \rightarrow 0$ in modo tale da limitare il tempo in cui un attaccante proverà l'\textit{offline cracking}, tramite il monitoraggio del traffico, del \textit{dark web} per osservare le \textit{disclosure} dei \textit{data breach} e segnalazione da parte di altri utenti.
+\end{boxA}
+
+\begin{flushleft}
+    \textcolor{red}{\textbf{[2] Protezzione contro \textit{pre-computational attack} attraverso il \textit{Salt}}}: la difesa migliore è rendere \textbf{randomico l'\textit{hash function}}. Per ogni utente la password viene hashata con un differente valore \textbf{unico e randomizzato}, chiamato \textbf{\textit{salt}}, che viene salvato insieme al \textit{digest} nel database. Per ogni utente la sua riga di autenticazione sarà quindi formata da: 
+    
+    {\centering
+        | \textit{username} | \textbf{\textit{salt}} | \textbf{\textit{hash(salt, password)}} |
+    \par}
+
+    In questo moto l'attaccante non può costruire la \textbf{\textit{rainbow table}} fino a che non ottiene il valore del \textbf{\textit{salt}}, ma siccome il valore del \textit{salt} viene ottenuto dall'attaccante durante la fase di \textbf{\textit{data breach}}, la generazione della \textit{rainbow table} avviene \textbf{online}, se si utilizzasse lo stesso \textit{salt} per più password una \textit{rainbow table} permetterebbe di aumentare l'efficenza del \textit{cracking} anche se online. In ogni caso l'attaccante è comunque capace di violare agilmente password deboli.
+
+    \smallskip
+
+    \textcolor{red}{\textbf{[2a] \textit{Secret Salt}}}, anche noto come \textbf{\textit{pepper}} è ottenibile dividendo l'\textbf{\textit{authentication server}} da un compomente esterno che genera il \textbf{\textit{secret salt}}, attraverso una \textbf{KDF}:
+
+    {\centering
+        \textbf{pepper} = \textbf{KDF}(\textbf{\textit{key}}, dimensione, ``\textbf{\textit{user}} || '\textbf{versione}')
+    \par}
+    
+    Se viene compromesso questo componente esterno il \textit{fallback} è tornare all'utilizzo del \textbf{\textit{public salt}}, è anche importante ricordare che non è una soluzione semplice ed è difficilmente integrabile con framework di sviluppo web.
+
+    \smallskip
+
+    \textcolor{red}{\textbf{[3] Difendersi contro le password ``deboli''}}: introduciamo un nuovo \textbf{schema crittografico}: \textbf{\textit{password-based hash functions}}, chiamate \textcolor{red}{\textbf{\textit{PBKDF - Password-Based Key Derivation Functions}}}. Il loro obiettivo è quello di \textbf{aumentare} il tempo di esecuizione del calcolo dell'hash (\textit{slow down}) in modo tale che comunque rimanga \textbf{moderato}, ma che il suo inverso sia comunque \textbf{infattibile}. L'idea non è quella di bloccare completamente gli attacchi \textit{offline} delle password, se la password è debole è imposibile senza modificare anche l'architettura, ma cercare di \textbf{rallentarli} attacchi esaustivi \textbf{senza compromettere l'esecuzione del servizio legittimo}.
+    \begin{itemize}[nosep]
+        \item i ritardi devono essere valutati e aggiornati nel tempo in base all'hardware disponibile e al suo costo.
+        \item se l'attaccante vuole andare più veloce, deve spendere di più.
+    \end{itemize}
+
+    Alcuni esempi di \textbf{PBKDF}:
+    \begin{enumerate}[nosep]
+        \item \textbf{PBKDF1}: procedura iterativa: $\underset{\text{n volte}, \; n \simeq 10^6}{\underbrace{H(H(...(H(}}\text{salt}, \text{password}))))$
+        \item \textbf{PBKDF2}: in alcuni scenari potrebbe essere necessario utilizzare questa funzione perché approvata da molti standard.
+        \item \textbf{Bcrypt}: supportata, comunemente, in scenari \textit{open-source}, anche questa ha un approccio iterativo.
+    \end{enumerate}
+
+    \smallskip
+
+    \textcolor{red}{\textbf{[4] Difendersi contro attacchi ``specializzati''}}: gli attacchi specializzati utilizzano \textbf{hardware dedicato} per riuscire ad annullare (rendere trascurabile) il \textbf{gap} introdotto da funzioni ``lente''. Cercando, ad esempio, rendere le \textbf{PBKDF egalitarie} ovvero standardizzare nel tempo l'esecuzione indipendentemente dall'hardware sottostante.
+    \begin{itemize}[nosep]
+        \item negli anni '90 gli attaccanti avevano lo stesso hardware.
+        \item negli anni '00 gli attaccanti utilizzavano le GPU.
+        \item negli anni '10 gli attaccanti iniziano ad utilizzare hardware dedicati.
+    \end{itemize}
+    Il ritardo introdotto con le \textbf{PBKDF} è reso inutile visto il crescente gap di risorse (sia computazionali che economiche) tra gli attori legittmi e avversari.
+
+    \smallskip
+
+    Abbiamo detto che per mitigare queste tipologie di attacchi bisogna rendere le \textbf{PBKDF \textcolor{red}{egalitarie}}, idealmente, l'attaccante non deve essere capace di sfruttare il vantaggio che potrebbe dare architettura specializzate per ogni calcolo rispetto ad un attore legittimo.
+
+    \smallskip
+
+    \textcolor{red}{\textbf{memory-hard hash functions}}: siccome l'hardware dedicato normalmente vuol dire estremamente parallelizzato, ma normalmente queste disposibitivi (ad esempio GPU) hanno molta meno memoria rispetto ad una classica CPU. Pertanto se progettiamo un algoritmo che impieghi quanto più tempo se gli viene messa a disposizione quanta meno memoria evitiamo che gli aggressori possano forzarli in modo più efficiente rispetto agli attori legittmi. In sostanza \textbf{sono molto più lenti da calcolare se viene utilizzata poca memoria}.
+
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.35\textwidth]{img/mhf.png}
+    \end{figure}
+
+    Il primo algoritmo di questo tipo era \textbf{Scrypt} considerato sicuro, ma soffriva di due svantaggi: era vulnerabile ad una certa categoria di \textit{timing attacks} e il \textit{gap} tra attaccante e attore legittimo non era molto alto. \\
+    Venne fatta una competizione per cercare un nuovo algoritmo (\textbf{\textit{password hasing competition}}) e nel 2015 il vincitore \textbf{Argon2} divenne lo standard per questo tipo di circostanze.
+    \begin{itemize}[nosep]
+        \item \textbf{Argon2i}: l'esecuzione è indipendente dal tempo rispetto agli input consigliata per l'utilizzo nei protocolli a chiave basati su password.
+        \item \textbf{Argon2d}: è molto più forte, ma è dipendente dal tempo per quanto riguarda gli input, suggerito per l'uso di schema \textbf{PoW} o quando gli attacchi temporizzati non sono un problema.
+        \item \textbf{Argon2id}: unisce le prime due \textit{mode of operation} (ibrido, spesso usato come default).
+    \end{itemize}
+    Parametri per \textbf{Argon2} :
+    \begin{itemize}[nosep]
+        \item \textbf{input}: la password inserita.
+        \item \textbf{salt}: normalmente o 8 o 16 bytes.
+        \item \textbf{\textit{time-cost}}: controlla il tempo di esecuzione (è simile al numero di replicazioni negli approcci iterativi); nel caso di esecuzioni per l'autenticazione \textit{online} siamo nel range 0.5-1.0 secondi, mentre per operazioni \textit{offline} anche più alto.
+        item \textbf{\textit{memory}}: quantità di memoria richiesta per il calcolo ``normale'' (ad oggi il minimo per fine autenticativo 64MB, ma si può utilizzare anche 1GB per applicazioni critiche di sicurezza).
+        \item \textbf{\textit{parallelism}}: numero di unità di calcolo parallele (anche se dipendenti).
+        \item \textbf{\textit{output size}}: lunghezza del \textit{digest} (di default è 16 bytes).
+    \end{itemize}
+\end{flushleft}
